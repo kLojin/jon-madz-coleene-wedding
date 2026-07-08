@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Share Wedding Photos</title>
+
+  <style>
+    :root {
+      --bg: #faf7f2;
+      --card: rgba(255, 255, 255, 0.78);
+      --text: #2b2420;
+      --muted: #7a6e66;
+      --accent: #b99a72;
+      --accent-dark: #8c6c49;
+      --border: rgba(43, 36, 32, 0.12);
+      --shadow: 0 24px 70px rgba(43, 36, 32, 0.14);
+      --radius: 28px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(185, 154, 114, 0.26), transparent 32rem),
+        radial-gradient(circle at bottom right, rgba(217, 198, 171, 0.36), transparent 30rem),
+        var(--bg);
+      padding: 20px;
+    }
+
+    .shell {
+      width: min(100%, 980px);
+      margin: 0 auto;
+      padding: 32px 0 56px;
+    }
+
+    .hero {
+      width: min(100%, 560px);
+      margin: 0 auto 32px;
+      padding: clamp(32px, 7vw, 56px) clamp(22px, 6vw, 44px);
+      text-align: center;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .eyebrow {
+      margin-bottom: 18px;
+      color: var(--accent-dark);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2.4rem, 9vw, 4.6rem);
+      line-height: 0.95;
+      font-weight: 400;
+      letter-spacing: -0.05em;
+      margin-bottom: 22px;
+    }
+
+    .message {
+      max-width: 36ch;
+      margin: 0 auto 26px;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.65;
+    }
+
+    .upload-area {
+      display: grid;
+      gap: 14px;
+    }
+
+    .file-input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .upload-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 58px;
+      width: 100%;
+      padding: 0 26px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--text);
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      box-shadow: 0 14px 30px rgba(43, 36, 32, 0.22);
+      transition:
+        transform 180ms ease,
+        background 180ms ease,
+        box-shadow 180ms ease;
+    }
+
+    .upload-btn:hover {
+      transform: translateY(-2px);
+      background: var(--accent-dark);
+      box-shadow: 0 18px 40px rgba(43, 36, 32, 0.26);
+    }
+
+    .upload-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.65;
+      transform: none;
+    }
+
+    .status {
+      min-height: 22px;
+      color: var(--muted);
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+
+    .gallery-header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 0 0 16px;
+    }
+
+    .gallery-title {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.8rem, 5vw, 2.6rem);
+      font-weight: 400;
+      letter-spacing: -0.04em;
+    }
+
+    .refresh-btn {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.64);
+      color: var(--text);
+      padding: 11px 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .photo {
+      display: block;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.64);
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 28px rgba(43, 36, 32, 0.08);
+    }
+
+    .photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 220ms ease;
+    }
+
+    .photo:hover img {
+      transform: scale(1.04);
+    }
+
+    .empty {
+      grid-column: 1 / -1;
+      padding: 28px;
+      text-align: center;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.58);
+      border: 1px dashed var(--border);
+      border-radius: 22px;
+    }
+
+    @media (max-width: 760px) {
+      .gallery {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 420px) {
+      body {
+        padding: 14px;
+      }
+
+      .shell {
+        padding-top: 18px;
+      }
+
+      .hero {
+        border-radius: 24px;
+      }
+
+      .gallery {
+        gap: 9px;
+      }
+
+      .photo {
+        border-radius: 16px;
+      }
+    }
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* FLORAL DECORATIONS */
+.floral {
+  position: fixed;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0.95;
+}
+
+.floral-top-left {
+  top: clamp(24px, 5vw, 72px);
+  left: clamp(-48px, -2vw, 24px);
+  width: clamp(190px, 25vw, 430px);
+}
+
+.floral-bottom-right {
+  right: clamp(-80px, -3vw, 24px);
+  bottom: clamp(-60px, -2vw, 20px);
+  width: clamp(220px, 30vw, 520px);
+}
+
+/* Make sure your actual content stays above florals */
+main,
+header,
+section,
+.card,
+.hero,
+.gallery-section {
+  position: relative;
+  z-index: 2;
+}
+
+/* SCROLL TO TOP BUTTON */
+.scroll-top-btn {
+  position: fixed;
+  right: clamp(18px, 3vw, 34px);
+  bottom: clamp(18px, 3vw, 34px);
+  z-index: 99;
+
+  width: 52px;
+  height: 52px;
+  border: 0;
+  border-radius: 999px;
+
+  display: grid;
+  place-items: center;
+
+  background: #a67462;
+  color: #fff;
+
+  font-size: 1.45rem;
+  line-height: 1;
+  cursor: pointer;
+
+  box-shadow: 0 14px 34px rgba(80, 55, 45, 0.24);
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(14px);
+
+  transition:
+    opacity 180ms ease,
+    visibility 180ms ease,
+    transform 180ms ease,
+    background 180ms ease;
+}
+
+.scroll-top-btn.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.scroll-top-btn:hover {
+  background: #8d5f50;
+}
+
+/* RESPONSIVE OPTIMIZATION */
+@media (max-width: 1024px) {
+  .floral-top-left {
+    width: clamp(170px, 31vw, 320px);
+    left: -48px;
+  }
+
+  .floral-bottom-right {
+    width: clamp(210px, 36vw, 400px);
+    right: -86px;
+  }
+}
+
+@media (max-width: 760px) {
+  .floral {
+    opacity: 0.55;
+  }
+
+  .floral-top-left {
+    top: 18px;
+    left: -78px;
+    width: 220px;
+  }
+
+  .floral-bottom-right {
+    right: -112px;
+    bottom: -48px;
+    width: 280px;
+  }
+
+  .scroll-top-btn {
+    width: 46px;
+    height: 46px;
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .floral-top-left {
+    width: 180px;
+    left: -82px;
+    top: 12px;
+  }
+
+  .floral-bottom-right {
+    width: 240px;
+    right: -118px;
+    bottom: -58px;
+  }
+}
+
+  </style>
+</head>
+
+<body>
+    <div id="top"></div>
+
+<img
+  src="assets/images/floral-top-left.png"
+  alt=""
+  class="floral floral-top-left"
+  aria-hidden="true"
+/>
+
+<img
+  src="assets/images/floral-bottom-right.png"
+  alt=""
+  class="floral floral-bottom-right"
+  aria-hidden="true"
+/>
+  <main class="shell">
+    <section class="hero">
+      <p class="eyebrow">Wedding Memories</p>
+
+      <h1>
+        Jon Madz<br />
+        &amp; Coleene
+      </h1>
+
+      <p class="message">
+        Share your favorite photos from today. Everyone can view the memories as they are uploaded.
+      </p>
+
+      <div class="upload-area">
+        <input
+          class="file-input"
+          id="photoInput"
+          type="file"
+          accept="image/*"
+          multiple
+        />
+
+        <button class="upload-btn" id="chooseBtn">
+          📷 Upload Photos
+        </button>
+        <p class="status" id="status">
+  Upload JPG, PNG, or phone photos only. Max 10MB per image.
+</p>
+
+        <p class="status" id="status">
+          You can select multiple images.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <div class="gallery-header">
+        <h2 class="gallery-title">Guest Gallery</h2>
+        <button class="refresh-btn" id="refreshBtn">Refresh</button>
+      </div>
+
+      <div class="gallery" id="gallery">
+        <div class="empty">Loading photos...</div>
+      </div>
+    </section>
+  </main>
+
+  <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top">
+  ↑
+</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    const SUPABASE_URL = "https://icwvatphuyjqvdowriss.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_u-yjZ2caskNqkUbvkgMNTw_MHuWrpBv";
+
+    const BUCKET_NAME = "wedding-photos";
+    const FOLDER_NAME = "uploads";
+
+    const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const photoInput = document.querySelector("#photoInput");
+    const chooseBtn = document.querySelector("#chooseBtn");
+    const refreshBtn = document.querySelector("#refreshBtn");
+    const statusText = document.querySelector("#status");
+    const gallery = document.querySelector("#gallery");
+
+    chooseBtn.addEventListener("click", () => {
+      photoInput.click();
+    });
+
+    refreshBtn.addEventListener("click", () => {
+      loadGallery();
+    });
+
+    photoInput.addEventListener("change", async (event) => {
+      const files = Array.from(event.target.files || []);
+
+      if (!files.length) return;
+
+      chooseBtn.disabled = true;
+      statusText.textContent = `Uploading ${files.length} photo${files.length > 1 ? "s" : ""}...`;
+
+      let uploaded = 0;
+      let failed = 0;
+
+      for (const file of files) {
+        const isImage = file.type.startsWith("image/");
+
+        if (!isImage) {
+          failed++;
+          continue;
+        }
+
+        const fileExt = file.name.split(".").pop();
+        const safeName = crypto.randomUUID();
+        const filePath = `${FOLDER_NAME}/${Date.now()}-${safeName}.${fileExt}`;
+
+        const { error } = await client.storage
+          .from(BUCKET_NAME)
+          .upload(filePath, file, {
+            cacheControl: "3600",
+            upsert: false
+          });
+
+        if (error) {
+  console.error("Upload error:", error);
+  failed++;
+  statusText.textContent = `Upload failed: ${error.message || "Unknown Supabase error"}`;
+} else {
+  uploaded++;
+}
+      }
+
+      photoInput.value = "";
+      chooseBtn.disabled = false;
+
+      if (failed > 0) {
+        statusText.textContent = `${uploaded} uploaded. ${failed} failed. Try again with image files below the size limit.`;
+      } else {
+        statusText.textContent = `${uploaded} photo${uploaded > 1 ? "s" : ""} uploaded. Thank you.`;
+      }
+
+      await loadGallery();
+    });
+
+    async function loadGallery() {
+      gallery.innerHTML = `<div class="empty">Loading photos...</div>`;
+
+      const { data, error } = await client.storage
+        .from(BUCKET_NAME)
+        .list(FOLDER_NAME, {
+          limit: 100,
+          offset: 0,
+          sortBy: {
+            column: "created_at",
+            order: "desc"
+          }
+        });
+
+      if (error) {
+  console.error("Gallery error:", error);
+  gallery.innerHTML = `
+    <div class="empty">
+      Could not load photos.<br>
+      Error: ${error.message || "Unknown Supabase error"}
+    </div>
+  `;
+  return;
+}
+
+      const imageFiles = (data || []).filter((file) => {
+        return file.name && !file.name.startsWith(".");
+      });
+
+      if (!imageFiles.length) {
+        gallery.innerHTML = `<div class="empty">No photos yet. Be the first to upload.</div>`;
+        return;
+      }
+
+      gallery.innerHTML = "";
+
+      imageFiles.forEach((file) => {
+        const filePath = `${FOLDER_NAME}/${file.name}`;
+
+        const { data: publicData } = client.storage
+          .from(BUCKET_NAME)
+          .getPublicUrl(filePath);
+
+        const link = document.createElement("a");
+        link.className = "photo";
+        link.href = publicData.publicUrl;
+        link.target = "_blank";
+        link.rel = "noopener";
+
+        const img = document.createElement("img");
+        img.src = publicData.publicUrl;
+        img.alt = "Wedding guest upload";
+        img.loading = "lazy";
+
+        link.appendChild(img);
+        gallery.appendChild(link);
+      });
+    }
+
+    loadGallery();
+  </script>
+  <script>
+  const scrollTopBtn = document.querySelector("#scrollTopBtn");
+
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 500) {
+      scrollTopBtn.classList.add("is-visible");
+    } else {
+      scrollTopBtn.classList.remove("is-visible");
+    }
+  });
+
+  scrollTopBtn.addEventListener("click", () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  });
+</script>
+</body>
+</html>
