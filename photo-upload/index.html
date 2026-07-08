@@ -25,8 +25,13 @@
       padding: 0;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       min-height: 100vh;
+      overflow-x: hidden;
       font-family: Arial, sans-serif;
       color: var(--text);
       background:
@@ -37,12 +42,16 @@
     }
 
     .shell {
+      position: relative;
+      z-index: 2;
       width: min(100%, 980px);
       margin: 0 auto;
       padding: 32px 0 56px;
     }
 
     .hero {
+      position: relative;
+      z-index: 2;
       width: min(100%, 560px);
       margin: 0 auto 32px;
       padding: clamp(32px, 7vw, 56px) clamp(22px, 6vw, 44px);
@@ -133,6 +142,8 @@
     }
 
     .gallery-header {
+      position: relative;
+      z-index: 2;
       display: flex;
       align-items: end;
       justify-content: space-between;
@@ -158,6 +169,8 @@
     }
 
     .gallery {
+      position: relative;
+      z-index: 2;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 12px;
@@ -165,23 +178,33 @@
 
     .photo {
       display: block;
+      width: 100%;
       aspect-ratio: 1 / 1;
       overflow: hidden;
       border-radius: 20px;
       background: rgba(255, 255, 255, 0.64);
       border: 1px solid var(--border);
       box-shadow: 0 10px 28px rgba(43, 36, 32, 0.08);
+      cursor: pointer;
+      padding: 0;
+      text-align: inherit;
+      font: inherit;
+      color: inherit;
     }
 
-    .photo img {
+    .photo img,
+    .photo video {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
+      pointer-events: none;
       transition: transform 220ms ease;
+      background: #000;
     }
 
-    .photo:hover img {
+    .photo:hover img,
+    .photo:hover video {
       transform: scale(1.04);
     }
 
@@ -195,9 +218,179 @@
       border-radius: 22px;
     }
 
+    /* FLORAL DECORATIONS */
+    .floral {
+      position: fixed;
+      z-index: 0;
+      pointer-events: none;
+      user-select: none;
+      opacity: 0.95;
+    }
+
+    .floral-top-left {
+      top: clamp(24px, 5vw, 72px);
+      left: clamp(-48px, -2vw, 24px);
+      width: clamp(190px, 25vw, 430px);
+    }
+
+    .floral-bottom-right {
+      right: clamp(-80px, -3vw, 24px);
+      bottom: clamp(-60px, -2vw, 20px);
+      width: clamp(220px, 30vw, 520px);
+    }
+
+    /* IN-PAGE PREVIEW MODAL */
+    .media-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: rgba(20, 16, 14, 0.86);
+      opacity: 0;
+      visibility: hidden;
+      transition:
+        opacity 180ms ease,
+        visibility 180ms ease;
+    }
+
+    .media-modal.is-open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-frame {
+      width: min(100%, 960px);
+      max-height: 86vh;
+      display: grid;
+      place-items: center;
+    }
+
+    .modal-frame img,
+    .modal-frame video {
+      max-width: 100%;
+      max-height: 86vh;
+      border-radius: 18px;
+      object-fit: contain;
+      background: #000;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+    }
+
+    .modal-frame video {
+      width: min(100%, 960px);
+    }
+
+    .modal-close {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      z-index: 1000;
+      width: 46px;
+      height: 46px;
+      border: 0;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, 0.92);
+      color: #2b2420;
+      font-size: 2rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    /* SCROLL TO TOP BUTTON */
+    .scroll-top-btn {
+      position: fixed;
+      right: clamp(18px, 3vw, 34px);
+      bottom: clamp(18px, 3vw, 34px);
+      z-index: 99;
+      width: 52px;
+      height: 52px;
+      border: 0;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: #a67462;
+      color: #fff;
+      font-size: 1.45rem;
+      line-height: 1;
+      cursor: pointer;
+      box-shadow: 0 14px 34px rgba(80, 55, 45, 0.24);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(14px);
+      transition:
+        opacity 180ms ease,
+        visibility 180ms ease,
+        transform 180ms ease,
+        background 180ms ease;
+    }
+
+    .scroll-top-btn.is-visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .scroll-top-btn:hover {
+      background: #8d5f50;
+    }
+
+    @media (max-width: 1024px) {
+      .floral-top-left {
+        width: clamp(170px, 31vw, 320px);
+        left: -48px;
+      }
+
+      .floral-bottom-right {
+        width: clamp(210px, 36vw, 400px);
+        right: -86px;
+      }
+    }
+
     @media (max-width: 760px) {
       .gallery {
         grid-template-columns: repeat(2, 1fr);
+      }
+
+      .floral {
+        opacity: 0.55;
+      }
+
+      .floral-top-left {
+        top: 18px;
+        left: -78px;
+        width: 220px;
+      }
+
+      .floral-bottom-right {
+        right: -112px;
+        bottom: -48px;
+        width: 280px;
+      }
+
+      .scroll-top-btn {
+        width: 46px;
+        height: 46px;
+        font-size: 1.25rem;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .media-modal {
+        padding: 14px;
+      }
+
+      .modal-frame img,
+      .modal-frame video {
+        border-radius: 14px;
+      }
+
+      .modal-close {
+        width: 42px;
+        height: 42px;
+        font-size: 1.8rem;
       }
     }
 
@@ -221,163 +414,39 @@
       .photo {
         border-radius: 16px;
       }
+
+      .floral-top-left {
+        width: 180px;
+        left: -82px;
+        top: 12px;
+      }
+
+      .floral-bottom-right {
+        width: 240px;
+        right: -118px;
+        bottom: -58px;
+      }
     }
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  overflow-x: hidden;
-}
-
-/* FLORAL DECORATIONS */
-.floral {
-  position: fixed;
-  z-index: 0;
-  pointer-events: none;
-  user-select: none;
-  opacity: 0.95;
-}
-
-.floral-top-left {
-  top: clamp(24px, 5vw, 72px);
-  left: clamp(-48px, -2vw, 24px);
-  width: clamp(190px, 25vw, 430px);
-}
-
-.floral-bottom-right {
-  right: clamp(-80px, -3vw, 24px);
-  bottom: clamp(-60px, -2vw, 20px);
-  width: clamp(220px, 30vw, 520px);
-}
-
-/* Make sure your actual content stays above florals */
-main,
-header,
-section,
-.card,
-.hero,
-.gallery-section {
-  position: relative;
-  z-index: 2;
-}
-
-/* SCROLL TO TOP BUTTON */
-.scroll-top-btn {
-  position: fixed;
-  right: clamp(18px, 3vw, 34px);
-  bottom: clamp(18px, 3vw, 34px);
-  z-index: 99;
-
-  width: 52px;
-  height: 52px;
-  border: 0;
-  border-radius: 999px;
-
-  display: grid;
-  place-items: center;
-
-  background: #a67462;
-  color: #fff;
-
-  font-size: 1.45rem;
-  line-height: 1;
-  cursor: pointer;
-
-  box-shadow: 0 14px 34px rgba(80, 55, 45, 0.24);
-
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(14px);
-
-  transition:
-    opacity 180ms ease,
-    visibility 180ms ease,
-    transform 180ms ease,
-    background 180ms ease;
-}
-
-.scroll-top-btn.is-visible {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-.scroll-top-btn:hover {
-  background: #8d5f50;
-}
-
-/* RESPONSIVE OPTIMIZATION */
-@media (max-width: 1024px) {
-  .floral-top-left {
-    width: clamp(170px, 31vw, 320px);
-    left: -48px;
-  }
-
-  .floral-bottom-right {
-    width: clamp(210px, 36vw, 400px);
-    right: -86px;
-  }
-}
-
-@media (max-width: 760px) {
-  .floral {
-    opacity: 0.55;
-  }
-
-  .floral-top-left {
-    top: 18px;
-    left: -78px;
-    width: 220px;
-  }
-
-  .floral-bottom-right {
-    right: -112px;
-    bottom: -48px;
-    width: 280px;
-  }
-
-  .scroll-top-btn {
-    width: 46px;
-    height: 46px;
-    font-size: 1.25rem;
-  }
-}
-
-@media (max-width: 420px) {
-  .floral-top-left {
-    width: 180px;
-    left: -82px;
-    top: 12px;
-  }
-
-  .floral-bottom-right {
-    width: 240px;
-    right: -118px;
-    bottom: -58px;
-  }
-}
-
   </style>
 </head>
 
 <body>
-    <div id="top"></div>
+  <div id="top"></div>
 
-<img
-  src="assets/images/floral-top-left.png"
-  alt=""
-  class="floral floral-top-left"
-  aria-hidden="true"
-/>
+  <img
+    src="assets/images/floral-top-left.png"
+    alt=""
+    class="floral floral-top-left"
+    aria-hidden="true"
+  />
 
-<img
-  src="assets/images/floral-bottom-right.png"
-  alt=""
-  class="floral floral-bottom-right"
-  aria-hidden="true"
-/>
+  <img
+    src="assets/images/floral-bottom-right.png"
+    alt=""
+    class="floral floral-bottom-right"
+    aria-hidden="true"
+  />
+
   <main class="shell">
     <section class="hero">
       <p class="eyebrow">Wedding Memories</p>
@@ -388,7 +457,7 @@ section,
       </h1>
 
       <p class="message">
-        Share your favorite photos from today. Everyone can view the memories as they are uploaded.
+        Share your favorite photos and short videos from today. Everyone can view the memories as they are uploaded.
       </p>
 
       <div class="upload-area">
@@ -396,19 +465,16 @@ section,
           class="file-input"
           id="photoInput"
           type="file"
-          accept="image/*,.heic,.heif"
+          accept="image/*,video/mp4,video/quicktime,video/webm,.heic,.heif,.mp4,.mov,.webm"
           multiple
         />
 
-        <button class="upload-btn" id="chooseBtn">
-          📷 Upload Photos
+        <button class="upload-btn" id="chooseBtn" type="button">
+          📷 Upload Photos &amp; Videos
         </button>
-        <p class="status" id="status">
-  Upload JPG, PNG, or iPhone photos. HEIC photos will be converted automatically.
-</p>
 
         <p class="status" id="status">
-          You can select multiple images.
+          Upload JPG, PNG, iPhone photos, MP4, MOV, or WEBM. Max 50MB per file.
         </p>
       </div>
     </section>
@@ -416,7 +482,7 @@ section,
     <section>
       <div class="gallery-header">
         <h2 class="gallery-title">Guest Gallery</h2>
-        <button class="refresh-btn" id="refreshBtn">Refresh</button>
+        <button class="refresh-btn" id="refreshBtn" type="button">Refresh</button>
       </div>
 
       <div class="gallery" id="gallery">
@@ -425,9 +491,17 @@ section,
     </section>
   </main>
 
-  <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top">
-  ↑
-</button>
+  <div class="media-modal" id="mediaModal" aria-hidden="true">
+    <button class="modal-close" id="modalCloseBtn" type="button" aria-label="Close preview">
+      ×
+    </button>
+
+    <div class="modal-frame" id="modalFrame"></div>
+  </div>
+
+  <button class="scroll-top-btn" id="scrollTopBtn" type="button" aria-label="Scroll to top">
+    ↑
+  </button>
 
   <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -438,6 +512,9 @@ section,
 
     const BUCKET_NAME = "wedding-photos";
     const FOLDER_NAME = "uploads";
+    const MAX_FILE_SIZE_MB = 50;
+    const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+    const VIDEO_EXTENSIONS = ["mp4", "mov", "webm"];
 
     const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -446,6 +523,10 @@ section,
     const refreshBtn = document.querySelector("#refreshBtn");
     const statusText = document.querySelector("#status");
     const gallery = document.querySelector("#gallery");
+    const mediaModal = document.querySelector("#mediaModal");
+    const modalFrame = document.querySelector("#modalFrame");
+    const modalCloseBtn = document.querySelector("#modalCloseBtn");
+    const scrollTopBtn = document.querySelector("#scrollTopBtn");
 
     chooseBtn.addEventListener("click", () => {
       photoInput.click();
@@ -455,42 +536,135 @@ section,
       loadGallery();
     });
 
-async function prepareImageForUpload(file) {
-  const fileName = file.name.toLowerCase();
-  const isHeic =
-    file.type === "image/heic" ||
-    file.type === "image/heif" ||
-    fileName.endsWith(".heic") ||
-    fileName.endsWith(".heif");
-
-  if (!isHeic) {
-    return {
-      file,
-      extension: file.name.split(".").pop() || "jpg"
-    };
-  }
-
-  statusText.textContent = `Converting ${file.name} to JPG...`;
-
-  const convertedBlob = await heic2any({
-    blob: file,
-    toType: "image/jpeg",
-    quality: 0.86
-  });
-
-  const jpgFile = new File(
-    [convertedBlob],
-    file.name.replace(/\.(heic|heif)$/i, ".jpg"),
-    {
-      type: "image/jpeg"
+    function getFileExtension(file) {
+      return file.name.split(".").pop()?.toLowerCase() || "";
     }
-  );
 
-  return {
-    file: jpgFile,
-    extension: "jpg"
-  };
-}
+    function isHeicFile(file) {
+      const fileName = file.name.toLowerCase();
+
+      return (
+        file.type === "image/heic" ||
+        file.type === "image/heif" ||
+        fileName.endsWith(".heic") ||
+        fileName.endsWith(".heif")
+      );
+    }
+
+    function isVideoFile(file) {
+      const fileName = file.name.toLowerCase();
+
+      return (
+        file.type.startsWith("video/") ||
+        fileName.endsWith(".mp4") ||
+        fileName.endsWith(".mov") ||
+        fileName.endsWith(".webm")
+      );
+    }
+
+    function isAllowedMedia(file) {
+      const fileName = file.name.toLowerCase();
+
+      return (
+        file.type.startsWith("image/") ||
+        file.type.startsWith("video/") ||
+        fileName.endsWith(".heic") ||
+        fileName.endsWith(".heif") ||
+        fileName.endsWith(".mp4") ||
+        fileName.endsWith(".mov") ||
+        fileName.endsWith(".webm")
+      );
+    }
+
+    function getContentType(file, extension) {
+      if (file.type) return file.type;
+
+      if (extension === "jpg" || extension === "jpeg") return "image/jpeg";
+      if (extension === "png") return "image/png";
+      if (extension === "webp") return "image/webp";
+      if (extension === "mp4") return "video/mp4";
+      if (extension === "mov") return "video/quicktime";
+      if (extension === "webm") return "video/webm";
+
+      return "application/octet-stream";
+    }
+
+    async function prepareMediaForUpload(file) {
+      if (!isHeicFile(file)) {
+        const extension = getFileExtension(file) || (isVideoFile(file) ? "mp4" : "jpg");
+
+        return {
+          file,
+          extension
+        };
+      }
+
+      statusText.textContent = `Converting ${file.name} to JPG...`;
+
+      const converted = await heic2any({
+        blob: file,
+        toType: "image/jpeg",
+        quality: 0.86
+      });
+
+      const convertedBlob = Array.isArray(converted) ? converted[0] : converted;
+
+      const jpgFile = new File(
+        [convertedBlob],
+        file.name.replace(/\.(heic|heif)$/i, ".jpg"),
+        { type: "image/jpeg" }
+      );
+
+      return {
+        file: jpgFile,
+        extension: "jpg"
+      };
+    }
+
+    function openMediaModal(url, type) {
+      modalFrame.innerHTML = "";
+
+      if (type === "video") {
+        const video = document.createElement("video");
+        video.src = url;
+        video.controls = true;
+        video.autoplay = true;
+        video.playsInline = true;
+
+        modalFrame.appendChild(video);
+      } else {
+        const img = document.createElement("img");
+        img.src = url;
+        img.alt = "Wedding guest upload preview";
+
+        modalFrame.appendChild(img);
+      }
+
+      mediaModal.classList.add("is-open");
+      mediaModal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeMediaModal() {
+      mediaModal.classList.remove("is-open");
+      mediaModal.setAttribute("aria-hidden", "true");
+      modalFrame.innerHTML = "";
+      document.body.style.overflow = "";
+    }
+
+    modalCloseBtn.addEventListener("click", closeMediaModal);
+
+    mediaModal.addEventListener("click", (event) => {
+      if (event.target === mediaModal) {
+        closeMediaModal();
+      }
+    });
+
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeMediaModal();
+      }
+    });
 
     photoInput.addEventListener("change", async (event) => {
       const files = Array.from(event.target.files || []);
@@ -498,70 +672,69 @@ async function prepareImageForUpload(file) {
       if (!files.length) return;
 
       chooseBtn.disabled = true;
-      statusText.textContent = `Uploading ${files.length} photo${files.length > 1 ? "s" : ""}...`;
+      statusText.textContent = `Uploading ${files.length} file${files.length > 1 ? "s" : ""}...`;
 
       let uploaded = 0;
       let failed = 0;
 
-for (const originalFile of files) {
-  try {
-    const originalName = originalFile.name.toLowerCase();
+      for (const originalFile of files) {
+        try {
+          if (!isAllowedMedia(originalFile)) {
+            failed++;
+            continue;
+          }
 
-    const isAllowedImage =
-      originalFile.type.startsWith("image/") ||
-      originalName.endsWith(".heic") ||
-      originalName.endsWith(".heif");
+          if (originalFile.size > MAX_FILE_SIZE_BYTES) {
+            failed++;
+            statusText.textContent = `${originalFile.name} is too large. Max is ${MAX_FILE_SIZE_MB}MB.`;
+            continue;
+          }
 
-    if (!isAllowedImage) {
-      failed++;
-      continue;
-    }
+          const prepared = await prepareMediaForUpload(originalFile);
+          const uploadFile = prepared.file;
+          const fileExt = prepared.extension;
+          const safeName = crypto.randomUUID();
+          const filePath = `${FOLDER_NAME}/${Date.now()}-${safeName}.${fileExt}`;
+          const contentType = getContentType(uploadFile, fileExt);
 
-    const prepared = await prepareImageForUpload(originalFile);
-    const uploadFile = prepared.file;
-    const fileExt = prepared.extension;
+          statusText.textContent = `Uploading ${originalFile.name}...`;
 
-    const safeName = crypto.randomUUID();
-    const filePath = `${FOLDER_NAME}/${Date.now()}-${safeName}.${fileExt}`;
+          const { error } = await client.storage
+            .from(BUCKET_NAME)
+            .upload(filePath, uploadFile, {
+              cacheControl: "3600",
+              upsert: false,
+              contentType
+            });
 
-    statusText.textContent = `Uploading ${originalFile.name}...`;
-
-    const { error } = await client.storage
-      .from(BUCKET_NAME)
-      .upload(filePath, uploadFile, {
-        cacheControl: "3600",
-        upsert: false,
-        contentType: uploadFile.type
-      });
-
-    if (error) {
-      console.error("Upload error:", error);
-      failed++;
-      statusText.textContent = `Upload failed: ${error.message || "Unknown Supabase error"}`;
-    } else {
-      uploaded++;
-    }
-  } catch (error) {
-    console.error("Conversion/upload error:", error);
-    failed++;
-    statusText.textContent = `Could not process ${originalFile.name}. Try JPG or PNG.`;
-  }
-}
+          if (error) {
+            console.error("Upload error:", error);
+            failed++;
+            statusText.textContent = `Upload failed: ${error.message || "Unknown Supabase error"}`;
+          } else {
+            uploaded++;
+          }
+        } catch (error) {
+          console.error("Conversion/upload error:", error);
+          failed++;
+          statusText.textContent = `Could not process ${originalFile.name}. Try JPG, PNG, MP4, MOV, or WEBM.`;
+        }
+      }
 
       photoInput.value = "";
       chooseBtn.disabled = false;
 
       if (failed > 0) {
-        statusText.textContent = `${uploaded} uploaded. ${failed} failed. Try again with image files below the size limit.`;
+        statusText.textContent = `${uploaded} uploaded. ${failed} failed. Check file type and ${MAX_FILE_SIZE_MB}MB size limit.`;
       } else {
-        statusText.textContent = `${uploaded} photo${uploaded > 1 ? "s" : ""} uploaded. Thank you.`;
+        statusText.textContent = `${uploaded} file${uploaded > 1 ? "s" : ""} uploaded. Thank you.`;
       }
 
       await loadGallery();
     });
 
     async function loadGallery() {
-      gallery.innerHTML = `<div class="empty">Loading photos...</div>`;
+      gallery.innerHTML = `<div class="empty">Loading photos and videos...</div>`;
 
       const { data, error } = await client.storage
         .from(BUCKET_NAME)
@@ -575,69 +748,84 @@ for (const originalFile of files) {
         });
 
       if (error) {
-  console.error("Gallery error:", error);
-  gallery.innerHTML = `
-    <div class="empty">
-      Could not load photos.<br>
-      Error: ${error.message || "Unknown Supabase error"}
-    </div>
-  `;
-  return;
-}
+        console.error("Gallery error:", error);
+        gallery.innerHTML = `
+          <div class="empty">
+            Could not load photos.<br>
+            Error: ${error.message || "Unknown Supabase error"}
+          </div>
+        `;
+        return;
+      }
 
-      const imageFiles = (data || []).filter((file) => {
+      const mediaFiles = (data || []).filter((file) => {
         return file.name && !file.name.startsWith(".");
       });
 
-      if (!imageFiles.length) {
-        gallery.innerHTML = `<div class="empty">No photos yet. Be the first to upload.</div>`;
+      if (!mediaFiles.length) {
+        gallery.innerHTML = `<div class="empty">No uploads yet. Be the first to share.</div>`;
         return;
       }
 
       gallery.innerHTML = "";
 
-      imageFiles.forEach((file) => {
+      mediaFiles.forEach((file) => {
         const filePath = `${FOLDER_NAME}/${file.name}`;
 
         const { data: publicData } = client.storage
           .from(BUCKET_NAME)
           .getPublicUrl(filePath);
 
-        const link = document.createElement("a");
-        link.className = "photo";
-        link.href = publicData.publicUrl;
-        link.target = "_blank";
-        link.rel = "noopener";
+        const fileUrl = publicData.publicUrl;
+        const ext = file.name.split(".").pop().toLowerCase();
+        const isVideo = VIDEO_EXTENSIONS.includes(ext);
 
-        const img = document.createElement("img");
-        img.src = publicData.publicUrl;
-        img.alt = "Wedding guest upload";
-        img.loading = "lazy";
+        const mediaButton = document.createElement("button");
+        mediaButton.className = "photo";
+        mediaButton.type = "button";
+        mediaButton.setAttribute("aria-label", "Open wedding upload preview");
 
-        link.appendChild(img);
-        gallery.appendChild(link);
+        if (isVideo) {
+          const video = document.createElement("video");
+          video.src = fileUrl;
+          video.preload = "metadata";
+          video.playsInline = true;
+          video.muted = true;
+
+          mediaButton.appendChild(video);
+        } else {
+          const img = document.createElement("img");
+          img.src = fileUrl;
+          img.alt = "Wedding guest upload";
+          img.loading = "lazy";
+
+          mediaButton.appendChild(img);
+        }
+
+        mediaButton.addEventListener("click", () => {
+          openMediaModal(fileUrl, isVideo ? "video" : "image");
+        });
+
+        gallery.appendChild(mediaButton);
       });
     }
 
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 500) {
+        scrollTopBtn.classList.add("is-visible");
+      } else {
+        scrollTopBtn.classList.remove("is-visible");
+      }
+    });
+
+    scrollTopBtn.addEventListener("click", () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    });
+
     loadGallery();
   </script>
-  <script>
-  const scrollTopBtn = document.querySelector("#scrollTopBtn");
-
-  window.addEventListener("scroll", () => {
-    if (window.scrollY > 500) {
-      scrollTopBtn.classList.add("is-visible");
-    } else {
-      scrollTopBtn.classList.remove("is-visible");
-    }
-  });
-
-  scrollTopBtn.addEventListener("click", () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-  });
-</script>
 </body>
 </html>
