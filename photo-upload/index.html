@@ -396,7 +396,7 @@ section,
           class="file-input"
           id="photoInput"
           type="file"
-          accept="image/*"
+          accept="image/*,.heic,.heif"
           multiple
         />
 
@@ -404,7 +404,7 @@ section,
           📷 Upload Photos
         </button>
         <p class="status" id="status">
-  Upload JPG, PNG, or phone photos only. Max 10MB per image.
+  Upload JPG, PNG, or iPhone photos. HEIC photos will be converted automatically.
 </p>
 
         <p class="status" id="status">
@@ -429,6 +429,7 @@ section,
   ↑
 </button>
 
+  <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
@@ -454,6 +455,43 @@ section,
       loadGallery();
     });
 
+async function prepareImageForUpload(file) {
+  const fileName = file.name.toLowerCase();
+  const isHeic =
+    file.type === "image/heic" ||
+    file.type === "image/heif" ||
+    fileName.endsWith(".heic") ||
+    fileName.endsWith(".heif");
+
+  if (!isHeic) {
+    return {
+      file,
+      extension: file.name.split(".").pop() || "jpg"
+    };
+  }
+
+  statusText.textContent = `Converting ${file.name} to JPG...`;
+
+  const convertedBlob = await heic2any({
+    blob: file,
+    toType: "image/jpeg",
+    quality: 0.86
+  });
+
+  const jpgFile = new File(
+    [convertedBlob],
+    file.name.replace(/\.(heic|heif)$/i, ".jpg"),
+    {
+      type: "image/jpeg"
+    }
+  );
+
+  return {
+    file: jpgFile,
+    extension: "jpg"
+  };
+}
+
     photoInput.addEventListener("change", async (event) => {
       const files = Array.from(event.target.files || []);
 
@@ -465,33 +503,50 @@ section,
       let uploaded = 0;
       let failed = 0;
 
-      for (const file of files) {
-        const isImage = file.type.startsWith("image/");
+for (const originalFile of files) {
+  try {
+    const originalName = originalFile.name.toLowerCase();
 
-        if (!isImage) {
-          failed++;
-          continue;
-        }
+    const isAllowedImage =
+      originalFile.type.startsWith("image/") ||
+      originalName.endsWith(".heic") ||
+      originalName.endsWith(".heif");
 
-        const fileExt = file.name.split(".").pop();
-        const safeName = crypto.randomUUID();
-        const filePath = `${FOLDER_NAME}/${Date.now()}-${safeName}.${fileExt}`;
+    if (!isAllowedImage) {
+      failed++;
+      continue;
+    }
 
-        const { error } = await client.storage
-          .from(BUCKET_NAME)
-          .upload(filePath, file, {
-            cacheControl: "3600",
-            upsert: false
-          });
+    const prepared = await prepareImageForUpload(originalFile);
+    const uploadFile = prepared.file;
+    const fileExt = prepared.extension;
 
-        if (error) {
-  console.error("Upload error:", error);
-  failed++;
-  statusText.textContent = `Upload failed: ${error.message || "Unknown Supabase error"}`;
-} else {
-  uploaded++;
+    const safeName = crypto.randomUUID();
+    const filePath = `${FOLDER_NAME}/${Date.now()}-${safeName}.${fileExt}`;
+
+    statusText.textContent = `Uploading ${originalFile.name}...`;
+
+    const { error } = await client.storage
+      .from(BUCKET_NAME)
+      .upload(filePath, uploadFile, {
+        cacheControl: "3600",
+        upsert: false,
+        contentType: uploadFile.type
+      });
+
+    if (error) {
+      console.error("Upload error:", error);
+      failed++;
+      statusText.textContent = `Upload failed: ${error.message || "Unknown Supabase error"}`;
+    } else {
+      uploaded++;
+    }
+  } catch (error) {
+    console.error("Conversion/upload error:", error);
+    failed++;
+    statusText.textContent = `Could not process ${originalFile.name}. Try JPG or PNG.`;
+  }
 }
-      }
 
       photoInput.value = "";
       chooseBtn.disabled = false;
