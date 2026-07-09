@@ -904,14 +904,17 @@
     }
 
     function getContentType(file, extension) {
-      if (file.type && !isHeicFile(file)) return file.type;
+      const normalizedExtension = (extension || getFileExtension(file)).toLowerCase();
 
-      if (extension === "jpg" || extension === "jpeg") return "image/jpeg";
-      if (extension === "png") return "image/png";
-      if (extension === "webp") return "image/webp";
-      if (extension === "mp4") return "video/mp4";
-      if (extension === "mov") return "video/quicktime";
-      if (extension === "webm") return "video/webm";
+      if (normalizedExtension === "jpg" || normalizedExtension === "jpeg") return "image/jpeg";
+      if (normalizedExtension === "png") return "image/png";
+      if (normalizedExtension === "webp") return "image/webp";
+      if (normalizedExtension === "gif") return "image/gif";
+      if (normalizedExtension === "mp4") return "video/mp4";
+      if (normalizedExtension === "mov") return "video/quicktime";
+      if (normalizedExtension === "webm") return "video/webm";
+
+      if (file.type && !isHeicFile(file)) return file.type;
 
       return "application/octet-stream";
     }
@@ -1188,6 +1191,13 @@
 
       if (!files.length) return;
 
+      console.table(files.map((file) => ({
+        name: file.name,
+        type: file.type || "empty",
+        size: formatBytes(file.size),
+        extension: getFileExtension(file)
+      })));
+
       const invalidTypeFiles = files.filter((file) => !isAllowedMedia(file));
       const oversizedFiles = files.filter((file) => file.size > MAX_FILE_SIZE_BYTES);
       const uploadableFiles = files.filter((file) => isAllowedMedia(file) && file.size <= MAX_FILE_SIZE_BYTES);
@@ -1205,6 +1215,7 @@
       let uploaded = 0;
       let failed = 0;
       const skipped = invalidTypeFiles.length + oversizedFiles.length;
+      const failureReasons = [];
       setProgress(0, uploadableFiles.length);
 
       for (let index = 0; index < uploadableFiles.length; index++) {
@@ -1221,6 +1232,18 @@
           const filePath = `${FOLDER_NAME}/${Date.now()}-${safeName}.${fileExt}`;
           const contentType = getContentType(uploadFile, fileExt);
 
+          console.log("Uploading to Supabase", {
+            filePath,
+            contentType,
+            originalName: originalFile.name,
+            uploadName: uploadFile.name,
+            size: uploadFile.size
+          });
+
+          if (contentType === "application/octet-stream") {
+            throw new Error(`Unsupported content type for ${originalFile.name}`);
+          }
+
           statusText.textContent = `Uploading ${itemNumber} of ${uploadableFiles.length}: ${originalFile.name}...`;
 
           const { error } = await client.storage
@@ -1234,6 +1257,7 @@
           if (error) {
             console.error("Upload error:", error);
             failed++;
+            failureReasons.push(`${originalFile.name}: ${error.message || "Unknown Supabase error"}`);
             statusText.textContent = `Upload failed for ${originalFile.name}: ${error.message || "Unknown Supabase error"}`;
           } else {
             uploaded++;
@@ -1241,7 +1265,8 @@
         } catch (error) {
           console.error("Conversion/upload error:", error);
           failed++;
-          statusText.textContent = `Could not process ${originalFile.name}. Try JPG, PNG, MP4, MOV, or WEBM.`;
+          failureReasons.push(`${originalFile.name}: ${error.message || "Could not process file"}`);
+          statusText.textContent = `Could not process ${originalFile.name}: ${error.message || "Try JPG, PNG, MP4, MOV, or WEBM."}`;
         } finally {
           setProgress(itemNumber, uploadableFiles.length);
         }
@@ -1253,7 +1278,8 @@
       const skippedText = skipped ? ` ${skipped} skipped.` : "";
 
       if (failed > 0) {
-        statusText.textContent = `${uploaded} uploaded. ${failed} failed.${skippedText} Check file type and ${MAX_FILE_SIZE_MB}MB size limit.`;
+        const firstReason = failureReasons[0] ? ` Last error: ${failureReasons[0]}` : "";
+        statusText.textContent = `${uploaded} uploaded. ${failed} failed.${skippedText}${firstReason}`;
       } else {
         statusText.textContent = `${uploaded} file${uploaded !== 1 ? "s" : ""} uploaded.${skippedText} Thank you.`;
       }
