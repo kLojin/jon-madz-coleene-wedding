@@ -1428,6 +1428,404 @@
       }
     }
 
+
+
+    /* =========================================================
+       DARK GREEN ELEGANT THEME OVERRIDES
+       Visual-only update. Keeps Supabase/upload/admin JS intact.
+    ========================================================= */
+    :root {
+      --bg: #061912;
+      --card: rgba(10, 40, 28, 0.82);
+      --text: #fff7e6;
+      --muted: #d8c8a8;
+      --accent: #d7b46a;
+      --accent-dark: #b8914d;
+      --border: rgba(233, 209, 148, 0.22);
+      --shadow: 0 30px 90px rgba(0, 0, 0, 0.42);
+      --radius: 30px;
+      --deep-green: #061912;
+      --forest: #0b2a1e;
+      --emerald: #123a2b;
+      --cream: #fff8ea;
+      --champagne: #ead19a;
+      --caption-bg: rgba(5, 22, 15, 0.96);
+      --caption-text: #fff4dc;
+    }
+
+    body {
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% 8%, rgba(215, 180, 106, 0.16), transparent 27rem),
+        radial-gradient(circle at 88% 20%, rgba(42, 101, 70, 0.34), transparent 34rem),
+        radial-gradient(circle at 50% 100%, rgba(215, 180, 106, 0.12), transparent 34rem),
+        linear-gradient(135deg, #04110c 0%, #071d14 42%, #103625 100%);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(rgba(255, 255, 255, 0.024) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: radial-gradient(circle at center, black, transparent 78%);
+      opacity: 0.38;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at center, transparent 0%, transparent 52%, rgba(0, 0, 0, 0.28) 100%);
+    }
+
+    .shell {
+      max-width: 1080px;
+    }
+
+    .hero,
+    .dashboard-panel,
+    .selected-media-panel,
+    .gate-card {
+      background:
+        linear-gradient(145deg, rgba(17, 62, 44, 0.88), rgba(5, 26, 18, 0.9)),
+        rgba(10, 40, 28, 0.82);
+      border: 1px solid var(--border);
+      box-shadow:
+        0 30px 90px rgba(0, 0, 0, 0.42),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    .hero {
+      overflow: hidden;
+    }
+
+    .hero::before,
+    .dashboard-panel::before,
+    .selected-media-panel::before {
+      content: "";
+      position: absolute;
+      inset: 10px;
+      border: 1px solid rgba(234, 209, 154, 0.18);
+      border-radius: calc(var(--radius) - 10px);
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: "✦";
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      color: rgba(234, 209, 154, 0.48);
+      font-size: 1.25rem;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .eyebrow,
+    .field-label,
+    .selected-type-badge,
+    .admin-status-pill,
+    .stat-label {
+      color: var(--champagne);
+    }
+
+    h1,
+    .gallery-title,
+    .selected-media-title,
+    .dashboard-title,
+    .gate-card h2 {
+      color: #fff7e6;
+      text-shadow: 0 12px 34px rgba(0, 0, 0, 0.32);
+    }
+
+    .message,
+    .status,
+    .gallery-meta,
+    .dashboard-copy,
+    .selected-media-copy,
+    .field-help,
+    .download-note,
+    .gate-card p,
+    .photo-footer,
+    .admin-meta,
+    .selected-file-meta,
+    .thank-you-box p,
+    .modal-hint,
+    .modal-count {
+      color: rgba(255, 244, 220, 0.78);
+    }
+
+    .text-field,
+    .select-field,
+    .textarea-field,
+    .selected-caption {
+      background: rgba(255, 250, 239, 0.96);
+      color: #123025;
+      border-color: rgba(234, 209, 154, 0.44);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    .text-field::placeholder,
+    .textarea-field::placeholder,
+    .selected-caption::placeholder {
+      color: rgba(18, 48, 37, 0.56);
+    }
+
+    .text-field:focus,
+    .select-field:focus,
+    .textarea-field:focus,
+    .selected-caption:focus {
+      background: #fffdf5;
+      border-color: rgba(215, 180, 106, 0.95);
+      box-shadow:
+        0 0 0 4px rgba(215, 180, 106, 0.18),
+        0 14px 34px rgba(0, 0, 0, 0.18);
+    }
+
+    .upload-btn,
+    .selected-upload-btn,
+    .scroll-top-btn {
+      background:
+        linear-gradient(135deg, #f3d68f, #c69b4d 52%, #a87937);
+      color: #092116;
+      border: 1px solid rgba(255, 231, 168, 0.34);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+    }
+
+    .upload-btn:hover,
+    .selected-upload-btn:hover,
+    .scroll-top-btn:hover {
+      background:
+        linear-gradient(135deg, #ffe5a3, #d7ad5b 52%, #b1813b);
+      color: #061912;
+      box-shadow: 0 24px 56px rgba(0, 0, 0, 0.34);
+    }
+
+    .secondary-btn,
+    .admin-action,
+    .ghost-action,
+    .refresh-btn,
+    .filter-btn,
+    .album-btn,
+    .like-btn,
+    .modal-like,
+    .modal-download,
+    .modal-close,
+    .modal-nav {
+      background: rgba(255, 248, 234, 0.1);
+      border: 1px solid rgba(234, 209, 154, 0.24);
+      color: var(--cream);
+      backdrop-filter: blur(10px);
+    }
+
+    .secondary-btn:hover,
+    .admin-action:hover,
+    .ghost-action:hover,
+    .refresh-btn:hover,
+    .filter-btn:hover,
+    .album-btn:hover,
+    .like-btn:hover,
+    .modal-like:hover,
+    .modal-download:hover,
+    .modal-close:hover,
+    .modal-nav:hover {
+      background: rgba(255, 248, 234, 0.18);
+      border-color: rgba(234, 209, 154, 0.46);
+      color: #fff8ea;
+    }
+
+    .filter-btn.is-active,
+    .album-btn.is-active,
+    .like-btn.is-liked,
+    .modal-like.is-liked {
+      background:
+        linear-gradient(135deg, #f0d28d, #bd8f45);
+      border-color: rgba(255, 231, 168, 0.56);
+      color: #092116;
+    }
+
+    .danger-action {
+      color: #ffd7d7;
+      border-color: rgba(255, 160, 160, 0.34);
+      background: rgba(127, 29, 29, 0.16);
+    }
+
+    .danger-action:hover {
+      background: rgba(159, 42, 42, 0.28);
+      color: #fff2f2;
+    }
+
+    .selected-media-panel,
+    .dashboard-panel {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .selected-media-card,
+    .stat-card,
+    .checkbox-row,
+    .admin-row,
+    .thank-you-box,
+    .empty {
+      background: rgba(255, 248, 234, 0.1);
+      border-color: rgba(234, 209, 154, 0.22);
+      color: var(--cream);
+    }
+
+    .selected-file-name,
+    .stat-value,
+    .thank-you-box strong,
+    .admin-file-name {
+      color: #fff8ea;
+    }
+
+    .selected-thumb,
+    .admin-thumb {
+      background:
+        radial-gradient(circle at top left, rgba(215, 180, 106, 0.26), transparent 60%),
+        rgba(0, 0, 0, 0.24);
+    }
+
+    .selected-type-badge,
+    .video-badge {
+      background: rgba(6, 25, 18, 0.84);
+      color: var(--champagne);
+      border: 1px solid rgba(234, 209, 154, 0.25);
+    }
+
+    .progress-wrap {
+      background: rgba(255, 248, 234, 0.16);
+    }
+
+    .progress-bar {
+      background:
+        linear-gradient(90deg, #f3d68f, #be9047);
+    }
+
+    .gallery {
+      column-gap: 14px;
+    }
+
+    .photo-card {
+      background: rgba(7, 27, 19, 0.92);
+      border-color: rgba(234, 209, 154, 0.18);
+      box-shadow: 0 18px 46px rgba(0, 0, 0, 0.28);
+    }
+
+    .photo-card:hover {
+      box-shadow:
+        0 24px 66px rgba(0, 0, 0, 0.36),
+        0 0 0 1px rgba(234, 209, 154, 0.16);
+    }
+
+    .photo {
+      background: rgba(6, 25, 18, 0.9);
+    }
+
+    .photo img,
+    .photo video {
+      background: #020705;
+    }
+
+    .photo-details {
+      background:
+        linear-gradient(180deg, rgba(10, 43, 30, 0.98), rgba(4, 18, 13, 0.98));
+      border-top: 1px solid rgba(234, 209, 154, 0.16);
+      padding: 14px 14px 15px;
+    }
+
+    .photo-uploader {
+      color: #fff8ea;
+      letter-spacing: 0.01em;
+    }
+
+    .photo-caption {
+      color: var(--caption-text);
+      background: rgba(255, 248, 234, 0.07);
+      border: 1px solid rgba(234, 209, 154, 0.14);
+      border-radius: 14px;
+      padding: 10px 11px;
+      font-size: 0.86rem;
+      line-height: 1.58;
+    }
+
+    .photo-footer {
+      color: rgba(255, 244, 220, 0.68);
+    }
+
+    .album-pill,
+    .admin-status-pill {
+      background: rgba(215, 180, 106, 0.16);
+      color: #f4d996;
+      border: 1px solid rgba(215, 180, 106, 0.24);
+    }
+
+    .admin-status-pill.is-pending {
+      background: rgba(245, 188, 86, 0.18);
+      color: #ffd788;
+    }
+
+    .admin-status-pill.is-deleted {
+      background: rgba(255, 116, 116, 0.16);
+      color: #ffb5b5;
+    }
+
+    .media-modal {
+      background:
+        radial-gradient(circle at top left, rgba(215, 180, 106, 0.12), transparent 26rem),
+        rgba(1, 8, 5, 0.94);
+    }
+
+    .modal-frame img,
+    .modal-frame video {
+      border: 1px solid rgba(234, 209, 154, 0.18);
+      box-shadow: 0 28px 90px rgba(0, 0, 0, 0.56);
+    }
+
+    .gate-overlay {
+      background:
+        radial-gradient(circle at top, rgba(215, 180, 106, 0.14), transparent 32rem),
+        rgba(3, 17, 11, 0.9);
+    }
+
+    .gate-card {
+      color: var(--cream);
+    }
+
+    .floral {
+      opacity: 0.32;
+      filter: sepia(1) saturate(0.9) hue-rotate(12deg) brightness(0.92);
+    }
+
+    .floral-top-left {
+      mix-blend-mode: screen;
+    }
+
+    .floral-bottom-right {
+      mix-blend-mode: screen;
+    }
+
+    @media (max-width: 760px) {
+      .hero::before,
+      .dashboard-panel::before,
+      .selected-media-panel::before {
+        inset: 8px;
+      }
+
+      .photo-caption {
+        font-size: 0.84rem;
+        line-height: 1.55;
+      }
+    }
+
   </style>
 </head>
 
