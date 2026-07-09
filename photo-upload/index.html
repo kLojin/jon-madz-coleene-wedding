@@ -478,6 +478,12 @@
       transform: none;
     }
 
+    .like-btn.is-liked {
+      border-color: rgba(166, 116, 98, 0.32);
+      background: #a67462;
+      color: #fff;
+    }
+
     .empty {
       width: 100%;
       display: block;
@@ -594,6 +600,11 @@
       font-weight: 900;
       color: #2b2420;
       text-decoration: none;
+    }
+
+    .modal-like.is-liked {
+      background: #a67462;
+      color: #fff;
     }
 
     .modal-close {
@@ -1037,6 +1048,22 @@
     const MAX_FILE_SIZE_MB = 50;
     const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
     const VIDEO_EXTENSIONS = ["mp4", "mov", "webm"];
+    const DEVICE_ID_STORAGE_KEY = "wedding_gallery_device_id";
+    const REACTIONS_TABLE = "wedding_upload_reactions";
+
+    function getOrCreateDeviceId() {
+      const existingId = localStorage.getItem(DEVICE_ID_STORAGE_KEY);
+
+      if (existingId) {
+        return existingId;
+      }
+
+      const newId = crypto.randomUUID();
+      localStorage.setItem(DEVICE_ID_STORAGE_KEY, newId);
+      return newId;
+    }
+
+    const DEVICE_ID = getOrCreateDeviceId();
 
     const ALBUM_LABELS = {
       "guest-gallery": "Guest Gallery",
@@ -1216,6 +1243,10 @@
       return ALBUM_LABELS[album] || "Guest Gallery";
     }
 
+    function getLikeLabel(item) {
+      return `${item?.liked ? "♥" : "♡"} ${item?.likeCount || 0}`;
+    }
+
     function setProgress(current, total) {
       if (!total) {
         progressWrap.classList.remove("is-visible");
@@ -1301,7 +1332,9 @@
       modalDownload.disabled = false;
       modalLikeBtn.disabled = !item.id;
       modalDownload.textContent = "Download";
-      modalLikeBtn.textContent = `♡ ${item.likeCount || 0}`;
+      modalLikeBtn.textContent = getLikeLabel(item);
+      modalLikeBtn.classList.toggle("is-liked", Boolean(item.liked));
+      modalLikeBtn.setAttribute("aria-label", item.liked ? "Remove reaction" : "React to this upload");
       modalCount.textContent = `${activeModalIndex + 1} / ${visibleMediaItems.length}${item.guestName ? ` • ${item.guestName}` : ""}${item.createdAt ? ` • ${formatDateTime(item.createdAt)}` : ""}`;
 
       if (item.type === "video") {
@@ -1358,26 +1391,38 @@
     }
 
     async function likeMediaItem(item) {
-      if (!item?.id) return;
+      if (!item?.id || item.likeBusy) return;
 
       const previousCount = item.likeCount || 0;
-      item.likeCount = previousCount + 1;
+      const previousLiked = Boolean(item.liked);
+
+      item.likeBusy = true;
+      item.liked = !previousLiked;
+      item.likeCount = Math.max(0, previousCount + (item.liked ? 1 : -1));
       renderGallery();
       renderModalMedia();
 
-      const { data, error } = await client.rpc("increment_upload_like", {
-        upload_id: item.id
+      const { data, error } = await client.rpc("toggle_upload_like", {
+        p_upload_id: item.id,
+        p_device_id: DEVICE_ID
       });
 
       if (error) {
-        console.error("Like error:", error);
+        console.error("Toggle like error:", error);
+        item.liked = previousLiked;
         item.likeCount = previousCount;
+        item.likeBusy = false;
         renderGallery();
         renderModalMedia();
         return;
       }
 
-      item.likeCount = Number(data ?? item.likeCount);
+      const result = Array.isArray(data) ? data[0] : data;
+
+      item.liked = Boolean(result?.liked);
+      item.likeCount = Number(result?.like_count ?? item.likeCount);
+      item.likeBusy = false;
+
       renderGallery();
       renderModalMedia();
     }
@@ -1483,9 +1528,14 @@
         const likeButton = document.createElement("button");
         likeButton.className = "like-btn";
         likeButton.type = "button";
-        likeButton.textContent = `♡ ${item.likeCount || 0}`;
-        likeButton.disabled = !item.id;
-        likeButton.addEventListener("click", () => likeMediaItem(item));
+        likeButton.textContent = getLikeLabel(item);
+        likeButton.disabled = !item.id || item.likeBusy;
+        likeButton.classList.toggle("is-liked", Boolean(item.liked));
+        likeButton.setAttribute("aria-label", item.liked ? "Remove reaction" : "React to this upload");
+        likeButton.addEventListener("click", (event) => {
+          event.stopPropagation();
+          likeMediaItem(item);
+        });
 
         footer.appendChild(dateText);
         footer.appendChild(likeButton);
@@ -1515,6 +1565,8 @@
         caption: row.caption || "",
         album: row.album || "guest-gallery",
         likeCount: row.like_count || 0,
+        liked: false,
+        likeBusy: false,
         createdAt: row.created_at || ""
       };
     }
@@ -1557,10 +1609,31 @@
             caption: "",
             album: "guest-gallery",
             likeCount: 0,
+            liked: false,
+            likeBusy: false,
             createdAt: file.created_at || "",
             legacy: true
           };
         });
+    }
+
+    async function loadLikedUploadIds(uploadIds) {
+      if (!uploadIds.length) {
+        return new Set();
+      }
+
+      const { data, error } = await client
+        .from(REACTIONS_TABLE)
+        .select("upload_id")
+        .eq("device_id", DEVICE_ID)
+        .in("upload_id", uploadIds);
+
+      if (error) {
+        console.warn("Could not load device reactions:", error);
+        return new Set();
+      }
+
+      return new Set((data || []).map((row) => row.upload_id));
     }
 
     async function loadGallery() {
@@ -1587,6 +1660,12 @@
       }
 
       const databaseItems = (rows || []).map(mapDatabaseRowToItem);
+      const likedUploadIds = await loadLikedUploadIds(databaseItems.map((item) => item.id));
+
+      databaseItems.forEach((item) => {
+        item.liked = likedUploadIds.has(item.id);
+      });
+
       const storageItems = await loadStorageItems();
       const databasePaths = new Set(databaseItems.map((item) => item.path));
       const legacyItems = storageItems.filter((item) => !databasePaths.has(item.path));
