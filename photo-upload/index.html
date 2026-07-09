@@ -877,6 +877,325 @@
         bottom: -58px;
       }
     }
+
+
+    /* LEVEL 3 DASHBOARD / PRIVATE GATE */
+    .gallery-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .secondary-btn,
+    .admin-action,
+    .danger-action,
+    .ghost-action {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--text);
+      padding: 10px 14px;
+      font-weight: 800;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: background 180ms ease, transform 180ms ease, border-color 180ms ease;
+    }
+
+    .secondary-btn:hover,
+    .admin-action:hover,
+    .ghost-action:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.95);
+      border-color: rgba(140, 108, 73, 0.42);
+    }
+
+    .danger-action {
+      color: #7f1d1d;
+      border-color: rgba(127, 29, 29, 0.22);
+    }
+
+    .danger-action:hover {
+      background: rgba(127, 29, 29, 0.08);
+      transform: translateY(-1px);
+    }
+
+    .dashboard-panel {
+      width: 100%;
+      margin: 28px auto 0;
+      padding: clamp(22px, 5vw, 34px);
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 18px 54px rgba(43, 36, 32, 0.1);
+      backdrop-filter: blur(16px);
+    }
+
+    .dashboard-panel[hidden] {
+      display: none;
+    }
+
+    .dashboard-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .dashboard-title {
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 400;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      letter-spacing: -0.04em;
+    }
+
+    .dashboard-copy {
+      max-width: 64ch;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin-top: 6px;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin: 16px 0 18px;
+    }
+
+    .stat-card {
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.62);
+    }
+
+    .stat-value {
+      display: block;
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: var(--text);
+    }
+
+    .stat-label {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .dashboard-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .dashboard-form .field-group.is-wide {
+      grid-column: 1 / -1;
+    }
+
+    .checkbox-row {
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.62);
+      color: var(--text);
+      font-weight: 800;
+    }
+
+    .checkbox-row input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent-dark);
+    }
+
+    .dashboard-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .admin-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .admin-row {
+      display: grid;
+      grid-template-columns: 72px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.62);
+    }
+
+    .admin-thumb {
+      width: 72px;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      border-radius: 14px;
+      background: rgba(43, 36, 32, 0.08);
+    }
+
+    .admin-thumb img,
+    .admin-thumb video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .admin-info {
+      min-width: 0;
+      display: grid;
+      gap: 5px;
+    }
+
+    .admin-file-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-weight: 900;
+    }
+
+    .admin-meta {
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.35;
+    }
+
+    .admin-status-pill {
+      width: max-content;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: rgba(185, 154, 114, 0.18);
+      color: var(--accent-dark);
+      font-size: 0.7rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .admin-status-pill.is-pending {
+      background: rgba(214, 158, 46, 0.16);
+      color: #8a5a00;
+    }
+
+    .admin-status-pill.is-deleted {
+      background: rgba(127, 29, 29, 0.1);
+      color: #7f1d1d;
+    }
+
+    .admin-row-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .gate-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1001;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: rgba(250, 247, 242, 0.88);
+      backdrop-filter: blur(18px);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 180ms ease, visibility 180ms ease;
+    }
+
+    .gate-overlay.is-visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .gate-card {
+      width: min(100%, 420px);
+      padding: 30px;
+      border-radius: 28px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.86);
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .gate-card h2 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 400;
+      font-size: 2rem;
+      letter-spacing: -0.04em;
+      margin-bottom: 10px;
+    }
+
+    .gate-card p {
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .download-note {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.8rem;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 820px) {
+      .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .dashboard-form {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-row {
+        grid-template-columns: 64px 1fr;
+      }
+
+      .admin-row-actions {
+        grid-column: 1 / -1;
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .gallery-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .gallery-actions {
+        justify-content: flex-start;
+      }
+
+      .dashboard-head {
+        flex-direction: column;
+      }
+
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
   </style>
 </head>
 
@@ -971,7 +1290,11 @@
     <section>
       <div class="gallery-header">
         <h2 class="gallery-title">Guest Gallery</h2>
-        <button class="refresh-btn" id="refreshBtn" type="button">Refresh</button>
+        <div class="gallery-actions">
+          <button class="refresh-btn" id="refreshBtn" type="button">Refresh</button>
+          <button class="secondary-btn" id="coupleToggleBtn" type="button">Couple View</button>
+          <button class="secondary-btn" id="adminToggleBtn" type="button">Admin</button>
+        </div>
       </div>
 
       <div class="filter-tabs" aria-label="Filter gallery uploads by media type">
@@ -992,6 +1315,97 @@
 
       <div class="gallery" id="gallery">
         <div class="empty">Loading photos and videos...</div>
+      </div>
+    </section>
+
+    <section class="dashboard-panel" id="couplePanel" hidden>
+      <div class="dashboard-head">
+        <div>
+          <h2 class="dashboard-title">Couple View</h2>
+          <p class="dashboard-copy">
+            Review the public gallery, download approved uploads, and check the event status.
+          </p>
+        </div>
+        <button class="ghost-action" id="coupleCloseBtn" type="button">Close</button>
+      </div>
+
+      <div class="dashboard-grid" id="coupleStats"></div>
+
+      <div class="dashboard-toolbar">
+        <button class="admin-action" id="coupleDownloadApprovedBtn" type="button">Download Approved ZIP</button>
+        <button class="ghost-action" id="coupleCopyLinkBtn" type="button">Copy Gallery Link</button>
+      </div>
+
+      <p class="download-note" id="coupleNote">
+        ZIP download uses the files currently available in the approved gallery.
+      </p>
+    </section>
+
+    <section class="dashboard-panel" id="adminPanel" hidden>
+      <div class="dashboard-head">
+        <div>
+          <h2 class="dashboard-title">Admin Dashboard</h2>
+          <p class="dashboard-copy">
+            Approve uploads, hide unwanted files, configure private gallery access, set an upload deadline, and download gallery files.
+          </p>
+        </div>
+        <button class="ghost-action" id="adminCloseBtn" type="button">Close</button>
+      </div>
+
+      <div id="adminLoginBox">
+        <div class="dashboard-form">
+          <label class="field-group is-wide">
+            <span class="field-label">Admin passcode</span>
+            <input class="text-field" id="adminPasscodeInput" type="password" placeholder="Enter admin passcode" autocomplete="current-password" />
+          </label>
+        </div>
+        <div class="dashboard-toolbar">
+          <button class="admin-action" id="adminUnlockBtn" type="button">Unlock Dashboard</button>
+        </div>
+        <p class="status" id="adminStatus">Default admin passcode from SQL is admin1234. Change it after unlocking.</p>
+      </div>
+
+      <div id="adminControls" hidden>
+        <div class="dashboard-grid" id="adminStats"></div>
+
+        <div class="dashboard-form">
+          <label class="checkbox-row">
+            <input id="privateToggle" type="checkbox" />
+            Private gallery passcode
+          </label>
+
+          <label class="checkbox-row">
+            <input id="approvalToggle" type="checkbox" />
+            Require approval before showing uploads
+          </label>
+
+          <label class="field-group">
+            <span class="field-label">Upload close date/time</span>
+            <input class="text-field" id="uploadsCloseInput" type="datetime-local" />
+            <span class="field-help">Leave blank to keep uploads open.</span>
+          </label>
+
+          <label class="field-group">
+            <span class="field-label">New guest passcode</span>
+            <input class="text-field" id="guestPasscodeInput" type="text" placeholder="Leave blank to keep current" />
+          </label>
+
+          <label class="field-group is-wide">
+            <span class="field-label">New admin passcode</span>
+            <input class="text-field" id="newAdminPasscodeInput" type="password" placeholder="Leave blank to keep current" autocomplete="new-password" />
+          </label>
+        </div>
+
+        <div class="dashboard-toolbar">
+          <button class="admin-action" id="saveSettingsBtn" type="button">Save Settings</button>
+          <button class="admin-action" id="adminRefreshBtn" type="button">Refresh Dashboard</button>
+          <button class="admin-action" id="adminDownloadApprovedBtn" type="button">Download Approved ZIP</button>
+          <button class="admin-action" id="adminDownloadAllBtn" type="button">Download All Non-deleted ZIP</button>
+        </div>
+
+        <p class="status" id="adminActionStatus">Admin dashboard unlocked.</p>
+
+        <div class="admin-list" id="adminUploadList"></div>
       </div>
     </section>
   </main>
@@ -1030,12 +1444,30 @@
     <p class="modal-hint">Tap outside to close. Use arrows or swipe to browse.</p>
   </div>
 
+
+
+  <div class="gate-overlay" id="privateGate" aria-hidden="true">
+    <div class="gate-card">
+      <h2>Private Gallery</h2>
+      <p>This gallery is passcode protected. Enter the couple's guest passcode to view the uploads.</p>
+      <label class="field-group">
+        <span class="field-label">Guest passcode</span>
+        <input class="text-field" id="galleryPasscodeInput" type="password" placeholder="Enter passcode" autocomplete="current-password" />
+      </label>
+      <div class="dashboard-toolbar" style="justify-content: center;">
+        <button class="admin-action" id="galleryUnlockBtn" type="button">View Gallery</button>
+      </div>
+      <p class="status" id="gateStatus"></p>
+    </div>
+  </div>
+
   <button class="scroll-top-btn" id="scrollTopBtn" type="button" aria-label="Scroll to top">
     ↑
   </button>
 
   <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 
   <script>
     const SUPABASE_URL = "https://icwvatphuyjqvdowriss.supabase.co";
@@ -1044,19 +1476,19 @@
     const BUCKET_NAME = "wedding-photos";
     const FOLDER_NAME = "uploads";
     const UPLOADS_TABLE = "wedding_uploads";
-    const APPROVAL_REQUIRED = false;
     const MAX_FILE_SIZE_MB = 50;
     const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
     const VIDEO_EXTENSIONS = ["mp4", "mov", "webm"];
     const DEVICE_ID_STORAGE_KEY = "wedding_gallery_device_id";
+    const GALLERY_PASSCODE_STORAGE_KEY = "wedding_gallery_passcode";
+    const ADMIN_PASSCODE_STORAGE_KEY = "wedding_gallery_admin_passcode";
     const REACTIONS_TABLE = "wedding_upload_reactions";
+
+    const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     function getOrCreateDeviceId() {
       const existingId = localStorage.getItem(DEVICE_ID_STORAGE_KEY);
-
-      if (existingId) {
-        return existingId;
-      }
+      if (existingId) return existingId;
 
       const newId = crypto.randomUUID();
       localStorage.setItem(DEVICE_ID_STORAGE_KEY, newId);
@@ -1071,8 +1503,6 @@
       reception: "Reception",
       afterparty: "Afterparty"
     };
-
-    const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const guestNameInput = document.querySelector("#guestNameInput");
     const captionInput = document.querySelector("#captionInput");
@@ -1098,43 +1528,57 @@
     const modalCount = document.querySelector("#modalCount");
     const scrollTopBtn = document.querySelector("#scrollTopBtn");
 
+    const coupleToggleBtn = document.querySelector("#coupleToggleBtn");
+    const couplePanel = document.querySelector("#couplePanel");
+    const coupleCloseBtn = document.querySelector("#coupleCloseBtn");
+    const coupleStats = document.querySelector("#coupleStats");
+    const coupleDownloadApprovedBtn = document.querySelector("#coupleDownloadApprovedBtn");
+    const coupleCopyLinkBtn = document.querySelector("#coupleCopyLinkBtn");
+    const coupleNote = document.querySelector("#coupleNote");
+
+    const adminToggleBtn = document.querySelector("#adminToggleBtn");
+    const adminPanel = document.querySelector("#adminPanel");
+    const adminCloseBtn = document.querySelector("#adminCloseBtn");
+    const adminLoginBox = document.querySelector("#adminLoginBox");
+    const adminControls = document.querySelector("#adminControls");
+    const adminPasscodeInput = document.querySelector("#adminPasscodeInput");
+    const adminUnlockBtn = document.querySelector("#adminUnlockBtn");
+    const adminStatus = document.querySelector("#adminStatus");
+    const adminStats = document.querySelector("#adminStats");
+    const privateToggle = document.querySelector("#privateToggle");
+    const approvalToggle = document.querySelector("#approvalToggle");
+    const uploadsCloseInput = document.querySelector("#uploadsCloseInput");
+    const guestPasscodeInput = document.querySelector("#guestPasscodeInput");
+    const newAdminPasscodeInput = document.querySelector("#newAdminPasscodeInput");
+    const saveSettingsBtn = document.querySelector("#saveSettingsBtn");
+    const adminRefreshBtn = document.querySelector("#adminRefreshBtn");
+    const adminDownloadApprovedBtn = document.querySelector("#adminDownloadApprovedBtn");
+    const adminDownloadAllBtn = document.querySelector("#adminDownloadAllBtn");
+    const adminActionStatus = document.querySelector("#adminActionStatus");
+    const adminUploadList = document.querySelector("#adminUploadList");
+
+    const privateGate = document.querySelector("#privateGate");
+    const galleryPasscodeInput = document.querySelector("#galleryPasscodeInput");
+    const galleryUnlockBtn = document.querySelector("#galleryUnlockBtn");
+    const gateStatus = document.querySelector("#gateStatus");
+
     let allMediaItems = [];
     let visibleMediaItems = [];
+    let adminMediaItems = [];
     let activeFilter = "all";
     let activeAlbumFilter = "all";
     let activeModalIndex = 0;
     let touchStartX = 0;
     let touchEndX = 0;
-
-    chooseBtn.addEventListener("click", () => {
-      photoInput.click();
-    });
-
-    refreshBtn.addEventListener("click", () => {
-      loadGallery();
-    });
-
-    filterButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        activeFilter = button.dataset.filter;
-
-        filterButtons.forEach((item) => item.classList.remove("is-active"));
-        button.classList.add("is-active");
-
-        renderGallery();
-      });
-    });
-
-    albumButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        activeAlbumFilter = button.dataset.albumFilter;
-
-        albumButtons.forEach((item) => item.classList.remove("is-active"));
-        button.classList.add("is-active");
-
-        renderGallery();
-      });
-    });
+    let currentGalleryPasscode = localStorage.getItem(GALLERY_PASSCODE_STORAGE_KEY) || "";
+    let currentAdminPasscode = sessionStorage.getItem(ADMIN_PASSCODE_STORAGE_KEY) || "";
+    let currentSettings = {
+      galleryPrivate: false,
+      requireApproval: false,
+      uploadsCloseAt: null,
+      isOpen: true,
+      accessGranted: true
+    };
 
     function getFileExtension(file) {
       return file.name.split(".").pop()?.toLowerCase() || "";
@@ -1146,43 +1590,21 @@
 
     function isHeicFile(file) {
       const fileName = file.name.toLowerCase();
-
-      return (
-        file.type === "image/heic" ||
-        file.type === "image/heif" ||
-        fileName.endsWith(".heic") ||
-        fileName.endsWith(".heif")
-      );
+      return file.type === "image/heic" || file.type === "image/heif" || fileName.endsWith(".heic") || fileName.endsWith(".heif");
     }
 
     function isVideoFile(file) {
       const fileName = file.name.toLowerCase();
-
-      return (
-        file.type.startsWith("video/") ||
-        fileName.endsWith(".mp4") ||
-        fileName.endsWith(".mov") ||
-        fileName.endsWith(".webm")
-      );
+      return file.type.startsWith("video/") || fileName.endsWith(".mp4") || fileName.endsWith(".mov") || fileName.endsWith(".webm");
     }
 
     function isAllowedMedia(file) {
       const fileName = file.name.toLowerCase();
-
-      return (
-        file.type.startsWith("image/") ||
-        file.type.startsWith("video/") ||
-        fileName.endsWith(".heic") ||
-        fileName.endsWith(".heif") ||
-        fileName.endsWith(".mp4") ||
-        fileName.endsWith(".mov") ||
-        fileName.endsWith(".webm")
-      );
+      return file.type.startsWith("image/") || file.type.startsWith("video/") || fileName.endsWith(".heic") || fileName.endsWith(".heif") || fileName.endsWith(".mp4") || fileName.endsWith(".mov") || fileName.endsWith(".webm");
     }
 
     function getContentType(file, extension) {
       const normalizedExtension = (extension || getFileExtension(file)).toLowerCase();
-
       if (normalizedExtension === "jpg" || normalizedExtension === "jpeg") return "image/jpeg";
       if (normalizedExtension === "png") return "image/png";
       if (normalizedExtension === "webp") return "image/webp";
@@ -1190,9 +1612,7 @@
       if (normalizedExtension === "mp4") return "video/mp4";
       if (normalizedExtension === "mov") return "video/quicktime";
       if (normalizedExtension === "webm") return "video/webm";
-
       if (file.type && !isHeicFile(file)) return file.type;
-
       return "application/octet-stream";
     }
 
@@ -1212,31 +1632,47 @@
 
     function formatBytes(bytes) {
       if (!bytes && bytes !== 0) return "";
-
       const units = ["B", "KB", "MB", "GB"];
       let size = bytes;
       let unitIndex = 0;
-
       while (size >= 1024 && unitIndex < units.length - 1) {
         size /= 1024;
         unitIndex++;
       }
-
       return `${size.toFixed(size >= 10 || unitIndex === 0 ? 0 : 1)}${units[unitIndex]}`;
     }
 
     function formatDateTime(value) {
       if (!value) return "";
-
       const date = new Date(value);
       if (Number.isNaN(date.getTime())) return "";
-
       return new Intl.DateTimeFormat("en", {
         month: "short",
         day: "numeric",
         hour: "numeric",
         minute: "2-digit"
       }).format(date);
+    }
+
+    function formatFullDateTime(value) {
+      if (!value) return "Open";
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return "Open";
+      return new Intl.DateTimeFormat("en", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "2-digit"
+      }).format(date);
+    }
+
+    function toDateTimeLocalValue(value) {
+      if (!value) return "";
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return "";
+      const local = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+      return local.toISOString().slice(0, 16);
     }
 
     function getAlbumLabel(album) {
@@ -1253,19 +1689,38 @@
         progressBar.style.width = "0%";
         return;
       }
-
       progressWrap.classList.add("is-visible");
       progressBar.style.width = `${Math.round((current / total) * 100)}%`;
+    }
+
+    function createTextElement(className, text) {
+      const element = document.createElement("p");
+      element.className = className;
+      element.textContent = text;
+      return element;
+    }
+
+    function createStat(label, value) {
+      const card = document.createElement("div");
+      card.className = "stat-card";
+      card.innerHTML = `<span class="stat-value">${value}</span><span class="stat-label">${label}</span>`;
+      return card;
+    }
+
+    function normalizeSettings(row) {
+      return {
+        galleryPrivate: Boolean(row?.gallery_private),
+        requireApproval: Boolean(row?.require_approval),
+        uploadsCloseAt: row?.uploads_close_at || null,
+        isOpen: row?.is_open !== false,
+        accessGranted: row?.access_granted !== false
+      };
     }
 
     async function prepareMediaForUpload(file) {
       if (!isHeicFile(file)) {
         const extension = getFileExtension(file) || (isVideoFile(file) ? "mp4" : "jpg");
-
-        return {
-          file,
-          extension
-        };
+        return { file, extension };
       }
 
       statusText.textContent = `Converting ${file.name} to JPG...`;
@@ -1277,180 +1732,119 @@
       });
 
       const convertedBlob = Array.isArray(converted) ? converted[0] : converted;
-
       const jpgFile = new File(
         [convertedBlob],
         file.name.replace(/\.(heic|heif)$/i, ".jpg"),
         { type: "image/jpeg" }
       );
 
-      return {
-        file: jpgFile,
-        extension: "jpg"
-      };
+      return { file: jpgFile, extension: "jpg" };
     }
 
     function getVisibleItems() {
       return allMediaItems.filter((item) => {
-        const mediaMatches = activeFilter === "all" || item.type === activeFilter;
-        const albumMatches = activeAlbumFilter === "all" || item.album === activeAlbumFilter;
-
-        return mediaMatches && albumMatches;
+        const matchesType = activeFilter === "all" || item.type === activeFilter;
+        const matchesAlbum = activeAlbumFilter === "all" || item.album === activeAlbumFilter;
+        return matchesType && matchesAlbum;
       });
     }
 
     function updateGalleryMeta() {
-      const totalPhotos = allMediaItems.filter((item) => item.type === "photo").length;
-      const totalVideos = allMediaItems.filter((item) => item.type === "video").length;
-      const totalVisible = visibleMediaItems.length;
+      const total = visibleMediaItems.length;
+      const photos = visibleMediaItems.filter((item) => item.type === "photo").length;
+      const videos = visibleMediaItems.filter((item) => item.type === "video").length;
+      const privateText = currentSettings.galleryPrivate ? "Private" : "Public";
+      const approvalText = currentSettings.requireApproval ? "Approval on" : "Live uploads";
+      galleryMeta.textContent = `${total} upload${total !== 1 ? "s" : ""} shown • ${photos} photo${photos !== 1 ? "s" : ""} • ${videos} video${videos !== 1 ? "s" : ""} • ${privateText} • ${approvalText}`;
+    }
 
-      if (!allMediaItems.length) {
-        galleryMeta.textContent = "No uploads yet.";
+    function updateUploadAvailability() {
+      if (!currentSettings.isOpen) {
+        chooseBtn.disabled = true;
+        statusText.textContent = `Uploads are closed. Gallery remains viewable. Closed at: ${formatFullDateTime(currentSettings.uploadsCloseAt)}.`;
         return;
       }
 
-      const mediaLabel = activeFilter === "all" ? "uploads" : `${activeFilter}s`;
-      const albumLabel = activeAlbumFilter === "all" ? "all albums" : getAlbumLabel(activeAlbumFilter);
-      galleryMeta.textContent = `Showing ${totalVisible} ${mediaLabel} from ${albumLabel}. Total: ${totalPhotos} photo${totalPhotos !== 1 ? "s" : ""}, ${totalVideos} video${totalVideos !== 1 ? "s" : ""}.`;
+      chooseBtn.disabled = false;
+      statusText.textContent = currentSettings.requireApproval
+        ? `Upload JPG, PNG, iPhone photos, MP4, MOV, or WEBM. Max ${MAX_FILE_SIZE_MB}MB. Uploads will appear after approval.`
+        : `Upload JPG, PNG, iPhone photos, MP4, MOV, or WEBM. Max ${MAX_FILE_SIZE_MB}MB per file.`;
     }
 
-    function openMediaModal(index) {
-      if (!visibleMediaItems.length) return;
-
-      activeModalIndex = index;
-      renderModalMedia();
-      mediaModal.classList.add("is-open");
-      mediaModal.setAttribute("aria-hidden", "false");
-      document.body.style.overflow = "hidden";
+    function showPrivateGate(message = "") {
+      gateStatus.textContent = message;
+      privateGate.classList.add("is-visible");
+      privateGate.setAttribute("aria-hidden", "false");
     }
 
-    function renderModalMedia() {
-      const item = visibleMediaItems[activeModalIndex];
-      if (!item) return;
-
-      modalFrame.innerHTML = "";
-      modalDownload.disabled = false;
-      modalLikeBtn.disabled = !item.id;
-      modalDownload.textContent = "Download";
-      modalLikeBtn.textContent = getLikeLabel(item);
-      modalLikeBtn.classList.toggle("is-liked", Boolean(item.liked));
-      modalLikeBtn.setAttribute("aria-label", item.liked ? "Remove reaction" : "React to this upload");
-      modalCount.textContent = `${activeModalIndex + 1} / ${visibleMediaItems.length}${item.guestName ? ` • ${item.guestName}` : ""}${item.createdAt ? ` • ${formatDateTime(item.createdAt)}` : ""}`;
-
-      if (item.type === "video") {
-        const video = document.createElement("video");
-        video.src = item.url;
-        video.controls = true;
-        video.autoplay = true;
-        video.playsInline = true;
-
-        modalFrame.appendChild(video);
-      } else {
-        const img = document.createElement("img");
-        img.src = item.url;
-        img.alt = item.caption || "Wedding guest upload preview";
-
-        modalFrame.appendChild(img);
-      }
+    function hidePrivateGate() {
+      privateGate.classList.remove("is-visible");
+      privateGate.setAttribute("aria-hidden", "true");
+      gateStatus.textContent = "";
     }
 
-    async function downloadCurrentMedia() {
-      const item = visibleMediaItems[activeModalIndex];
-      if (!item) return;
-
-      try {
-        modalDownload.disabled = true;
-        modalDownload.textContent = "Preparing...";
-
-        const { data, error } = await client.storage
-          .from(BUCKET_NAME)
-          .download(item.path);
-
-        if (error) {
-          throw error;
-        }
-
-        const blobUrl = URL.createObjectURL(data);
-        const temporaryLink = document.createElement("a");
-        temporaryLink.href = blobUrl;
-        temporaryLink.download = item.name || "wedding-upload";
-        temporaryLink.style.display = "none";
-
-        document.body.appendChild(temporaryLink);
-        temporaryLink.click();
-        temporaryLink.remove();
-
-        setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
-      } catch (error) {
-        console.error("Download error:", error);
-        window.open(item.url, "_blank", "noopener");
-      } finally {
-        modalDownload.disabled = false;
-        modalDownload.textContent = "Download";
-      }
-    }
-
-    async function likeMediaItem(item) {
-      if (!item?.id || item.likeBusy) return;
-
-      const previousCount = item.likeCount || 0;
-      const previousLiked = Boolean(item.liked);
-
-      item.likeBusy = true;
-      item.liked = !previousLiked;
-      item.likeCount = Math.max(0, previousCount + (item.liked ? 1 : -1));
-      renderGallery();
-      renderModalMedia();
-
-      const { data, error } = await client.rpc("toggle_upload_like", {
-        p_upload_id: item.id,
-        p_device_id: DEVICE_ID
+    async function loadSettings() {
+      const { data, error } = await client.rpc("get_gallery_settings", {
+        p_gallery_passcode: currentGalleryPasscode || null
       });
 
       if (error) {
-        console.error("Toggle like error:", error);
-        item.liked = previousLiked;
-        item.likeCount = previousCount;
-        item.likeBusy = false;
-        renderGallery();
-        renderModalMedia();
-        return;
+        console.error("Settings error:", error);
+        currentSettings = { galleryPrivate: false, requireApproval: false, uploadsCloseAt: null, isOpen: true, accessGranted: true };
+        return currentSettings;
       }
 
-      const result = Array.isArray(data) ? data[0] : data;
+      currentSettings = normalizeSettings(Array.isArray(data) ? data[0] : data);
 
-      item.liked = Boolean(result?.liked);
-      item.likeCount = Number(result?.like_count ?? item.likeCount);
-      item.likeBusy = false;
+      if (currentSettings.galleryPrivate && !currentSettings.accessGranted) {
+        showPrivateGate("Passcode required.");
+      } else {
+        hidePrivateGate();
+      }
 
-      renderGallery();
-      renderModalMedia();
+      updateUploadAvailability();
+      return currentSettings;
     }
 
-    function closeMediaModal() {
-      mediaModal.classList.remove("is-open");
-      mediaModal.setAttribute("aria-hidden", "true");
-      modalFrame.innerHTML = "";
-      document.body.style.overflow = "";
+    function mapDatabaseRowToItem(row) {
+      const extension = getExtensionFromName(row.file_name || row.file_path || "");
+      const { data: publicData } = client.storage.from(BUCKET_NAME).getPublicUrl(row.file_path);
+
+      return {
+        id: row.id,
+        name: row.file_name || row.file_path.split("/").pop(),
+        path: row.file_path,
+        url: row.file_url || publicData.publicUrl,
+        extension,
+        type: getDisplayMediaType(row.file_type, extension),
+        size: 0,
+        guestName: row.guest_name || "",
+        caption: row.caption || "",
+        album: row.album || "guest-gallery",
+        approved: row.approved !== false,
+        deletedAt: row.deleted_at || null,
+        likeCount: row.like_count || 0,
+        liked: false,
+        likeBusy: false,
+        createdAt: row.created_at || ""
+      };
     }
 
-    function showNextMedia() {
-      if (!visibleMediaItems.length) return;
-      activeModalIndex = (activeModalIndex + 1) % visibleMediaItems.length;
-      renderModalMedia();
-    }
+    async function loadLikedUploadIds(uploadIds) {
+      if (!uploadIds.length) return new Set();
 
-    function showPreviousMedia() {
-      if (!visibleMediaItems.length) return;
-      activeModalIndex = (activeModalIndex - 1 + visibleMediaItems.length) % visibleMediaItems.length;
-      renderModalMedia();
-    }
+      const { data, error } = await client
+        .from(REACTIONS_TABLE)
+        .select("upload_id")
+        .eq("device_id", DEVICE_ID)
+        .in("upload_id", uploadIds);
 
-    function createTextElement(className, text) {
-      const element = document.createElement("p");
-      element.className = className;
-      element.textContent = text;
-      return element;
+      if (error) {
+        console.warn("Could not load device reactions:", error);
+        return new Set();
+      }
+
+      return new Set((data || []).map((row) => row.upload_id));
     }
 
     function renderGallery() {
@@ -1458,11 +1852,8 @@
       updateGalleryMeta();
 
       if (!visibleMediaItems.length) {
-        const emptyMessage = activeFilter === "all"
-          ? "No uploads found for this album yet."
-          : `No ${activeFilter}s found for this album yet.`;
-
-        gallery.innerHTML = `<div class="empty">${emptyMessage}</div>`;
+        gallery.innerHTML = `<div class="empty">No uploads in this view yet.</div>`;
+        renderCoupleStats();
         return;
       }
 
@@ -1495,13 +1886,10 @@
           img.src = item.url;
           img.alt = item.caption || "Wedding guest upload";
           img.loading = "lazy";
-
           previewButton.appendChild(img);
         }
 
-        previewButton.addEventListener("click", () => {
-          openMediaModal(index);
-        });
+        previewButton.addEventListener("click", () => openMediaModal(index));
 
         const details = document.createElement("div");
         details.className = "photo-details";
@@ -1511,13 +1899,8 @@
         albumPill.textContent = getAlbumLabel(item.album);
         details.appendChild(albumPill);
 
-        if (item.guestName) {
-          details.appendChild(createTextElement("photo-uploader", item.guestName));
-        }
-
-        if (item.caption) {
-          details.appendChild(createTextElement("photo-caption", item.caption));
-        }
+        if (item.guestName) details.appendChild(createTextElement("photo-uploader", item.guestName));
+        if (item.caption) details.appendChild(createTextElement("photo-caption", item.caption));
 
         const footer = document.createElement("div");
         footer.className = "photo-footer";
@@ -1540,162 +1923,582 @@
         footer.appendChild(dateText);
         footer.appendChild(likeButton);
         details.appendChild(footer);
-
         card.appendChild(previewButton);
         card.appendChild(details);
         gallery.appendChild(card);
       });
-    }
 
-    function mapDatabaseRowToItem(row) {
-      const extension = getExtensionFromName(row.file_name || row.file_path || "");
-      const { data: publicData } = client.storage
-        .from(BUCKET_NAME)
-        .getPublicUrl(row.file_path);
-
-      return {
-        id: row.id,
-        name: row.file_name || row.file_path.split("/").pop(),
-        path: row.file_path,
-        url: row.file_url || publicData.publicUrl,
-        extension,
-        type: getDisplayMediaType(row.file_type, extension),
-        size: 0,
-        guestName: row.guest_name || "",
-        caption: row.caption || "",
-        album: row.album || "guest-gallery",
-        likeCount: row.like_count || 0,
-        liked: false,
-        likeBusy: false,
-        createdAt: row.created_at || ""
-      };
-    }
-
-    async function loadStorageItems() {
-      const { data, error } = await client.storage
-        .from(BUCKET_NAME)
-        .list(FOLDER_NAME, {
-          limit: 200,
-          offset: 0,
-          sortBy: {
-            column: "created_at",
-            order: "desc"
-          }
-        });
-
-      if (error) {
-        console.warn("Legacy storage gallery failed to load:", error);
-        return [];
-      }
-
-      return (data || [])
-        .filter((file) => file.name && !file.name.startsWith("."))
-        .map((file) => {
-          const extension = getExtensionFromName(file.name);
-          const filePath = `${FOLDER_NAME}/${file.name}`;
-          const { data: publicData } = client.storage
-            .from(BUCKET_NAME)
-            .getPublicUrl(filePath);
-
-          return {
-            id: null,
-            name: file.name,
-            path: filePath,
-            url: publicData.publicUrl,
-            extension,
-            type: getMediaTypeFromExtension(extension),
-            size: file.metadata?.size || 0,
-            guestName: "",
-            caption: "",
-            album: "guest-gallery",
-            likeCount: 0,
-            liked: false,
-            likeBusy: false,
-            createdAt: file.created_at || "",
-            legacy: true
-          };
-        });
-    }
-
-    async function loadLikedUploadIds(uploadIds) {
-      if (!uploadIds.length) {
-        return new Set();
-      }
-
-      const { data, error } = await client
-        .from(REACTIONS_TABLE)
-        .select("upload_id")
-        .eq("device_id", DEVICE_ID)
-        .in("upload_id", uploadIds);
-
-      if (error) {
-        console.warn("Could not load device reactions:", error);
-        return new Set();
-      }
-
-      return new Set((data || []).map((row) => row.upload_id));
+      renderCoupleStats();
     }
 
     async function loadGallery() {
       gallery.innerHTML = `<div class="empty">Loading photos and videos...</div>`;
       galleryMeta.textContent = "Loading gallery...";
 
-      const { data: rows, error } = await client
-        .from(UPLOADS_TABLE)
-        .select("id,file_path,file_url,file_name,file_type,mime_type,guest_name,caption,album,approved,like_count,created_at")
-        .eq("approved", true)
-        .order("created_at", { ascending: false })
-        .limit(250);
+      await loadSettings();
+
+      if (currentSettings.galleryPrivate && !currentSettings.accessGranted) {
+        allMediaItems = [];
+        visibleMediaItems = [];
+        gallery.innerHTML = `<div class="empty">This gallery is private. Enter the guest passcode to view uploads.</div>`;
+        galleryMeta.textContent = "Private gallery locked.";
+        return;
+      }
+
+      const { data: rows, error } = await client.rpc("list_gallery_uploads", {
+        p_gallery_passcode: currentGalleryPasscode || null
+      });
 
       if (error) {
-        console.error("Gallery database error:", error);
+        console.error("Gallery RPC error:", error);
+        if ((error.message || "").toLowerCase().includes("passcode")) {
+          localStorage.removeItem(GALLERY_PASSCODE_STORAGE_KEY);
+          currentGalleryPasscode = "";
+          showPrivateGate("Invalid passcode. Try again.");
+        }
+
         galleryMeta.textContent = "Gallery failed to load.";
-        gallery.innerHTML = `
-          <div class="empty">
-            Could not load gallery records.<br>
-            Error: ${error.message || "Unknown Supabase database error"}
-          </div>
-        `;
+        gallery.innerHTML = `<div class="empty">Could not load gallery.<br>Error: ${error.message || "Unknown database error"}</div>`;
         return;
       }
 
       const databaseItems = (rows || []).map(mapDatabaseRowToItem);
       const likedUploadIds = await loadLikedUploadIds(databaseItems.map((item) => item.id));
-
       databaseItems.forEach((item) => {
         item.liked = likedUploadIds.has(item.id);
       });
 
-      const storageItems = await loadStorageItems();
-      const databasePaths = new Set(databaseItems.map((item) => item.path));
-      const legacyItems = storageItems.filter((item) => !databasePaths.has(item.path));
-
-      allMediaItems = [...databaseItems, ...legacyItems].sort((a, b) => {
-        return new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime();
-      });
-
+      allMediaItems = databaseItems;
       renderGallery();
     }
 
     async function createUploadRecord({ filePath, publicUrl, fileName, mediaType, contentType, guestName, caption, album }) {
-      const { error } = await client
-        .from(UPLOADS_TABLE)
-        .insert({
-          file_path: filePath,
-          file_url: publicUrl,
-          file_name: fileName,
-          file_type: getDatabaseFileType(mediaType),
-          mime_type: contentType,
-          guest_name: guestName || null,
-          caption: caption || null,
-          album,
-          approved: !APPROVAL_REQUIRED
-        });
+      const { error } = await client.from(UPLOADS_TABLE).insert({
+        file_path: filePath,
+        file_url: publicUrl,
+        file_name: fileName,
+        file_type: getDatabaseFileType(mediaType),
+        mime_type: contentType,
+        guest_name: guestName || null,
+        caption: caption || null,
+        album,
+        approved: !currentSettings.requireApproval
+      });
+
+      if (error) throw error;
+    }
+
+    async function likeMediaItem(item) {
+      if (!item?.id || item.likeBusy) return;
+
+      item.likeBusy = true;
+      renderGallery();
+      if (mediaModal.classList.contains("is-open")) renderModalMedia();
+
+      const { data, error } = await client.rpc("toggle_upload_like", {
+        p_upload_id: item.id,
+        p_device_id: DEVICE_ID
+      });
+
+      item.likeBusy = false;
 
       if (error) {
-        throw error;
+        console.error("Like error:", error);
+        renderGallery();
+        if (mediaModal.classList.contains("is-open")) renderModalMedia();
+        return;
+      }
+
+      const result = Array.isArray(data) ? data[0] : data;
+      item.liked = Boolean(result?.liked);
+      item.likeCount = result?.like_count ?? item.likeCount;
+
+      const globalItem = allMediaItems.find((mediaItem) => mediaItem.id === item.id);
+      if (globalItem) {
+        globalItem.liked = item.liked;
+        globalItem.likeCount = item.likeCount;
+        globalItem.likeBusy = false;
+      }
+
+      renderGallery();
+      if (mediaModal.classList.contains("is-open")) renderModalMedia();
+    }
+
+    function openMediaModal(index) {
+      if (!visibleMediaItems.length) return;
+      activeModalIndex = index;
+      renderModalMedia();
+      mediaModal.classList.add("is-open");
+      mediaModal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+
+    function renderModalMedia() {
+      const item = visibleMediaItems[activeModalIndex];
+      if (!item) return;
+
+      modalFrame.innerHTML = "";
+      modalDownload.disabled = false;
+      modalLikeBtn.disabled = !item.id || item.likeBusy;
+      modalDownload.textContent = "Download";
+      modalLikeBtn.textContent = getLikeLabel(item);
+      modalLikeBtn.classList.toggle("is-liked", Boolean(item.liked));
+      modalLikeBtn.setAttribute("aria-label", item.liked ? "Remove reaction" : "React to this upload");
+      modalCount.textContent = `${activeModalIndex + 1} / ${visibleMediaItems.length}${item.guestName ? ` • ${item.guestName}` : ""}${item.createdAt ? ` • ${formatDateTime(item.createdAt)}` : ""}`;
+
+      if (item.type === "video") {
+        const video = document.createElement("video");
+        video.src = item.url;
+        video.controls = true;
+        video.autoplay = true;
+        video.playsInline = true;
+        modalFrame.appendChild(video);
+      } else {
+        const img = document.createElement("img");
+        img.src = item.url;
+        img.alt = item.caption || "Wedding guest upload preview";
+        modalFrame.appendChild(img);
       }
     }
+
+    async function forceDownloadItem(item, prefix = "wedding-upload") {
+      const response = await fetch(item.url, { mode: "cors" });
+      if (!response.ok) throw new Error(`Download failed: ${response.status}`);
+      const blob = await response.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      const extension = item.extension || getExtensionFromName(item.name) || (item.type === "video" ? "mp4" : "jpg");
+      const safeName = (item.name || `${prefix}.${extension}`).replace(/[^a-z0-9._-]/gi, "-");
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = safeName;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(blobUrl);
+    }
+
+    async function downloadCurrentMedia() {
+      const item = visibleMediaItems[activeModalIndex];
+      if (!item) return;
+
+      try {
+        modalDownload.disabled = true;
+        modalDownload.textContent = "Preparing...";
+        await forceDownloadItem(item);
+      } catch (error) {
+        console.error("Download error:", error);
+        window.open(item.url, "_blank", "noopener");
+      } finally {
+        modalDownload.disabled = false;
+        modalDownload.textContent = "Download";
+      }
+    }
+
+    async function downloadItemsAsZip(items, zipName) {
+      const validItems = items.filter((item) => item?.url && !item.deletedAt);
+      if (!validItems.length) {
+        alert("No files available for ZIP download.");
+        return;
+      }
+
+      const zip = new JSZip();
+      const folder = zip.folder("wedding-uploads");
+
+      for (let index = 0; index < validItems.length; index++) {
+        const item = validItems[index];
+        const extension = item.extension || getExtensionFromName(item.name) || (item.type === "video" ? "mp4" : "jpg");
+        const album = item.album || "guest-gallery";
+        const safeName = `${String(index + 1).padStart(3, "0")}-${album}-${item.name || `upload.${extension}`}`.replace(/[^a-z0-9._-]/gi, "-");
+
+        statusText.textContent = `Preparing ZIP ${index + 1} of ${validItems.length}: ${item.name}`;
+        const response = await fetch(item.url, { mode: "cors" });
+        if (!response.ok) throw new Error(`Could not download ${item.name}`);
+        const blob = await response.blob();
+        folder.file(safeName, blob);
+      }
+
+      statusText.textContent = "Generating ZIP file...";
+      const zipBlob = await zip.generateAsync({ type: "blob" });
+      const blobUrl = URL.createObjectURL(zipBlob);
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = zipName;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(blobUrl);
+      statusText.textContent = "ZIP download ready.";
+    }
+
+    function closeMediaModal() {
+      mediaModal.classList.remove("is-open");
+      mediaModal.setAttribute("aria-hidden", "true");
+      modalFrame.innerHTML = "";
+      document.body.style.overflow = "";
+    }
+
+    function showNextMedia() {
+      if (!visibleMediaItems.length) return;
+      activeModalIndex = (activeModalIndex + 1) % visibleMediaItems.length;
+      renderModalMedia();
+    }
+
+    function showPreviousMedia() {
+      if (!visibleMediaItems.length) return;
+      activeModalIndex = (activeModalIndex - 1 + visibleMediaItems.length) % visibleMediaItems.length;
+      renderModalMedia();
+    }
+
+    function renderCoupleStats() {
+      if (!coupleStats) return;
+      const approved = allMediaItems.length;
+      const photos = allMediaItems.filter((item) => item.type === "photo").length;
+      const videos = allMediaItems.filter((item) => item.type === "video").length;
+      const likes = allMediaItems.reduce((sum, item) => sum + (item.likeCount || 0), 0);
+      coupleStats.innerHTML = "";
+      coupleStats.appendChild(createStat("Approved", approved));
+      coupleStats.appendChild(createStat("Photos", photos));
+      coupleStats.appendChild(createStat("Videos", videos));
+      coupleStats.appendChild(createStat("Reactions", likes));
+      coupleNote.textContent = `Upload status: ${currentSettings.isOpen ? "Open" : "Closed"}. Close date: ${formatFullDateTime(currentSettings.uploadsCloseAt)}.`;
+    }
+
+    function renderAdminStats(data) {
+      adminStats.innerHTML = "";
+      adminStats.appendChild(createStat("Total", data.total || 0));
+      adminStats.appendChild(createStat("Approved", data.approved || 0));
+      adminStats.appendChild(createStat("Pending", data.pending || 0));
+      adminStats.appendChild(createStat("Deleted", data.deleted || 0));
+      adminStats.appendChild(createStat("Photos", data.photos || 0));
+      adminStats.appendChild(createStat("Videos", data.videos || 0));
+      adminStats.appendChild(createStat("Reactions", data.likes || 0));
+      adminStats.appendChild(createStat("Uploads", data.is_open ? "Open" : "Closed"));
+
+      privateToggle.checked = Boolean(data.gallery_private);
+      approvalToggle.checked = Boolean(data.require_approval);
+      uploadsCloseInput.value = toDateTimeLocalValue(data.uploads_close_at);
+    }
+
+    function getAdminStatusLabel(item) {
+      if (item.deletedAt) return "deleted";
+      if (!item.approved) return "pending";
+      return "approved";
+    }
+
+    function renderAdminUploads() {
+      adminUploadList.innerHTML = "";
+
+      if (!adminMediaItems.length) {
+        adminUploadList.innerHTML = `<div class="empty">No upload records yet.</div>`;
+        return;
+      }
+
+      adminMediaItems.forEach((item) => {
+        const row = document.createElement("article");
+        row.className = "admin-row";
+
+        const thumb = document.createElement("div");
+        thumb.className = "admin-thumb";
+
+        if (item.type === "video") {
+          const video = document.createElement("video");
+          video.src = item.url;
+          video.preload = "metadata";
+          video.muted = true;
+          video.playsInline = true;
+          thumb.appendChild(video);
+        } else {
+          const img = document.createElement("img");
+          img.src = item.url;
+          img.alt = item.caption || item.name;
+          thumb.appendChild(img);
+        }
+
+        const info = document.createElement("div");
+        info.className = "admin-info";
+
+        const status = getAdminStatusLabel(item);
+        const pill = document.createElement("span");
+        pill.className = `admin-status-pill ${status === "pending" ? "is-pending" : ""} ${status === "deleted" ? "is-deleted" : ""}`;
+        pill.textContent = status;
+
+        info.appendChild(pill);
+        info.appendChild(createTextElement("admin-file-name", item.name));
+        info.appendChild(createTextElement("admin-meta", `${getAlbumLabel(item.album)} • ${item.type} • ${item.guestName || "Anonymous"} • ${formatDateTime(item.createdAt)}`));
+        if (item.caption) info.appendChild(createTextElement("admin-meta", item.caption));
+
+        const actions = document.createElement("div");
+        actions.className = "admin-row-actions";
+
+        const openBtn = document.createElement("button");
+        openBtn.className = "ghost-action";
+        openBtn.type = "button";
+        openBtn.textContent = "Open";
+        openBtn.addEventListener("click", () => window.open(item.url, "_blank", "noopener"));
+        actions.appendChild(openBtn);
+
+        if (item.deletedAt) {
+          const restoreBtn = document.createElement("button");
+          restoreBtn.className = "admin-action";
+          restoreBtn.type = "button";
+          restoreBtn.textContent = "Restore";
+          restoreBtn.addEventListener("click", () => adminRestoreUpload(item.id));
+          actions.appendChild(restoreBtn);
+        } else {
+          const approveBtn = document.createElement("button");
+          approveBtn.className = "admin-action";
+          approveBtn.type = "button";
+          approveBtn.textContent = item.approved ? "Hide" : "Approve";
+          approveBtn.addEventListener("click", () => adminSetApproved(item.id, !item.approved));
+          actions.appendChild(approveBtn);
+
+          const deleteBtn = document.createElement("button");
+          deleteBtn.className = "danger-action";
+          deleteBtn.type = "button";
+          deleteBtn.textContent = "Delete";
+          deleteBtn.addEventListener("click", () => adminDeleteUpload(item.id));
+          actions.appendChild(deleteBtn);
+        }
+
+        row.appendChild(thumb);
+        row.appendChild(info);
+        row.appendChild(actions);
+        adminUploadList.appendChild(row);
+      });
+    }
+
+    async function refreshAdminDashboard() {
+      if (!currentAdminPasscode) return;
+
+      adminActionStatus.textContent = "Loading dashboard...";
+
+      const { data: stats, error: statsError } = await client.rpc("admin_get_dashboard", {
+        p_admin_passcode: currentAdminPasscode
+      });
+
+      if (statsError) {
+        console.error("Admin dashboard error:", statsError);
+        adminActionStatus.textContent = statsError.message || "Could not load dashboard.";
+        adminControls.hidden = true;
+        adminLoginBox.hidden = false;
+        sessionStorage.removeItem(ADMIN_PASSCODE_STORAGE_KEY);
+        currentAdminPasscode = "";
+        return;
+      }
+
+      renderAdminStats(stats || {});
+
+      const { data: rows, error: listError } = await client.rpc("admin_list_uploads", {
+        p_admin_passcode: currentAdminPasscode
+      });
+
+      if (listError) {
+        console.error("Admin list error:", listError);
+        adminActionStatus.textContent = listError.message || "Could not load uploads.";
+        return;
+      }
+
+      adminMediaItems = (rows || []).map(mapDatabaseRowToItem);
+      renderAdminUploads();
+      adminActionStatus.textContent = "Dashboard updated.";
+    }
+
+    async function unlockAdmin() {
+      const passcode = adminPasscodeInput.value.trim() || currentAdminPasscode;
+      if (!passcode) {
+        adminStatus.textContent = "Enter the admin passcode.";
+        return;
+      }
+
+      currentAdminPasscode = passcode;
+      sessionStorage.setItem(ADMIN_PASSCODE_STORAGE_KEY, passcode);
+      adminLoginBox.hidden = true;
+      adminControls.hidden = false;
+      await refreshAdminDashboard();
+    }
+
+    async function saveAdminSettings() {
+      if (!currentAdminPasscode) return;
+
+      const closeValue = uploadsCloseInput.value ? new Date(uploadsCloseInput.value).toISOString() : null;
+      const newAdminPasscode = newAdminPasscodeInput.value.trim();
+
+      adminActionStatus.textContent = "Saving settings...";
+
+      const { data, error } = await client.rpc("admin_update_gallery_settings", {
+        p_admin_passcode: currentAdminPasscode,
+        p_gallery_private: privateToggle.checked,
+        p_require_approval: approvalToggle.checked,
+        p_uploads_close_at: closeValue,
+        p_guest_passcode: guestPasscodeInput.value.trim() || null,
+        p_new_admin_passcode: newAdminPasscode || null
+      });
+
+      if (error) {
+        console.error("Save settings error:", error);
+        adminActionStatus.textContent = error.message || "Could not save settings.";
+        return;
+      }
+
+      if (newAdminPasscode) {
+        currentAdminPasscode = newAdminPasscode;
+        sessionStorage.setItem(ADMIN_PASSCODE_STORAGE_KEY, newAdminPasscode);
+        adminPasscodeInput.value = newAdminPasscode;
+        newAdminPasscodeInput.value = "";
+      }
+
+      guestPasscodeInput.value = "";
+      renderAdminStats(data || {});
+      adminActionStatus.textContent = "Settings saved.";
+      localStorage.removeItem(GALLERY_PASSCODE_STORAGE_KEY);
+      currentGalleryPasscode = "";
+      await loadGallery();
+      await refreshAdminDashboard();
+    }
+
+    async function adminSetApproved(id, approved) {
+      const { error } = await client.rpc("admin_set_upload_approved", {
+        p_upload_id: id,
+        p_approved: approved,
+        p_admin_passcode: currentAdminPasscode
+      });
+
+      if (error) {
+        adminActionStatus.textContent = error.message || "Could not update approval.";
+        return;
+      }
+
+      await refreshAdminDashboard();
+      await loadGallery();
+    }
+
+    async function adminDeleteUpload(id) {
+      if (!confirm("Delete this upload from the public gallery? The database record will be hidden. Delete the physical file from Storage later if needed.")) return;
+
+      const { error } = await client.rpc("admin_soft_delete_upload", {
+        p_upload_id: id,
+        p_admin_passcode: currentAdminPasscode
+      });
+
+      if (error) {
+        adminActionStatus.textContent = error.message || "Could not delete upload.";
+        return;
+      }
+
+      await refreshAdminDashboard();
+      await loadGallery();
+    }
+
+    async function adminRestoreUpload(id) {
+      const { error } = await client.rpc("admin_restore_upload", {
+        p_upload_id: id,
+        p_admin_passcode: currentAdminPasscode
+      });
+
+      if (error) {
+        adminActionStatus.textContent = error.message || "Could not restore upload.";
+        return;
+      }
+
+      await refreshAdminDashboard();
+      await loadGallery();
+    }
+
+    chooseBtn.addEventListener("click", () => {
+      if (!currentSettings.isOpen) return;
+      photoInput.click();
+    });
+
+    refreshBtn.addEventListener("click", loadGallery);
+
+    filterButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        activeFilter = button.dataset.filter;
+        filterButtons.forEach((item) => item.classList.remove("is-active"));
+        button.classList.add("is-active");
+        renderGallery();
+      });
+    });
+
+    albumButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        activeAlbumFilter = button.dataset.albumFilter;
+        albumButtons.forEach((item) => item.classList.remove("is-active"));
+        button.classList.add("is-active");
+        renderGallery();
+      });
+    });
+
+    galleryUnlockBtn.addEventListener("click", async () => {
+      const passcode = galleryPasscodeInput.value.trim();
+      if (!passcode) {
+        gateStatus.textContent = "Enter the guest passcode.";
+        return;
+      }
+
+      currentGalleryPasscode = passcode;
+      localStorage.setItem(GALLERY_PASSCODE_STORAGE_KEY, passcode);
+      await loadGallery();
+    });
+
+    galleryPasscodeInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") galleryUnlockBtn.click();
+    });
+
+    coupleToggleBtn.addEventListener("click", () => {
+      couplePanel.hidden = !couplePanel.hidden;
+      if (!couplePanel.hidden) {
+        renderCoupleStats();
+        couplePanel.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+
+    coupleCloseBtn.addEventListener("click", () => {
+      couplePanel.hidden = true;
+    });
+
+    coupleDownloadApprovedBtn.addEventListener("click", () => {
+      downloadItemsAsZip(allMediaItems, "wedding-approved-uploads.zip").catch((error) => {
+        console.error(error);
+        alert(error.message || "ZIP download failed.");
+      });
+    });
+
+    coupleCopyLinkBtn.addEventListener("click", async () => {
+      await navigator.clipboard.writeText(window.location.href.split("#")[0]);
+      coupleNote.textContent = "Gallery link copied.";
+    });
+
+    adminToggleBtn.addEventListener("click", () => {
+      adminPanel.hidden = !adminPanel.hidden;
+      if (!adminPanel.hidden) {
+        adminPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+        if (currentAdminPasscode) {
+          adminLoginBox.hidden = true;
+          adminControls.hidden = false;
+          refreshAdminDashboard();
+        }
+      }
+    });
+
+    adminCloseBtn.addEventListener("click", () => {
+      adminPanel.hidden = true;
+    });
+
+    adminUnlockBtn.addEventListener("click", unlockAdmin);
+    adminPasscodeInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") unlockAdmin();
+    });
+    saveSettingsBtn.addEventListener("click", saveAdminSettings);
+    adminRefreshBtn.addEventListener("click", refreshAdminDashboard);
+
+    adminDownloadApprovedBtn.addEventListener("click", () => {
+      downloadItemsAsZip(allMediaItems, "wedding-approved-uploads.zip").catch((error) => alert(error.message || "ZIP download failed."));
+    });
+
+    adminDownloadAllBtn.addEventListener("click", () => {
+      downloadItemsAsZip(adminMediaItems.filter((item) => !item.deletedAt), "wedding-all-uploads.zip").catch((error) => alert(error.message || "ZIP download failed."));
+    });
 
     modalCloseBtn.addEventListener("click", closeMediaModal);
     modalPrevBtn.addEventListener("click", showPreviousMedia);
@@ -1707,9 +2510,7 @@
     });
 
     mediaModal.addEventListener("click", (event) => {
-      if (event.target === mediaModal) {
-        closeMediaModal();
-      }
+      if (event.target === mediaModal) closeMediaModal();
     });
 
     modalStage.addEventListener("touchstart", (event) => {
@@ -1719,7 +2520,6 @@
     modalStage.addEventListener("touchend", (event) => {
       touchEndX = event.changedTouches[0].screenX;
       const swipeDistance = touchEndX - touchStartX;
-
       if (Math.abs(swipeDistance) < 50) return;
       if (swipeDistance < 0) showNextMedia();
       if (swipeDistance > 0) showPreviousMedia();
@@ -1727,7 +2527,6 @@
 
     window.addEventListener("keydown", (event) => {
       if (!mediaModal.classList.contains("is-open")) return;
-
       if (event.key === "Escape") closeMediaModal();
       if (event.key === "ArrowRight") showNextMedia();
       if (event.key === "ArrowLeft") showPreviousMedia();
@@ -1735,19 +2534,19 @@
 
     photoInput.addEventListener("change", async (event) => {
       const files = Array.from(event.target.files || []);
-
       if (!files.length) return;
+
+      await loadSettings();
+
+      if (!currentSettings.isOpen) {
+        statusText.textContent = "Uploads are closed.";
+        photoInput.value = "";
+        return;
+      }
 
       const guestName = guestNameInput.value.trim().slice(0, 80);
       const caption = captionInput.value.trim().slice(0, 240);
       const album = albumSelect.value || "guest-gallery";
-
-      console.table(files.map((file) => ({
-        name: file.name,
-        type: file.type || "empty",
-        size: formatBytes(file.size),
-        extension: getFileExtension(file)
-      })));
 
       const invalidTypeFiles = files.filter((file) => !isAllowedMedia(file));
       const oversizedFiles = files.filter((file) => file.size > MAX_FILE_SIZE_BYTES);
@@ -1784,36 +2583,21 @@
           const contentType = getContentType(uploadFile, fileExt);
           const mediaType = getMediaTypeFromExtension(fileExt);
 
-          console.log("Uploading to Supabase", {
-            filePath,
-            contentType,
-            originalName: originalFile.name,
-            uploadName: uploadFile.name,
-            size: uploadFile.size,
-            album
-          });
-
           if (contentType === "application/octet-stream") {
             throw new Error(`Unsupported content type for ${originalFile.name}`);
           }
 
           statusText.textContent = `Uploading ${itemNumber} of ${uploadableFiles.length}: ${originalFile.name}...`;
 
-          const { error: uploadError } = await client.storage
-            .from(BUCKET_NAME)
-            .upload(filePath, uploadFile, {
-              cacheControl: "3600",
-              upsert: false,
-              contentType
-            });
+          const { error: uploadError } = await client.storage.from(BUCKET_NAME).upload(filePath, uploadFile, {
+            cacheControl: "3600",
+            upsert: false,
+            contentType
+          });
 
-          if (uploadError) {
-            throw uploadError;
-          }
+          if (uploadError) throw uploadError;
 
-          const { data: publicData } = client.storage
-            .from(BUCKET_NAME)
-            .getPublicUrl(filePath);
+          const { data: publicData } = client.storage.from(BUCKET_NAME).getPublicUrl(filePath);
 
           statusText.textContent = `Saving details for ${originalFile.name}...`;
 
@@ -1840,42 +2624,45 @@
       }
 
       photoInput.value = "";
-      chooseBtn.disabled = false;
-
+      chooseBtn.disabled = !currentSettings.isOpen;
       const skippedText = skipped ? ` ${skipped} skipped.` : "";
 
       if (failed > 0) {
         const firstReason = failureReasons[0] ? ` Last error: ${failureReasons[0]}` : "";
         statusText.textContent = `${uploaded} uploaded. ${failed} failed.${skippedText}${firstReason}`;
-      } else if (APPROVAL_REQUIRED) {
+      } else if (currentSettings.requireApproval) {
         statusText.textContent = `${uploaded} file${uploaded !== 1 ? "s" : ""} uploaded.${skippedText} Waiting for approval before showing in the gallery.`;
       } else {
         statusText.textContent = `${uploaded} file${uploaded !== 1 ? "s" : ""} uploaded.${skippedText} Thank you.`;
       }
 
-      setTimeout(() => {
-        setProgress(0, 0);
-      }, 1200);
-
+      setTimeout(() => setProgress(0, 0), 1200);
       await loadGallery();
+      if (currentAdminPasscode) await refreshAdminDashboard();
     });
 
     window.addEventListener("scroll", () => {
-      if (window.scrollY > 500) {
-        scrollTopBtn.classList.add("is-visible");
-      } else {
-        scrollTopBtn.classList.remove("is-visible");
-      }
+      if (window.scrollY > 500) scrollTopBtn.classList.add("is-visible");
+      else scrollTopBtn.classList.remove("is-visible");
     });
 
     scrollTopBtn.addEventListener("click", () => {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     });
 
-    loadGallery();
+    async function init() {
+      if (new URLSearchParams(window.location.search).has("admin")) {
+        adminPanel.hidden = false;
+      }
+
+      if (new URLSearchParams(window.location.search).has("couple")) {
+        couplePanel.hidden = false;
+      }
+
+      await loadGallery();
+    }
+
+    init();
   </script>
 </body>
 </html>
