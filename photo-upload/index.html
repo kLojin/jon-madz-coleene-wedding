@@ -42,7 +42,9 @@
     }
 
     button,
-    input {
+    input,
+    select,
+    textarea {
       font: inherit;
     }
 
@@ -97,6 +99,70 @@
     .upload-area {
       display: grid;
       gap: 14px;
+    }
+
+    .upload-fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      text-align: left;
+    }
+
+    .field-group {
+      display: grid;
+      gap: 7px;
+    }
+
+    .field-group.is-wide {
+      grid-column: 1 / -1;
+    }
+
+    .field-label {
+      color: var(--muted);
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .text-field,
+    .select-field,
+    .textarea-field {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--text);
+      outline: 0;
+      box-shadow: 0 8px 24px rgba(43, 36, 32, 0.05);
+      transition: border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+    }
+
+    .text-field,
+    .select-field {
+      min-height: 48px;
+      padding: 0 15px;
+    }
+
+    .textarea-field {
+      min-height: 92px;
+      resize: vertical;
+      padding: 14px 15px;
+      line-height: 1.45;
+    }
+
+    .text-field:focus,
+    .select-field:focus,
+    .textarea-field:focus {
+      border-color: rgba(140, 108, 73, 0.52);
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 0 0 4px rgba(185, 154, 114, 0.14);
+    }
+
+    .field-help {
+      color: rgba(122, 110, 102, 0.78);
+      font-size: 0.75rem;
+      line-height: 1.45;
     }
 
     .file-input {
@@ -240,6 +306,38 @@
       color: #fff;
     }
 
+    .album-tabs {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: -6px 0 18px;
+    }
+
+    .album-btn {
+      min-height: 36px;
+      padding: 0 14px;
+      border: 1px solid rgba(43, 36, 32, 0.1);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.46);
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: background 180ms ease, color 180ms ease, transform 180ms ease;
+    }
+
+    .album-btn:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.78);
+    }
+
+    .album-btn.is-active {
+      background: var(--accent-dark);
+      color: #fff;
+    }
+
     .gallery-meta {
       position: relative;
       z-index: 2;
@@ -257,28 +355,37 @@
       column-gap: 12px;
     }
 
-    .photo {
+    .photo-card {
       position: relative;
       display: block;
       width: 100%;
       overflow: hidden;
       margin: 0 0 12px;
       border-radius: 20px;
-      background: rgba(255, 255, 255, 0.64);
+      background: rgba(255, 255, 255, 0.68);
       border: 1px solid var(--border);
       box-shadow: 0 10px 28px rgba(43, 36, 32, 0.08);
-      cursor: pointer;
-      padding: 0;
-      text-align: inherit;
-      color: inherit;
       break-inside: avoid;
       -webkit-column-break-inside: avoid;
       transition: transform 180ms ease, box-shadow 180ms ease;
     }
 
-    .photo:hover {
+    .photo-card:hover {
       transform: translateY(-2px);
       box-shadow: 0 16px 36px rgba(43, 36, 32, 0.13);
+    }
+
+    .photo {
+      position: relative;
+      display: block;
+      width: 100%;
+      overflow: hidden;
+      border: 0;
+      background: rgba(255, 255, 255, 0.64);
+      cursor: pointer;
+      padding: 0;
+      text-align: inherit;
+      color: inherit;
     }
 
     .photo img,
@@ -297,25 +404,78 @@
       aspect-ratio: 9 / 16;
     }
 
-    .video-badge {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      z-index: 3;
+    .photo-details {
+      display: grid;
+      gap: 8px;
+      padding: 12px 13px 13px;
+      text-align: left;
+    }
+
+    .photo-uploader {
+      color: var(--text);
+      font-size: 0.82rem;
+      font-weight: 900;
+      line-height: 1.35;
+    }
+
+    .photo-caption {
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.45;
+      overflow-wrap: anywhere;
+    }
+
+    .photo-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      color: rgba(122, 110, 102, 0.82);
+      font-size: 0.72rem;
+      line-height: 1.3;
+    }
+
+    .album-pill {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      min-height: 26px;
+      min-height: 24px;
+      width: max-content;
       padding: 0 9px;
       border-radius: 999px;
-      background: rgba(43, 36, 32, 0.82);
-      color: #fff;
+      background: rgba(185, 154, 114, 0.18);
+      color: var(--accent-dark);
       font-size: 0.68rem;
       font-weight: 900;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
-      pointer-events: none;
-      backdrop-filter: blur(10px);
+    }
+
+    .like-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      min-height: 30px;
+      padding: 0 10px;
+      border: 1px solid rgba(43, 36, 32, 0.1);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--text);
+      font-size: 0.78rem;
+      font-weight: 900;
+      cursor: pointer;
+      transition: background 180ms ease, transform 180ms ease;
+    }
+
+    .like-btn:hover {
+      background: rgba(255, 255, 255, 0.94);
+      transform: translateY(-1px);
+    }
+
+    .like-btn:disabled {
+      opacity: 0.65;
+      cursor: wait;
+      transform: none;
     }
 
     .empty {
@@ -395,6 +555,7 @@
       gap: 9px;
     }
 
+    .modal-like,
     .modal-download,
     .modal-close,
     .modal-nav {
@@ -406,6 +567,7 @@
       transition: transform 180ms ease, background 180ms ease;
     }
 
+    .modal-like:hover,
     .modal-download:hover,
     .modal-close:hover,
     .modal-nav:hover {
@@ -413,12 +575,14 @@
       transform: translateY(-1px);
     }
 
+    .modal-like:disabled,
     .modal-download:disabled {
       opacity: 0.7;
       cursor: wait;
       transform: none;
     }
 
+    .modal-like,
     .modal-download {
       display: inline-flex;
       align-items: center;
@@ -569,7 +733,7 @@
         column-gap: 10px;
       }
 
-      .photo {
+      .photo-card {
         margin-bottom: 10px;
       }
 
@@ -579,12 +743,18 @@
         max-height: 420px;
       }
 
-      .filter-tabs {
+      .filter-tabs,
+      .album-tabs {
         gap: 8px;
       }
 
-      .filter-btn {
+      .filter-btn,
+      .album-btn {
         flex: 1 1 auto;
+      }
+
+      .upload-fields {
+        grid-template-columns: 1fr;
       }
 
       .floral {
@@ -637,6 +807,7 @@
         gap: 7px;
       }
 
+      .modal-like,
       .modal-download {
         min-height: 38px;
         padding: 0 12px;
@@ -672,7 +843,7 @@
         column-gap: 9px;
       }
 
-      .photo {
+      .photo-card {
         margin-bottom: 9px;
         border-radius: 16px;
       }
@@ -729,6 +900,41 @@
       </p>
 
       <div class="upload-area">
+        <div class="upload-fields">
+          <label class="field-group">
+            <span class="field-label">Your name</span>
+            <input
+              class="text-field"
+              id="guestNameInput"
+              type="text"
+              maxlength="80"
+              placeholder="Optional"
+              autocomplete="name"
+            />
+          </label>
+
+          <label class="field-group">
+            <span class="field-label">Album</span>
+            <select class="select-field" id="albumSelect">
+              <option value="guest-gallery">Guest Gallery</option>
+              <option value="ceremony">Ceremony</option>
+              <option value="reception">Reception</option>
+              <option value="afterparty">Afterparty</option>
+            </select>
+          </label>
+
+          <label class="field-group is-wide">
+            <span class="field-label">Message / caption</span>
+            <textarea
+              class="textarea-field"
+              id="captionInput"
+              maxlength="240"
+              placeholder="Optional short message for the couple"
+            ></textarea>
+            <span class="field-help">Maximum 240 characters. This caption will appear in the gallery.</span>
+          </label>
+        </div>
+
         <input
           class="file-input"
           id="photoInput"
@@ -757,10 +963,18 @@
         <button class="refresh-btn" id="refreshBtn" type="button">Refresh</button>
       </div>
 
-      <div class="filter-tabs" aria-label="Filter gallery uploads">
+      <div class="filter-tabs" aria-label="Filter gallery uploads by media type">
         <button class="filter-btn is-active" type="button" data-filter="all">All</button>
         <button class="filter-btn" type="button" data-filter="photo">Photos</button>
         <button class="filter-btn" type="button" data-filter="video">Videos</button>
+      </div>
+
+      <div class="album-tabs" aria-label="Filter gallery uploads by album">
+        <button class="album-btn is-active" type="button" data-album-filter="all">All Albums</button>
+        <button class="album-btn" type="button" data-album-filter="guest-gallery">Guest Gallery</button>
+        <button class="album-btn" type="button" data-album-filter="ceremony">Ceremony</button>
+        <button class="album-btn" type="button" data-album-filter="reception">Reception</button>
+        <button class="album-btn" type="button" data-album-filter="afterparty">Afterparty</button>
       </div>
 
       <p class="gallery-meta" id="galleryMeta">Loading gallery...</p>
@@ -776,6 +990,10 @@
       <p class="modal-count" id="modalCount">1 / 1</p>
 
       <div class="modal-actions">
+        <button class="modal-like" id="modalLikeBtn" type="button">
+          ♡ 0
+        </button>
+
         <button class="modal-download" id="modalDownload" type="button">
           Download
         </button>
@@ -814,12 +1032,24 @@
 
     const BUCKET_NAME = "wedding-photos";
     const FOLDER_NAME = "uploads";
+    const UPLOADS_TABLE = "wedding_uploads";
+    const APPROVAL_REQUIRED = false;
     const MAX_FILE_SIZE_MB = 50;
     const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
     const VIDEO_EXTENSIONS = ["mp4", "mov", "webm"];
 
+    const ALBUM_LABELS = {
+      "guest-gallery": "Guest Gallery",
+      ceremony: "Ceremony",
+      reception: "Reception",
+      afterparty: "Afterparty"
+    };
+
     const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+    const guestNameInput = document.querySelector("#guestNameInput");
+    const captionInput = document.querySelector("#captionInput");
+    const albumSelect = document.querySelector("#albumSelect");
     const photoInput = document.querySelector("#photoInput");
     const chooseBtn = document.querySelector("#chooseBtn");
     const refreshBtn = document.querySelector("#refreshBtn");
@@ -829,6 +1059,7 @@
     const gallery = document.querySelector("#gallery");
     const galleryMeta = document.querySelector("#galleryMeta");
     const filterButtons = document.querySelectorAll(".filter-btn");
+    const albumButtons = document.querySelectorAll(".album-btn");
     const mediaModal = document.querySelector("#mediaModal");
     const modalStage = document.querySelector("#modalStage");
     const modalFrame = document.querySelector("#modalFrame");
@@ -836,12 +1067,14 @@
     const modalPrevBtn = document.querySelector("#modalPrevBtn");
     const modalNextBtn = document.querySelector("#modalNextBtn");
     const modalDownload = document.querySelector("#modalDownload");
+    const modalLikeBtn = document.querySelector("#modalLikeBtn");
     const modalCount = document.querySelector("#modalCount");
     const scrollTopBtn = document.querySelector("#scrollTopBtn");
 
     let allMediaItems = [];
     let visibleMediaItems = [];
     let activeFilter = "all";
+    let activeAlbumFilter = "all";
     let activeModalIndex = 0;
     let touchStartX = 0;
     let touchEndX = 0;
@@ -859,6 +1092,17 @@
         activeFilter = button.dataset.filter;
 
         filterButtons.forEach((item) => item.classList.remove("is-active"));
+        button.classList.add("is-active");
+
+        renderGallery();
+      });
+    });
+
+    albumButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        activeAlbumFilter = button.dataset.albumFilter;
+
+        albumButtons.forEach((item) => item.classList.remove("is-active"));
         button.classList.add("is-active");
 
         renderGallery();
@@ -929,6 +1173,16 @@
       return VIDEO_EXTENSIONS.includes(extension) ? "video" : "photo";
     }
 
+    function getDatabaseFileType(mediaType) {
+      return mediaType === "video" ? "video" : "image";
+    }
+
+    function getDisplayMediaType(databaseFileType, extension) {
+      if (databaseFileType === "video") return "video";
+      if (databaseFileType === "image") return "photo";
+      return getMediaTypeFromExtension(extension);
+    }
+
     function formatBytes(bytes) {
       if (!bytes && bytes !== 0) return "";
 
@@ -942,6 +1196,24 @@
       }
 
       return `${size.toFixed(size >= 10 || unitIndex === 0 ? 0 : 1)}${units[unitIndex]}`;
+    }
+
+    function formatDateTime(value) {
+      if (!value) return "";
+
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return "";
+
+      return new Intl.DateTimeFormat("en", {
+        month: "short",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit"
+      }).format(date);
+    }
+
+    function getAlbumLabel(album) {
+      return ALBUM_LABELS[album] || "Guest Gallery";
     }
 
     function setProgress(current, total) {
@@ -988,8 +1260,12 @@
     }
 
     function getVisibleItems() {
-      if (activeFilter === "all") return allMediaItems;
-      return allMediaItems.filter((item) => item.type === activeFilter);
+      return allMediaItems.filter((item) => {
+        const mediaMatches = activeFilter === "all" || item.type === activeFilter;
+        const albumMatches = activeAlbumFilter === "all" || item.album === activeAlbumFilter;
+
+        return mediaMatches && albumMatches;
+      });
     }
 
     function updateGalleryMeta() {
@@ -1002,8 +1278,9 @@
         return;
       }
 
-      const filterLabel = activeFilter === "all" ? "uploads" : `${activeFilter}s`;
-      galleryMeta.textContent = `Showing ${totalVisible} ${filterLabel}. Total: ${totalPhotos} photo${totalPhotos !== 1 ? "s" : ""}, ${totalVideos} video${totalVideos !== 1 ? "s" : ""}.`;
+      const mediaLabel = activeFilter === "all" ? "uploads" : `${activeFilter}s`;
+      const albumLabel = activeAlbumFilter === "all" ? "all albums" : getAlbumLabel(activeAlbumFilter);
+      galleryMeta.textContent = `Showing ${totalVisible} ${mediaLabel} from ${albumLabel}. Total: ${totalPhotos} photo${totalPhotos !== 1 ? "s" : ""}, ${totalVideos} video${totalVideos !== 1 ? "s" : ""}.`;
     }
 
     function openMediaModal(index) {
@@ -1022,8 +1299,10 @@
 
       modalFrame.innerHTML = "";
       modalDownload.disabled = false;
+      modalLikeBtn.disabled = !item.id;
       modalDownload.textContent = "Download";
-      modalCount.textContent = `${activeModalIndex + 1} / ${visibleMediaItems.length}`;
+      modalLikeBtn.textContent = `♡ ${item.likeCount || 0}`;
+      modalCount.textContent = `${activeModalIndex + 1} / ${visibleMediaItems.length}${item.guestName ? ` • ${item.guestName}` : ""}${item.createdAt ? ` • ${formatDateTime(item.createdAt)}` : ""}`;
 
       if (item.type === "video") {
         const video = document.createElement("video");
@@ -1036,7 +1315,7 @@
       } else {
         const img = document.createElement("img");
         img.src = item.url;
-        img.alt = "Wedding guest upload preview";
+        img.alt = item.caption || "Wedding guest upload preview";
 
         modalFrame.appendChild(img);
       }
@@ -1078,6 +1357,31 @@
       }
     }
 
+    async function likeMediaItem(item) {
+      if (!item?.id) return;
+
+      const previousCount = item.likeCount || 0;
+      item.likeCount = previousCount + 1;
+      renderGallery();
+      renderModalMedia();
+
+      const { data, error } = await client.rpc("increment_upload_like", {
+        upload_id: item.id
+      });
+
+      if (error) {
+        console.error("Like error:", error);
+        item.likeCount = previousCount;
+        renderGallery();
+        renderModalMedia();
+        return;
+      }
+
+      item.likeCount = Number(data ?? item.likeCount);
+      renderGallery();
+      renderModalMedia();
+    }
+
     function closeMediaModal() {
       mediaModal.classList.remove("is-open");
       mediaModal.setAttribute("aria-hidden", "true");
@@ -1097,14 +1401,21 @@
       renderModalMedia();
     }
 
+    function createTextElement(className, text) {
+      const element = document.createElement("p");
+      element.className = className;
+      element.textContent = text;
+      return element;
+    }
+
     function renderGallery() {
       visibleMediaItems = getVisibleItems();
       updateGalleryMeta();
 
       if (!visibleMediaItems.length) {
         const emptyMessage = activeFilter === "all"
-          ? "No uploads yet. Be the first to share."
-          : `No ${activeFilter}s yet.`;
+          ? "No uploads found for this album yet."
+          : `No ${activeFilter}s found for this album yet.`;
 
         gallery.innerHTML = `<div class="empty">${emptyMessage}</div>`;
         return;
@@ -1113,10 +1424,13 @@
       gallery.innerHTML = "";
 
       visibleMediaItems.forEach((item, index) => {
-        const mediaButton = document.createElement("button");
-        mediaButton.className = "photo";
-        mediaButton.type = "button";
-        mediaButton.setAttribute("aria-label", "Open wedding upload preview");
+        const card = document.createElement("article");
+        card.className = "photo-card";
+
+        const previewButton = document.createElement("button");
+        previewButton.className = "photo";
+        previewButton.type = "button";
+        previewButton.setAttribute("aria-label", "Open wedding upload preview");
 
         if (item.type === "video") {
           const video = document.createElement("video");
@@ -1129,33 +1443,87 @@
           badge.className = "video-badge";
           badge.textContent = "▶ Video";
 
-          mediaButton.appendChild(video);
-          mediaButton.appendChild(badge);
+          previewButton.appendChild(video);
+          previewButton.appendChild(badge);
         } else {
           const img = document.createElement("img");
           img.src = item.url;
-          img.alt = "Wedding guest upload";
+          img.alt = item.caption || "Wedding guest upload";
           img.loading = "lazy";
 
-          mediaButton.appendChild(img);
+          previewButton.appendChild(img);
         }
 
-        mediaButton.addEventListener("click", () => {
+        previewButton.addEventListener("click", () => {
           openMediaModal(index);
         });
 
-        gallery.appendChild(mediaButton);
+        const details = document.createElement("div");
+        details.className = "photo-details";
+
+        const albumPill = document.createElement("span");
+        albumPill.className = "album-pill";
+        albumPill.textContent = getAlbumLabel(item.album);
+        details.appendChild(albumPill);
+
+        if (item.guestName) {
+          details.appendChild(createTextElement("photo-uploader", item.guestName));
+        }
+
+        if (item.caption) {
+          details.appendChild(createTextElement("photo-caption", item.caption));
+        }
+
+        const footer = document.createElement("div");
+        footer.className = "photo-footer";
+
+        const dateText = document.createElement("span");
+        dateText.textContent = item.createdAt ? formatDateTime(item.createdAt) : "";
+
+        const likeButton = document.createElement("button");
+        likeButton.className = "like-btn";
+        likeButton.type = "button";
+        likeButton.textContent = `♡ ${item.likeCount || 0}`;
+        likeButton.disabled = !item.id;
+        likeButton.addEventListener("click", () => likeMediaItem(item));
+
+        footer.appendChild(dateText);
+        footer.appendChild(likeButton);
+        details.appendChild(footer);
+
+        card.appendChild(previewButton);
+        card.appendChild(details);
+        gallery.appendChild(card);
       });
     }
 
-    async function loadGallery() {
-      gallery.innerHTML = `<div class="empty">Loading photos and videos...</div>`;
-      galleryMeta.textContent = "Loading gallery...";
+    function mapDatabaseRowToItem(row) {
+      const extension = getExtensionFromName(row.file_name || row.file_path || "");
+      const { data: publicData } = client.storage
+        .from(BUCKET_NAME)
+        .getPublicUrl(row.file_path);
 
+      return {
+        id: row.id,
+        name: row.file_name || row.file_path.split("/").pop(),
+        path: row.file_path,
+        url: row.file_url || publicData.publicUrl,
+        extension,
+        type: getDisplayMediaType(row.file_type, extension),
+        size: 0,
+        guestName: row.guest_name || "",
+        caption: row.caption || "",
+        album: row.album || "guest-gallery",
+        likeCount: row.like_count || 0,
+        createdAt: row.created_at || ""
+      };
+    }
+
+    async function loadStorageItems() {
       const { data, error } = await client.storage
         .from(BUCKET_NAME)
         .list(FOLDER_NAME, {
-          limit: 100,
+          limit: 200,
           offset: 0,
           sortBy: {
             column: "created_at",
@@ -1164,18 +1532,11 @@
         });
 
       if (error) {
-        console.error("Gallery error:", error);
-        galleryMeta.textContent = "Gallery failed to load.";
-        gallery.innerHTML = `
-          <div class="empty">
-            Could not load photos.<br>
-            Error: ${error.message || "Unknown Supabase error"}
-          </div>
-        `;
-        return;
+        console.warn("Legacy storage gallery failed to load:", error);
+        return [];
       }
 
-      allMediaItems = (data || [])
+      return (data || [])
         .filter((file) => file.name && !file.name.startsWith("."))
         .map((file) => {
           const extension = getExtensionFromName(file.name);
@@ -1185,23 +1546,86 @@
             .getPublicUrl(filePath);
 
           return {
+            id: null,
             name: file.name,
             path: filePath,
             url: publicData.publicUrl,
             extension,
             type: getMediaTypeFromExtension(extension),
             size: file.metadata?.size || 0,
-            createdAt: file.created_at || ""
+            guestName: "",
+            caption: "",
+            album: "guest-gallery",
+            likeCount: 0,
+            createdAt: file.created_at || "",
+            legacy: true
           };
         });
+    }
+
+    async function loadGallery() {
+      gallery.innerHTML = `<div class="empty">Loading photos and videos...</div>`;
+      galleryMeta.textContent = "Loading gallery...";
+
+      const { data: rows, error } = await client
+        .from(UPLOADS_TABLE)
+        .select("id,file_path,file_url,file_name,file_type,mime_type,guest_name,caption,album,approved,like_count,created_at")
+        .eq("approved", true)
+        .order("created_at", { ascending: false })
+        .limit(250);
+
+      if (error) {
+        console.error("Gallery database error:", error);
+        galleryMeta.textContent = "Gallery failed to load.";
+        gallery.innerHTML = `
+          <div class="empty">
+            Could not load gallery records.<br>
+            Error: ${error.message || "Unknown Supabase database error"}
+          </div>
+        `;
+        return;
+      }
+
+      const databaseItems = (rows || []).map(mapDatabaseRowToItem);
+      const storageItems = await loadStorageItems();
+      const databasePaths = new Set(databaseItems.map((item) => item.path));
+      const legacyItems = storageItems.filter((item) => !databasePaths.has(item.path));
+
+      allMediaItems = [...databaseItems, ...legacyItems].sort((a, b) => {
+        return new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime();
+      });
 
       renderGallery();
+    }
+
+    async function createUploadRecord({ filePath, publicUrl, fileName, mediaType, contentType, guestName, caption, album }) {
+      const { error } = await client
+        .from(UPLOADS_TABLE)
+        .insert({
+          file_path: filePath,
+          file_url: publicUrl,
+          file_name: fileName,
+          file_type: getDatabaseFileType(mediaType),
+          mime_type: contentType,
+          guest_name: guestName || null,
+          caption: caption || null,
+          album,
+          approved: !APPROVAL_REQUIRED
+        });
+
+      if (error) {
+        throw error;
+      }
     }
 
     modalCloseBtn.addEventListener("click", closeMediaModal);
     modalPrevBtn.addEventListener("click", showPreviousMedia);
     modalNextBtn.addEventListener("click", showNextMedia);
     modalDownload.addEventListener("click", downloadCurrentMedia);
+    modalLikeBtn.addEventListener("click", () => {
+      const item = visibleMediaItems[activeModalIndex];
+      likeMediaItem(item);
+    });
 
     mediaModal.addEventListener("click", (event) => {
       if (event.target === mediaModal) {
@@ -1234,6 +1658,10 @@
       const files = Array.from(event.target.files || []);
 
       if (!files.length) return;
+
+      const guestName = guestNameInput.value.trim().slice(0, 80);
+      const caption = captionInput.value.trim().slice(0, 240);
+      const album = albumSelect.value || "guest-gallery";
 
       console.table(files.map((file) => ({
         name: file.name,
@@ -1275,13 +1703,15 @@
           const safeName = crypto.randomUUID();
           const filePath = `${FOLDER_NAME}/${Date.now()}-${safeName}.${fileExt}`;
           const contentType = getContentType(uploadFile, fileExt);
+          const mediaType = getMediaTypeFromExtension(fileExt);
 
           console.log("Uploading to Supabase", {
             filePath,
             contentType,
             originalName: originalFile.name,
             uploadName: uploadFile.name,
-            size: uploadFile.size
+            size: uploadFile.size,
+            album
           });
 
           if (contentType === "application/octet-stream") {
@@ -1290,7 +1720,7 @@
 
           statusText.textContent = `Uploading ${itemNumber} of ${uploadableFiles.length}: ${originalFile.name}...`;
 
-          const { error } = await client.storage
+          const { error: uploadError } = await client.storage
             .from(BUCKET_NAME)
             .upload(filePath, uploadFile, {
               cacheControl: "3600",
@@ -1298,14 +1728,28 @@
               contentType
             });
 
-          if (error) {
-            console.error("Upload error:", error);
-            failed++;
-            failureReasons.push(`${originalFile.name}: ${error.message || "Unknown Supabase error"}`);
-            statusText.textContent = `Upload failed for ${originalFile.name}: ${error.message || "Unknown Supabase error"}`;
-          } else {
-            uploaded++;
+          if (uploadError) {
+            throw uploadError;
           }
+
+          const { data: publicData } = client.storage
+            .from(BUCKET_NAME)
+            .getPublicUrl(filePath);
+
+          statusText.textContent = `Saving details for ${originalFile.name}...`;
+
+          await createUploadRecord({
+            filePath,
+            publicUrl: publicData.publicUrl,
+            fileName: uploadFile.name,
+            mediaType,
+            contentType,
+            guestName,
+            caption,
+            album
+          });
+
+          uploaded++;
         } catch (error) {
           console.error("Conversion/upload error:", error);
           failed++;
@@ -1324,6 +1768,8 @@
       if (failed > 0) {
         const firstReason = failureReasons[0] ? ` Last error: ${failureReasons[0]}` : "";
         statusText.textContent = `${uploaded} uploaded. ${failed} failed.${skippedText}${firstReason}`;
+      } else if (APPROVAL_REQUIRED) {
+        statusText.textContent = `${uploaded} file${uploaded !== 1 ? "s" : ""} uploaded.${skippedText} Waiting for approval before showing in the gallery.`;
       } else {
         statusText.textContent = `${uploaded} file${uploaded !== 1 ? "s" : ""} uploaded.${skippedText} Thank you.`;
       }
