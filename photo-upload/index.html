@@ -165,6 +165,216 @@
       line-height: 1.45;
     }
 
+    .selected-media-panel {
+      display: grid;
+      gap: 14px;
+      padding: 16px;
+      border: 1px solid rgba(185, 154, 114, 0.26);
+      border-radius: 24px;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(250, 247, 242, 0.7)),
+        rgba(255, 255, 255, 0.68);
+      box-shadow: 0 16px 38px rgba(43, 36, 32, 0.08);
+      text-align: left;
+    }
+
+    .selected-media-panel[hidden],
+    .thank-you-box[hidden] {
+      display: none;
+    }
+
+    .selected-media-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .selected-media-title {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.35rem, 4vw, 1.9rem);
+      font-weight: 400;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+
+    .selected-media-copy {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 0.84rem;
+      line-height: 1.45;
+    }
+
+    .selected-media-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .selected-media-card {
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      gap: 12px;
+      padding: 10px;
+      border: 1px solid rgba(43, 36, 32, 0.1);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.74);
+    }
+
+    .selected-media-card.is-invalid {
+      border-color: rgba(127, 29, 29, 0.26);
+      background: rgba(127, 29, 29, 0.04);
+    }
+
+    .selected-thumb {
+      position: relative;
+      width: 92px;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      border-radius: 16px;
+      background:
+        radial-gradient(circle at top left, rgba(185, 154, 114, 0.28), transparent 60%),
+        rgba(43, 36, 32, 0.08);
+      display: grid;
+      place-items: center;
+      color: var(--accent-dark);
+      font-size: 0.72rem;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .selected-thumb img,
+    .selected-thumb video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      background: #000;
+    }
+
+    .selected-type-badge {
+      position: absolute;
+      left: 7px;
+      bottom: 7px;
+      min-height: 21px;
+      padding: 0 7px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      background: rgba(43, 36, 32, 0.78);
+      color: #fff;
+      font-size: 0.62rem;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+    }
+
+    .selected-details {
+      min-width: 0;
+      display: grid;
+      gap: 8px;
+    }
+
+    .selected-file-name {
+      color: var(--text);
+      font-size: 0.84rem;
+      font-weight: 900;
+      line-height: 1.25;
+      overflow-wrap: anywhere;
+    }
+
+    .selected-file-meta {
+      color: rgba(122, 110, 102, 0.82);
+      font-size: 0.72rem;
+      line-height: 1.35;
+    }
+
+    .selected-caption {
+      width: 100%;
+      min-height: 74px;
+      resize: vertical;
+      padding: 11px 12px;
+      border: 1px solid rgba(43, 36, 32, 0.12);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.86);
+      color: var(--text);
+      font: inherit;
+      font-size: 0.84rem;
+      line-height: 1.4;
+      outline: 0;
+    }
+
+    .selected-caption:focus {
+      border-color: rgba(140, 108, 73, 0.52);
+      box-shadow: 0 0 0 4px rgba(185, 154, 114, 0.14);
+    }
+
+    .selected-error {
+      color: #7f1d1d;
+      font-size: 0.76rem;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .selected-media-footer {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .selected-upload-btn {
+      background: var(--text);
+      color: #fff;
+      border-color: var(--text);
+      padding-inline: 20px;
+    }
+
+    .selected-upload-btn:hover {
+      background: var(--accent-dark);
+      color: #fff;
+    }
+
+    .selected-upload-btn:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .thank-you-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border: 1px solid rgba(185, 154, 114, 0.28);
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.76);
+      text-align: left;
+      box-shadow: 0 14px 34px rgba(43, 36, 32, 0.07);
+    }
+
+    .thank-you-icon {
+      flex: 0 0 auto;
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: #a67462;
+      color: #fff;
+      font-size: 1.25rem;
+    }
+
+    .thank-you-box strong {
+      display: block;
+      color: var(--text);
+      font-size: 0.92rem;
+      line-height: 1.25;
+    }
+
+    .thank-you-box p {
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.4;
+    }
+
     .file-input {
       position: absolute;
       opacity: 0;
@@ -768,6 +978,28 @@
         grid-template-columns: 1fr;
       }
 
+      .selected-media-head {
+        flex-direction: column;
+      }
+
+      .selected-media-card {
+        grid-template-columns: 76px 1fr;
+        gap: 10px;
+      }
+
+      .selected-thumb {
+        width: 76px;
+        border-radius: 14px;
+      }
+
+      .selected-media-footer {
+        justify-content: stretch;
+      }
+
+      .selected-upload-btn {
+        width: 100%;
+      }
+
       .floral {
         opacity: 0.55;
       }
@@ -1253,16 +1485,6 @@
             </select>
           </label>
 
-          <label class="field-group is-wide">
-            <span class="field-label">Message / caption</span>
-            <textarea
-              class="textarea-field"
-              id="captionInput"
-              maxlength="240"
-              placeholder="Optional short message for the couple"
-            ></textarea>
-            <span class="field-help">Maximum 240 characters. This caption will appear in the gallery.</span>
-          </label>
         </div>
 
         <input
@@ -1274,8 +1496,34 @@
         />
 
         <button class="upload-btn" id="chooseBtn" type="button">
-          📷 Upload Photos &amp; Videos
+          📷 Choose Photos &amp; Videos
         </button>
+
+        <div class="selected-media-panel" id="selectedMediaPanel" hidden>
+          <div class="selected-media-head">
+            <div>
+              <h2 class="selected-media-title">Review your uploads</h2>
+              <p class="selected-media-copy">Add a different message for each photo or video before uploading.</p>
+            </div>
+            <button class="ghost-action" id="clearSelectedBtn" type="button">Clear</button>
+          </div>
+
+          <div class="selected-media-list" id="selectedMediaList"></div>
+
+          <div class="selected-media-footer">
+            <button class="secondary-btn selected-upload-btn" id="uploadSelectedBtn" type="button">
+              Continue Upload
+            </button>
+          </div>
+        </div>
+
+        <div class="thank-you-box" id="uploadThanks" hidden>
+          <span class="thank-you-icon" aria-hidden="true">♥</span>
+          <div>
+            <strong>Thank you for sharing.</strong>
+            <p>Your memories were uploaded successfully.</p>
+          </div>
+        </div>
 
         <div class="progress-wrap" id="progressWrap" aria-hidden="true">
           <div class="progress-bar" id="progressBar"></div>
@@ -1505,8 +1753,12 @@
     };
 
     const guestNameInput = document.querySelector("#guestNameInput");
-    const captionInput = document.querySelector("#captionInput");
     const albumSelect = document.querySelector("#albumSelect");
+    const selectedMediaPanel = document.querySelector("#selectedMediaPanel");
+    const selectedMediaList = document.querySelector("#selectedMediaList");
+    const uploadSelectedBtn = document.querySelector("#uploadSelectedBtn");
+    const clearSelectedBtn = document.querySelector("#clearSelectedBtn");
+    const uploadThanks = document.querySelector("#uploadThanks");
     const photoInput = document.querySelector("#photoInput");
     const chooseBtn = document.querySelector("#chooseBtn");
     const refreshBtn = document.querySelector("#refreshBtn");
@@ -1579,6 +1831,7 @@
       isOpen: true,
       accessGranted: true
     };
+    let selectedMediaItems = [];
 
     function getFileExtension(file) {
       return file.name.split(".").pop()?.toLowerCase() || "";
@@ -1618,6 +1871,148 @@
 
     function getMediaTypeFromExtension(extension) {
       return VIDEO_EXTENSIONS.includes(extension) ? "video" : "photo";
+    }
+
+    function getSelectedItemById(id) {
+      return selectedMediaItems.find((item) => item.id === id);
+    }
+
+    function validateSelectedFile(file) {
+      if (!isAllowedMedia(file)) {
+        return { valid: false, reason: "Unsupported file type. Use JPG, PNG, HEIC, MP4, MOV, or WEBM." };
+      }
+
+      if (file.size > MAX_FILE_SIZE_BYTES) {
+        return { valid: false, reason: `File is above ${MAX_FILE_SIZE_MB}MB.` };
+      }
+
+      return { valid: true, reason: "" };
+    }
+
+    function revokeSelectedPreviewUrls(items = selectedMediaItems) {
+      items.forEach((item) => {
+        if (item.previewUrl) URL.revokeObjectURL(item.previewUrl);
+      });
+    }
+
+    function clearSelectedMedia(options = {}) {
+      revokeSelectedPreviewUrls();
+      selectedMediaItems = [];
+      selectedMediaList.innerHTML = "";
+      selectedMediaPanel.hidden = true;
+      uploadSelectedBtn.disabled = true;
+      photoInput.value = "";
+
+      if (!options.keepThankYou) {
+        uploadThanks.hidden = true;
+      }
+    }
+
+    function renderSelectedMediaPreview() {
+      selectedMediaList.innerHTML = "";
+
+      if (!selectedMediaItems.length) {
+        selectedMediaPanel.hidden = true;
+        uploadSelectedBtn.disabled = true;
+        return;
+      }
+
+      selectedMediaPanel.hidden = false;
+      uploadThanks.hidden = true;
+
+      const validCount = selectedMediaItems.filter((item) => item.valid).length;
+      uploadSelectedBtn.disabled = !currentSettings.isOpen || validCount === 0;
+      uploadSelectedBtn.textContent = validCount === 1 ? "Upload 1 File" : `Upload ${validCount} Files`;
+
+      selectedMediaItems.forEach((item, index) => {
+        const card = document.createElement("article");
+        card.className = `selected-media-card${item.valid ? "" : " is-invalid"}`;
+
+        const thumb = document.createElement("div");
+        thumb.className = "selected-thumb";
+
+        if (item.previewUrl && item.mediaKind === "video") {
+          const video = document.createElement("video");
+          video.src = item.previewUrl;
+          video.muted = true;
+          video.playsInline = true;
+          video.preload = "metadata";
+          thumb.appendChild(video);
+        } else if (item.previewUrl && item.mediaKind === "photo") {
+          const img = document.createElement("img");
+          img.src = item.previewUrl;
+          img.alt = `Selected upload ${index + 1}`;
+          thumb.appendChild(img);
+        } else {
+          thumb.textContent = item.isHeic ? "HEIC" : item.mediaKind;
+        }
+
+        const badge = document.createElement("span");
+        badge.className = "selected-type-badge";
+        badge.textContent = item.mediaKind === "video" ? "Video" : "Photo";
+        thumb.appendChild(badge);
+
+        const details = document.createElement("div");
+        details.className = "selected-details";
+
+        const name = document.createElement("p");
+        name.className = "selected-file-name";
+        name.textContent = item.file.name;
+
+        const meta = document.createElement("p");
+        meta.className = "selected-file-meta";
+        meta.textContent = `${formatBytes(item.file.size)} • ${item.valid ? "Ready" : "Skipped"}`;
+
+        const caption = document.createElement("textarea");
+        caption.className = "selected-caption";
+        caption.maxLength = 240;
+        caption.placeholder = "Message for this photo/video...";
+        caption.value = item.caption || "";
+        caption.disabled = !item.valid;
+        caption.addEventListener("input", () => {
+          item.caption = caption.value.slice(0, 240);
+        });
+
+        details.appendChild(name);
+        details.appendChild(meta);
+
+        if (!item.valid) {
+          const error = document.createElement("p");
+          error.className = "selected-error";
+          error.textContent = item.reason;
+          details.appendChild(error);
+        }
+
+        details.appendChild(caption);
+        card.appendChild(thumb);
+        card.appendChild(details);
+        selectedMediaList.appendChild(card);
+      });
+    }
+
+    function selectFilesForReview(files) {
+      revokeSelectedPreviewUrls();
+
+      selectedMediaItems = files.map((file) => {
+        const extension = getFileExtension(file);
+        const validation = validateSelectedFile(file);
+        const mediaKind = isVideoFile(file) || VIDEO_EXTENSIONS.includes(extension) ? "video" : "photo";
+        const isHeic = isHeicFile(file);
+        const canPreview = validation.valid && !isHeic;
+
+        return {
+          id: crypto.randomUUID(),
+          file,
+          caption: "",
+          mediaKind,
+          isHeic,
+          valid: validation.valid,
+          reason: validation.reason,
+          previewUrl: canPreview ? URL.createObjectURL(file) : ""
+        };
+      });
+
+      renderSelectedMediaPreview();
     }
 
     function getDatabaseFileType(mediaType) {
@@ -1761,11 +2156,15 @@
     function updateUploadAvailability() {
       if (!currentSettings.isOpen) {
         chooseBtn.disabled = true;
+        if (uploadSelectedBtn) uploadSelectedBtn.disabled = true;
         statusText.textContent = `Uploads are closed. Gallery remains viewable. Closed at: ${formatFullDateTime(currentSettings.uploadsCloseAt)}.`;
         return;
       }
 
       chooseBtn.disabled = false;
+      if (uploadSelectedBtn) {
+        uploadSelectedBtn.disabled = !selectedMediaItems.some((item) => item.valid);
+      }
       statusText.textContent = currentSettings.requireApproval
         ? `Upload JPG, PNG, iPhone photos, MP4, MOV, or WEBM. Max ${MAX_FILE_SIZE_MB}MB. Uploads will appear after approval.`
         : `Upload JPG, PNG, iPhone photos, MP4, MOV, or WEBM. Max ${MAX_FILE_SIZE_MB}MB per file.`;
@@ -2544,36 +2943,57 @@
         return;
       }
 
-      const guestName = guestNameInput.value.trim().slice(0, 80);
-      const caption = captionInput.value.trim().slice(0, 240);
-      const album = albumSelect.value || "guest-gallery";
+      selectFilesForReview(files);
 
-      const invalidTypeFiles = files.filter((file) => !isAllowedMedia(file));
-      const oversizedFiles = files.filter((file) => file.size > MAX_FILE_SIZE_BYTES);
-      const uploadableFiles = files.filter((file) => isAllowedMedia(file) && file.size <= MAX_FILE_SIZE_BYTES);
+      const validCount = selectedMediaItems.filter((item) => item.valid).length;
+      const skippedCount = selectedMediaItems.length - validCount;
+      const skippedText = skippedCount ? ` ${skippedCount} skipped.` : "";
+      statusText.textContent = `${validCount} file${validCount !== 1 ? "s" : ""} ready for review.${skippedText} Add a message per file, then continue upload.`;
+    });
 
-      if (!uploadableFiles.length) {
-        const invalidText = invalidTypeFiles.length ? `${invalidTypeFiles.length} unsupported file${invalidTypeFiles.length > 1 ? "s" : ""}. ` : "";
-        const oversizedText = oversizedFiles.length ? `${oversizedFiles.length} file${oversizedFiles.length > 1 ? "s are" : " is"} above ${MAX_FILE_SIZE_MB}MB.` : "";
-        statusText.textContent = `${invalidText}${oversizedText}`.trim() || "No valid files selected.";
-        photoInput.value = "";
-        setProgress(0, 0);
+    clearSelectedBtn.addEventListener("click", () => {
+      clearSelectedMedia();
+      updateUploadAvailability();
+    });
+
+    uploadSelectedBtn.addEventListener("click", async () => {
+      await loadSettings();
+
+      if (!currentSettings.isOpen) {
+        statusText.textContent = "Uploads are closed.";
+        updateUploadAvailability();
         return;
       }
 
+      const uploadableItems = selectedMediaItems.filter((item) => item.valid);
+
+      if (!uploadableItems.length) {
+        statusText.textContent = "Choose at least one valid photo or video first.";
+        return;
+      }
+
+      const guestName = guestNameInput.value.trim().slice(0, 80);
+      const album = albumSelect.value || "guest-gallery";
+
       chooseBtn.disabled = true;
+      uploadSelectedBtn.disabled = true;
+      clearSelectedBtn.disabled = true;
+
       let uploaded = 0;
       let failed = 0;
-      const skipped = invalidTypeFiles.length + oversizedFiles.length;
+      const skipped = selectedMediaItems.length - uploadableItems.length;
       const failureReasons = [];
-      setProgress(0, uploadableFiles.length);
+      const successfulIds = [];
 
-      for (let index = 0; index < uploadableFiles.length; index++) {
-        const originalFile = uploadableFiles[index];
+      setProgress(0, uploadableItems.length);
+
+      for (let index = 0; index < uploadableItems.length; index++) {
+        const item = uploadableItems[index];
+        const originalFile = item.file;
         const itemNumber = index + 1;
 
         try {
-          statusText.textContent = `Preparing ${itemNumber} of ${uploadableFiles.length}: ${originalFile.name} (${formatBytes(originalFile.size)})...`;
+          statusText.textContent = `Preparing ${itemNumber} of ${uploadableItems.length}: ${originalFile.name} (${formatBytes(originalFile.size)})...`;
 
           const prepared = await prepareMediaForUpload(originalFile);
           const uploadFile = prepared.file;
@@ -2587,7 +3007,7 @@
             throw new Error(`Unsupported content type for ${originalFile.name}`);
           }
 
-          statusText.textContent = `Uploading ${itemNumber} of ${uploadableFiles.length}: ${originalFile.name}...`;
+          statusText.textContent = `Uploading ${itemNumber} of ${uploadableItems.length}: ${originalFile.name}...`;
 
           const { error: uploadError } = await client.storage.from(BUCKET_NAME).upload(filePath, uploadFile, {
             cacheControl: "3600",
@@ -2608,31 +3028,43 @@
             mediaType,
             contentType,
             guestName,
-            caption,
+            caption: item.caption.trim().slice(0, 240),
             album
           });
 
           uploaded++;
+          successfulIds.push(item.id);
         } catch (error) {
           console.error("Conversion/upload error:", error);
           failed++;
           failureReasons.push(`${originalFile.name}: ${error.message || "Could not process file"}`);
           statusText.textContent = `Could not process ${originalFile.name}: ${error.message || "Try JPG, PNG, MP4, MOV, or WEBM."}`;
         } finally {
-          setProgress(itemNumber, uploadableFiles.length);
+          setProgress(itemNumber, uploadableItems.length);
         }
       }
 
-      photoInput.value = "";
+      const successfulIdSet = new Set(successfulIds);
+      const removedItems = selectedMediaItems.filter((item) => successfulIdSet.has(item.id));
+      revokeSelectedPreviewUrls(removedItems);
+      selectedMediaItems = selectedMediaItems.filter((item) => !successfulIdSet.has(item.id));
+
       chooseBtn.disabled = !currentSettings.isOpen;
+      clearSelectedBtn.disabled = false;
+      renderSelectedMediaPreview();
+
       const skippedText = skipped ? ` ${skipped} skipped.` : "";
 
       if (failed > 0) {
         const firstReason = failureReasons[0] ? ` Last error: ${failureReasons[0]}` : "";
         statusText.textContent = `${uploaded} uploaded. ${failed} failed.${skippedText}${firstReason}`;
       } else if (currentSettings.requireApproval) {
-        statusText.textContent = `${uploaded} file${uploaded !== 1 ? "s" : ""} uploaded.${skippedText} Waiting for approval before showing in the gallery.`;
+        clearSelectedMedia({ keepThankYou: true });
+        uploadThanks.hidden = false;
+        statusText.textContent = `${uploaded} file${uploaded !== 1 ? "s" : ""} uploaded.${skippedText} Thank you. Waiting for approval before showing in the gallery.`;
       } else {
+        clearSelectedMedia({ keepThankYou: true });
+        uploadThanks.hidden = false;
         statusText.textContent = `${uploaded} file${uploaded !== 1 ? "s" : ""} uploaded.${skippedText} Thank you.`;
       }
 
