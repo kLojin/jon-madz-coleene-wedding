@@ -1948,6 +1948,122 @@
       }
     }
 
+
+    /* UPLOAD PROGRESS MODAL */
+    .upload-progress-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 2200;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: rgba(2, 12, 8, 0.78);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 220ms ease, visibility 220ms ease;
+    }
+
+    .upload-progress-modal.is-open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .upload-progress-card {
+      width: min(100%, 460px);
+      padding: clamp(26px, 6vw, 38px);
+      border: 1px solid rgba(234, 209, 154, 0.28);
+      border-radius: 28px;
+      background: linear-gradient(145deg, rgba(17, 62, 44, 0.98), rgba(5, 26, 18, 0.98));
+      box-shadow: 0 34px 100px rgba(0, 0, 0, 0.52), inset 0 1px 0 rgba(255,255,255,.08);
+      text-align: center;
+      color: var(--cream);
+      transform: translateY(18px) scale(.97);
+      transition: transform 220ms ease;
+    }
+
+    .upload-progress-modal.is-open .upload-progress-card {
+      transform: translateY(0) scale(1);
+    }
+
+    .upload-progress-icon {
+      width: 68px;
+      height: 68px;
+      margin: 0 auto 18px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(215, 180, 106, .14);
+      border: 1px solid rgba(234, 209, 154, .28);
+      color: var(--champagne);
+      font-size: 1.8rem;
+      font-weight: 900;
+    }
+
+    .upload-progress-title {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.7rem, 5vw, 2.25rem);
+      font-weight: 400;
+      letter-spacing: -.04em;
+    }
+
+    .upload-progress-copy {
+      margin: 9px 0 22px;
+      color: rgba(255, 244, 220, .76);
+      font-size: .9rem;
+      line-height: 1.55;
+    }
+
+    .upload-progress-track {
+      width: 100%;
+      height: 12px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(255, 248, 234, .14);
+      border: 1px solid rgba(234, 209, 154, .16);
+    }
+
+    .upload-progress-fill {
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #f3d68f, #be9047);
+      transition: width 260ms ease;
+    }
+
+    .upload-progress-percent {
+      margin-top: 10px;
+      color: var(--champagne);
+      font-size: .82rem;
+      font-weight: 900;
+      letter-spacing: .08em;
+    }
+
+    .upload-progress-done {
+      display: none;
+      width: 100%;
+      min-height: 50px;
+      margin-top: 22px;
+      border: 1px solid rgba(255, 231, 168, .34);
+      border-radius: 999px;
+      background: linear-gradient(135deg, #f3d68f, #c69b4d 52%, #a87937);
+      color: #092116;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .upload-progress-modal.is-success .upload-progress-done { display: block; }
+    .upload-progress-modal.is-success .upload-progress-track,
+    .upload-progress-modal.is-success .upload-progress-percent { display: none; }
+    .upload-progress-modal.is-success .upload-progress-icon {
+      background: linear-gradient(135deg, #f3d68f, #be9047);
+      color: #092116;
+    }
+
   </style>
 </head>
 
@@ -2182,6 +2298,20 @@
     </div>
   </div>
 
+
+  <div class="upload-progress-modal" id="uploadProgressModal" role="dialog" aria-modal="true" aria-labelledby="uploadProgressTitle" aria-hidden="true">
+    <div class="upload-progress-card">
+      <div class="upload-progress-icon" id="uploadProgressIcon" aria-hidden="true">↑</div>
+      <h2 class="upload-progress-title" id="uploadProgressTitle">Uploading your files</h2>
+      <p class="upload-progress-copy" id="uploadProgressCopy">Please keep this page open while your memories are being uploaded.</p>
+      <div class="upload-progress-track" aria-hidden="true">
+        <div class="upload-progress-fill" id="uploadProgressFill"></div>
+      </div>
+      <p class="upload-progress-percent" id="uploadProgressPercent">0%</p>
+      <button class="upload-progress-done" id="uploadProgressDone" type="button">Done</button>
+    </div>
+  </div>
+
   <div class="media-modal" id="mediaModal" role="dialog" aria-modal="true" aria-label="Wedding media preview" aria-hidden="true">
     <div class="modal-toolbar">
       <p class="modal-count" id="modalCount">1 / 1</p>
@@ -2281,6 +2411,13 @@
     const selectedMediaPanel = document.querySelector("#selectedMediaPanel");
     const selectedMediaList = document.querySelector("#selectedMediaList");
     const uploadSelectedBtn = document.querySelector("#uploadSelectedBtn");
+    const uploadProgressModal = document.querySelector("#uploadProgressModal");
+    const uploadProgressTitle = document.querySelector("#uploadProgressTitle");
+    const uploadProgressCopy = document.querySelector("#uploadProgressCopy");
+    const uploadProgressFill = document.querySelector("#uploadProgressFill");
+    const uploadProgressPercent = document.querySelector("#uploadProgressPercent");
+    const uploadProgressIcon = document.querySelector("#uploadProgressIcon");
+    const uploadProgressDone = document.querySelector("#uploadProgressDone");
     const clearSelectedBtn = document.querySelector("#clearSelectedBtn");
     const uploadThanks = document.querySelector("#uploadThanks");
     const photoInput = document.querySelector("#photoInput");
@@ -2618,6 +2755,38 @@
 
     function getLikeLabel(item) {
       return `${item?.liked ? "♥" : "♡"} ${item?.likeCount || 0}`;
+    }
+
+    function openUploadProgress(total) {
+      uploadProgressModal.classList.remove("is-success");
+      uploadProgressModal.classList.add("is-open");
+      uploadProgressModal.setAttribute("aria-hidden", "false");
+      uploadProgressTitle.textContent = "Uploading your files";
+      uploadProgressCopy.textContent = total === 1
+        ? "Please keep this page open while your file is being uploaded."
+        : `Please keep this page open while ${total} files are being uploaded.`;
+      uploadProgressIcon.textContent = "↑";
+      updateUploadProgressModal(0, total);
+    }
+
+    function updateUploadProgressModal(current, total) {
+      const percent = total ? Math.round((current / total) * 100) : 0;
+      uploadProgressFill.style.width = `${percent}%`;
+      uploadProgressPercent.textContent = `${percent}%`;
+    }
+
+    function showUploadSuccess(uploaded, failed) {
+      uploadProgressModal.classList.add("is-success");
+      uploadProgressIcon.textContent = failed ? "!" : "✓";
+      uploadProgressTitle.textContent = failed ? "Upload finished" : "Success!";
+      uploadProgressCopy.textContent = failed
+        ? `${uploaded} file${uploaded !== 1 ? "s" : ""} uploaded successfully. ${failed} failed.`
+        : `${uploaded} file${uploaded !== 1 ? "s" : ""} uploaded successfully. Thank you for sharing.`;
+    }
+
+    function closeUploadProgress() {
+      uploadProgressModal.classList.remove("is-open", "is-success");
+      uploadProgressModal.setAttribute("aria-hidden", "true");
     }
 
     function setProgress(current, total) {
@@ -3527,6 +3696,7 @@
       const failureReasons = [];
       const successfulIds = [];
 
+      openUploadProgress(uploadableItems.length);
       setProgress(0, uploadableItems.length);
 
       for (let index = 0; index < uploadableItems.length; index++) {
@@ -3583,6 +3753,7 @@
           statusText.textContent = `Could not process ${originalFile.name}: ${error.message || "Try JPG, PNG, MP4, MOV, or WEBM."}`;
         } finally {
           setProgress(itemNumber, uploadableItems.length);
+          updateUploadProgressModal(itemNumber, uploadableItems.length);
         }
       }
 
@@ -3610,10 +3781,13 @@
         statusText.textContent = `${uploaded} file${uploaded !== 1 ? "s" : ""} uploaded.${skippedText} Thank you.`;
       }
 
+      showUploadSuccess(uploaded, failed);
       setTimeout(() => setProgress(0, 0), 1200);
       await loadGallery();
       if (currentAdminPasscode) await refreshAdminDashboard();
     });
+
+    uploadProgressDone.addEventListener("click", closeUploadProgress);
 
     window.addEventListener("scroll", () => {
       if (window.scrollY > 500) scrollTopBtn.classList.add("is-visible");
