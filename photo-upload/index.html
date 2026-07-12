@@ -1849,8 +1849,8 @@
       inset: 0;
       z-index: 1200;
       display: grid;
-      place-items: center;
-      padding: clamp(12px, 3vw, 28px);
+      place-items: start center;
+      padding: clamp(18px, 4vh, 42px) clamp(12px, 3vw, 28px);
       background: transparent;
       border: 0;
       border-radius: 0;
@@ -1932,15 +1932,15 @@
 
     @media (max-width: 600px) {
       .selected-media-panel {
-        place-items: end center;
+        place-items: start center;
         padding: 10px;
       }
 
       .selected-media-dialog {
         width: 100%;
-        max-height: 92dvh;
+        max-height: calc(100dvh - 20px);
         padding: 22px 16px 18px;
-        border-radius: 26px 26px 16px 16px;
+        border-radius: 18px;
       }
 
       .selected-media-list {
@@ -1955,8 +1955,8 @@
       inset: 0;
       z-index: 2200;
       display: grid;
-      place-items: center;
-      padding: 20px;
+      place-items: start center;
+      padding: clamp(18px, 4vh, 40px) 20px 20px;
       background: rgba(2, 12, 8, 0.78);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
@@ -2043,28 +2043,736 @@
       letter-spacing: .08em;
     }
 
-    .upload-progress-done {
+    .upload-progress-loading {
+      text-align: center;
+    }
+
+    .upload-progress-success {
       display: none;
-      width: 100%;
-      min-height: 50px;
-      margin-top: 22px;
-      border: 1px solid rgba(255, 231, 168, .34);
+      text-align: left;
+    }
+
+    .upload-success-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .upload-success-title {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.85rem, 5vw, 2.55rem);
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: -.045em;
+      color: var(--cream);
+    }
+
+    .upload-success-copy {
+      margin-top: 8px;
+      color: rgba(255, 244, 220, .76);
+      font-size: .9rem;
+      line-height: 1.5;
+    }
+
+    .upload-progress-done {
+      flex: 0 0 auto;
+      min-height: 42px;
+      padding: 0 18px;
+      border: 1px solid rgba(234, 209, 154, .28);
       border-radius: 999px;
-      background: linear-gradient(135deg, #f3d68f, #c69b4d 52%, #a87937);
-      color: #092116;
+      background: rgba(255, 248, 234, .1);
+      color: var(--cream);
       font-weight: 900;
       cursor: pointer;
     }
 
-    .upload-progress-modal.is-success .upload-progress-done { display: block; }
-    .upload-progress-modal.is-success .upload-progress-track,
-    .upload-progress-modal.is-success .upload-progress-percent { display: none; }
-    .upload-progress-modal.is-success .upload-progress-icon {
-      background: linear-gradient(135deg, #f3d68f, #be9047);
-      color: #092116;
+    .upload-progress-done:hover {
+      background: rgba(255, 248, 234, .18);
+      border-color: rgba(234, 209, 154, .46);
     }
 
-  </style>
+    .upload-success-thanks {
+      margin: 0;
+    }
+
+    .upload-progress-modal.is-success .upload-progress-card {
+      width: min(100%, 760px);
+      padding: clamp(24px, 5vw, 34px);
+      text-align: left;
+    }
+
+    .upload-progress-modal.is-success .upload-progress-loading {
+      display: none;
+    }
+
+    .upload-progress-modal.is-success .upload-progress-success {
+      display: block;
+    }
+
+
+    @media (max-width: 560px) {
+      .upload-progress-modal {
+        place-items: start center;
+        padding: 12px 10px 10px;
+      }
+
+      .upload-progress-card {
+        max-height: calc(100dvh - 22px);
+        overflow-y: auto;
+      }
+      .upload-success-head {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .upload-progress-done {
+        width: 100%;
+      }
+    }
+
+  
+
+    /* Hide upload quota/usage counters in the guest upload flow */
+    .upload-usage,
+    .upload-quota,
+    .upload-limit-badge,
+    .uploads-used,
+    [data-upload-usage],
+    [data-upload-quota] {
+      display: none !important;
+    }
+
+    /* =========================================================
+       LIGHT, MINIMAL UPLOAD MODALS
+    ========================================================= */
+    .upload-stepper {
+      display: grid;
+      grid-template-columns: auto 44px auto 44px auto;
+      align-items: start;
+      justify-content: center;
+      gap: 9px;
+      margin: 0 auto 30px;
+      color: #a3a3a3;
+    }
+
+    .upload-stepper > i {
+      height: 1px;
+      margin-top: 15px;
+      background: #dedede;
+    }
+
+    .upload-step {
+      display: grid;
+      justify-items: center;
+      gap: 7px;
+      min-width: 54px;
+    }
+
+    .upload-step span {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #ededed;
+      color: #999;
+      font-size: .72rem;
+      font-weight: 800;
+    }
+
+    .upload-step small {
+      color: inherit;
+      font-size: .62rem;
+      font-weight: 800;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    .upload-step.is-active,
+    .upload-step.is-complete { color: #34231f; }
+
+    .upload-step.is-active span,
+    .upload-step.is-complete span {
+      background: #34231f;
+      color: #fff;
+    }
+
+    .selected-media-panel,
+    .upload-progress-modal {
+      background: rgba(18, 13, 11, .62);
+      backdrop-filter: blur(9px);
+      -webkit-backdrop-filter: blur(9px);
+      padding-top: clamp(18px, 4vh, 38px);
+    }
+
+    .selected-media-backdrop { background: transparent; backdrop-filter: none; }
+
+    .selected-media-dialog,
+    .upload-progress-card {
+      width: min(100%, 560px);
+      max-height: calc(100dvh - 36px);
+      overflow-y: auto;
+      padding: clamp(24px, 5vw, 38px);
+      border: 1px solid rgba(45, 36, 31, .14);
+      border-radius: 18px;
+      background: #fff;
+      color: #332723;
+      box-shadow: 0 28px 90px rgba(0,0,0,.28);
+    }
+
+    .selected-media-title,
+    .upload-progress-title,
+    .upload-success-title {
+      color: #2f2521;
+      text-shadow: none;
+      font-family: Arial, sans-serif;
+      font-weight: 800;
+      letter-spacing: -.025em;
+    }
+
+    .selected-media-copy,
+    .upload-progress-copy,
+    .upload-success-copy,
+    .selected-file-meta,
+    .thank-you-box p {
+      color: #8d847f;
+    }
+
+    .selected-media-head {
+      display: block;
+      margin-bottom: 22px;
+      text-align: center;
+    }
+
+    .selected-media-head .ghost-action {
+      position: absolute;
+      left: 30px;
+      bottom: 28px;
+      border: 0;
+      background: transparent;
+      color: #493934;
+      box-shadow: none;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-size: .7rem;
+    }
+
+    .selected-media-dialog { position: relative; padding-bottom: 88px; }
+
+    .selected-media-list { gap: 16px; }
+
+    .selected-media-card {
+      grid-template-columns: 78px 1fr;
+      gap: 14px;
+      padding: 0 0 16px;
+      border: 0;
+      border-bottom: 1px solid #eee8e3;
+      border-radius: 0;
+      background: transparent;
+    }
+
+    .selected-thumb {
+      width: 78px;
+      border-radius: 12px;
+    }
+
+    .selected-file-name { color: #352924; }
+
+    .selected-caption {
+      min-height: 72px;
+      border: 1px solid #eadfd5;
+      border-radius: 10px;
+      background: #fbf6f0;
+      color: #332723;
+      box-shadow: none;
+    }
+
+    .selected-media-footer {
+      position: absolute;
+      right: 30px;
+      bottom: 24px;
+      width: min(46%, 220px);
+    }
+
+    .selected-upload-btn,
+    .upload-progress-done {
+      width: 100%;
+      min-height: 42px;
+      border: 0;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #e79bea, #dc72e6);
+      color: #fff;
+      box-shadow: none;
+      font-size: .72rem;
+      font-weight: 900;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+
+    .selected-upload-btn:hover,
+    .upload-progress-done:hover {
+      background: linear-gradient(90deg, #dc87e1, #cd60d9);
+      color: #fff;
+    }
+
+    .upload-progress-card { text-align: center; }
+    .upload-stepper-progress { margin-bottom: 24px; }
+
+    .upload-progress-icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 14px;
+      background: #f5f3f2;
+      border: 0;
+      color: #4b403b;
+      font-size: 1.3rem;
+    }
+
+    .upload-progress-title { font-size: 1.15rem; }
+    .upload-progress-copy { margin: 7px 0 20px; font-size: .78rem; }
+
+    .upload-progress-track {
+      height: 5px;
+      border: 0;
+      background: #ece8e5;
+    }
+
+    .upload-progress-fill { background: #3d2924; }
+    .upload-progress-percent { color: #5a4943; }
+
+    .upload-progress-success { text-align: center; }
+    .upload-success-head { display: block; margin-bottom: 18px; }
+    .upload-success-title { font-size: 1.45rem; }
+
+    .upload-success-head .upload-progress-done {
+      position: static;
+      margin-top: 24px;
+    }
+
+    .upload-success-thanks {
+      justify-content: center;
+      margin-top: 16px;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .thank-you-icon {
+      background: #f2efed;
+      color: #4b3c36;
+    }
+
+    /* Captions modal refinements */
+    .selected-media-title {
+      display: none;
+    }
+
+    .selected-media-head {
+      margin-bottom: 22px;
+    }
+
+    .selected-media-head .ghost-action {
+      position: static;
+    }
+
+    .selected-media-footer {
+      left: 30px;
+      right: 30px;
+      bottom: 24px;
+      width: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .selected-back-btn,
+    .selected-upload-btn {
+      width: min(46%, 220px);
+      min-height: 42px;
+    }
+
+    .selected-back-btn {
+      border: 1px solid #e8dfda;
+      border-radius: 999px;
+      background: #fff;
+      color: #493934;
+      box-shadow: none;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-size: .7rem;
+      font-weight: 900;
+    }
+
+    .upload-success-thanks strong {
+      color: #3f302b !important;
+      opacity: 1;
+    }
+
+    @media (max-width: 560px) {
+      .selected-media-panel,
+      .upload-progress-modal { padding: 12px; }
+
+      .selected-media-dialog,
+      .upload-progress-card {
+        max-height: calc(100dvh - 24px);
+        border-radius: 16px;
+        padding: 22px 18px 82px;
+      }
+
+      .upload-progress-card { padding-bottom: 24px; }
+      .upload-stepper { grid-template-columns: auto 28px auto 28px auto; gap: 5px; }
+      .selected-media-card { grid-template-columns: 64px 1fr; }
+      .selected-thumb { width: 64px; }
+      .selected-media-footer { left: 18px; right: 18px; bottom: 20px; width: auto; }
+      .selected-back-btn,
+      .selected-upload-btn { width: 48%; }
+    }
+
+
+    /* SELECT FILES MODAL */
+    .select-media-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1190;
+      display: grid;
+      place-items: start center;
+      padding: clamp(18px, 4vh, 38px) 12px;
+      background: rgba(18, 13, 11, .62);
+      backdrop-filter: blur(9px);
+      -webkit-backdrop-filter: blur(9px);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 180ms ease, visibility 180ms ease;
+    }
+
+    .select-media-modal.is-open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .select-media-dialog {
+      position: relative;
+      width: min(100%, 560px);
+      max-height: calc(100dvh - 36px);
+      overflow-y: auto;
+      padding: clamp(24px, 5vw, 38px);
+      border: 1px solid rgba(45, 36, 31, .14);
+      border-radius: 18px;
+      background: #fff;
+      color: #332723;
+      box-shadow: 0 28px 90px rgba(0,0,0,.28);
+    }
+
+    .select-media-heading {
+      margin: 0 0 12px;
+      font-size: .72rem;
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .select-preview-box {
+      padding: 18px;
+      border: 1px dashed #d9bfb3;
+      border-radius: 14px;
+      background: #fffdfb;
+    }
+
+    .select-thumb-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .select-thumb-item,
+    .select-add-more {
+      position: relative;
+      width: 72px;
+      aspect-ratio: 1;
+      overflow: hidden;
+      border-radius: 11px;
+      background: #f4efeb;
+    }
+
+    .select-thumb-item img,
+    .select-thumb-item video {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .select-thumb-fallback {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      color: #746760;
+      font-size: .65rem;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .select-remove {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 20px;
+      height: 20px;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(40, 28, 24, .82);
+      color: #fff;
+      font-size: .85rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .select-add-more {
+      display: grid;
+      place-items: center;
+      border: 1px dashed #d7beb2;
+      background: #fff;
+      color: #9b8d86;
+      font-size: 1.8rem;
+      cursor: pointer;
+    }
+
+    .select-count {
+      margin-top: 12px;
+      color: #81756f;
+      font-size: .78rem;
+      text-align: center;
+    }
+
+    .select-summary {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 14px;
+      padding: 10px 12px;
+      border-radius: 9px;
+      background: #faf7f4;
+      color: #998d86;
+      font-size: .7rem;
+    }
+
+    .select-modal-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .select-close-btn,
+    .select-next-btn {
+      min-height: 42px;
+      border: 0;
+      border-radius: 999px;
+      font-size: .7rem;
+      font-weight: 900;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .select-close-btn { background: transparent; color: #493934; }
+    .select-next-btn { background: linear-gradient(90deg, #e79bea, #dc72e6); color: #fff; }
+    .select-next-btn:disabled { opacity: .45; cursor: not-allowed; }
+
+    @media (max-width: 560px) {
+      .select-media-modal { padding: 12px; }
+      .select-media-dialog { max-height: calc(100dvh - 24px); padding: 22px 18px; border-radius: 16px; }
+      .select-thumb-item, .select-add-more { width: 64px; }
+    }
+
+
+    /* =========================================================
+       THEMED UPLOAD MODALS — MATCH MAIN PAGE
+    ========================================================= */
+    .select-media-modal,
+    .selected-media-panel,
+    .upload-progress-modal {
+      background:
+        radial-gradient(circle at 50% 0%, rgba(215, 180, 106, 0.12), transparent 28rem),
+        rgba(1, 13, 9, 0.82);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .select-media-dialog,
+    .selected-media-dialog,
+    .upload-progress-card {
+      background:
+        linear-gradient(145deg, rgba(17, 62, 44, 0.98), rgba(5, 26, 18, 0.99));
+      color: var(--cream);
+      border: 1px solid rgba(234, 209, 154, 0.28);
+      box-shadow:
+        0 34px 100px rgba(0, 0, 0, 0.52),
+        inset 0 1px 0 rgba(255, 255, 255, 0.07);
+    }
+
+    .select-media-dialog::before,
+    .selected-media-dialog::before,
+    .upload-progress-card::before {
+      content: "";
+      position: absolute;
+      inset: 9px;
+      pointer-events: none;
+      border: 1px solid rgba(234, 209, 154, 0.14);
+      border-radius: 12px;
+    }
+
+    .select-media-dialog,
+    .selected-media-dialog,
+    .upload-progress-card { position: relative; }
+
+    .upload-stepper { color: rgba(255, 244, 220, 0.48); }
+    .upload-stepper > i { background: rgba(234, 209, 154, 0.24); }
+
+    .upload-step span {
+      background: rgba(255, 248, 234, 0.10);
+      color: rgba(255, 244, 220, 0.62);
+      border: 1px solid rgba(234, 209, 154, 0.18);
+    }
+
+    .upload-step.is-active,
+    .upload-step.is-complete { color: var(--champagne); }
+
+    .upload-step.is-active span,
+    .upload-step.is-complete span {
+      background: linear-gradient(135deg, #f3d68f, #b98740);
+      color: #082117;
+      border-color: rgba(255, 231, 168, 0.48);
+    }
+
+    .select-media-heading,
+    .selected-file-name,
+    .upload-progress-title,
+    .upload-success-title,
+    .thank-you-box strong {
+      color: var(--cream) !important;
+    }
+
+    .selected-media-copy,
+    .upload-progress-copy,
+    .upload-success-copy,
+    .selected-file-meta,
+    .select-count,
+    .select-summary,
+    .thank-you-box p {
+      color: rgba(255, 244, 220, 0.76) !important;
+    }
+
+    .select-preview-box {
+      border-color: rgba(234, 209, 154, 0.34);
+      background: rgba(255, 248, 234, 0.055);
+    }
+
+    .select-thumb-item,
+    .select-add-more {
+      background: rgba(255, 248, 234, 0.10);
+      border-color: rgba(234, 209, 154, 0.32);
+    }
+
+    .select-add-more {
+      color: var(--champagne);
+      background: rgba(255, 248, 234, 0.06);
+    }
+
+    .select-summary {
+      background: rgba(255, 248, 234, 0.07);
+      border: 1px solid rgba(234, 209, 154, 0.12);
+    }
+
+    .selected-media-card {
+      border-bottom-color: rgba(234, 209, 154, 0.16);
+    }
+
+    .selected-caption {
+      background: rgba(255, 250, 239, 0.97);
+      color: #123025;
+      border-color: rgba(234, 209, 154, 0.44);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
+    }
+
+    .selected-caption::placeholder {
+      color: rgba(18, 48, 37, 0.56);
+      opacity: 1;
+    }
+
+    .selected-caption:focus {
+      background: #fffdf5;
+      border-color: rgba(215, 180, 106, 0.95);
+      box-shadow: 0 0 0 4px rgba(215, 180, 106, 0.18);
+    }
+
+    .select-close-btn,
+    .selected-back-btn {
+      color: var(--cream);
+      border: 1px solid rgba(234, 209, 154, 0.26);
+      background: rgba(255, 248, 234, 0.08);
+    }
+
+    .select-close-btn:hover,
+    .selected-back-btn:hover {
+      color: #fff8ea;
+      background: rgba(255, 248, 234, 0.15);
+      border-color: rgba(234, 209, 154, 0.46);
+    }
+
+    .select-next-btn,
+    .selected-upload-btn,
+    .upload-progress-done {
+      background: linear-gradient(135deg, #f3d68f, #c69b4d 52%, #a87937);
+      color: #092116;
+      border: 1px solid rgba(255, 231, 168, 0.34);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.24);
+    }
+
+    .select-next-btn:hover,
+    .selected-upload-btn:hover,
+    .upload-progress-done:hover {
+      background: linear-gradient(135deg, #ffe5a3, #d7ad5b 52%, #b1813b);
+      color: #061912;
+    }
+
+    .upload-progress-icon,
+    .thank-you-icon {
+      background: rgba(215, 180, 106, 0.15);
+      color: var(--champagne);
+      border: 1px solid rgba(234, 209, 154, 0.24);
+    }
+
+    .upload-progress-track {
+      background: rgba(255, 248, 234, 0.14);
+      border: 1px solid rgba(234, 209, 154, 0.14);
+    }
+
+    .upload-progress-fill {
+      background: linear-gradient(90deg, #f3d68f, #be9047);
+    }
+
+    .upload-progress-percent { color: var(--champagne); }
+
+    .upload-success-thanks {
+      background: rgba(255, 248, 234, 0.07);
+      border: 1px solid rgba(234, 209, 154, 0.16);
+      border-radius: 16px;
+      padding: 14px 16px;
+    }
+
+</style>
 </head>
 
 <body>
@@ -2098,30 +2806,11 @@
       </p>
 
       <div class="upload-area">
-        <div class="upload-fields">
-          <label class="field-group">
-            <span class="field-label">Your name</span>
-            <input
-              class="text-field"
-              id="guestNameInput"
-              type="text"
-              maxlength="80"
-              placeholder="Optional"
-              autocomplete="name"
-            />
-          </label>
-
-          <label class="field-group">
-            <span class="field-label">Album</span>
-            <select class="select-field" id="albumSelect">
-              <option value="guest-gallery">Guest Gallery</option>
-              <option value="ceremony">Ceremony</option>
-              <option value="reception">Reception</option>
-              <option value="afterparty">Afterparty</option>
-            </select>
-          </label>
-
-        </div>
+        <!-- Kept for the existing upload logic; no guest-facing fields are shown. -->
+        <input id="guestNameInput" type="hidden" value="" />
+        <select id="albumSelect" hidden aria-hidden="true" tabindex="-1">
+          <option value="guest-gallery" selected>Guest Gallery</option>
+        </select>
 
         <input
           class="file-input"
@@ -2132,7 +2821,7 @@
         />
 
         <button class="upload-btn" id="chooseBtn" type="button">
-          📷 Choose Photos &amp; Videos
+          Upload Media
         </button>
 
         <div class="progress-wrap" id="progressWrap" aria-hidden="true">
@@ -2268,23 +2957,58 @@
     </section>
   </main>
 
+  <div class="select-media-modal" id="selectMediaModal" role="dialog" aria-modal="true" aria-labelledby="selectMediaTitle" aria-hidden="true">
+    <div class="select-media-dialog">
+      <div class="upload-stepper" aria-label="Upload progress">
+        <div class="upload-step is-active"><span>1</span><small>Select</small></div>
+        <i></i>
+        <div class="upload-step"><span>2</span><small>Captions</small></div>
+        <i></i>
+        <div class="upload-step"><span>3</span><small>Upload</small></div>
+      </div>
+
+      <h2 class="select-media-heading" id="selectMediaTitle">Upload here</h2>
+
+      <div class="select-preview-box">
+        <div class="select-thumb-grid" id="selectThumbGrid"></div>
+        <p class="select-count" id="selectCount">0 files selected</p>
+        <div class="select-summary">
+          <span id="selectRemaining">Select photos or videos</span>
+          <span id="selectValidCount">0 selected</span>
+        </div>
+      </div>
+
+      <div class="select-modal-actions">
+        <button class="select-close-btn" id="selectCloseBtn" type="button">Close</button>
+        <button class="select-next-btn" id="selectNextBtn" type="button" disabled>Next</button>
+      </div>
+    </div>
+  </div>
+
   <div class="selected-media-panel" id="selectedMediaPanel" role="dialog" aria-modal="true" aria-labelledby="selectedMediaTitle" hidden>
     <div class="selected-media-backdrop" aria-hidden="true"></div>
 
     <div class="selected-media-dialog">
+      <div class="upload-stepper" aria-label="Upload progress">
+        <div class="upload-step is-complete"><span>1</span><small>Select</small></div>
+        <i></i>
+        <div class="upload-step is-active"><span>2</span><small>Captions</small></div>
+        <i></i>
+        <div class="upload-step"><span>3</span><small>Upload</small></div>
+      </div>
       <div class="selected-media-head">
         <div>
-          <h2 class="selected-media-title" id="selectedMediaTitle">Review your uploads</h2>
-          <p class="selected-media-copy">Add a different message for each photo or video before uploading.</p>
+          <h2 class="selected-media-title" id="selectedMediaTitle">Add captions</h2>
+          <p class="selected-media-copy">Add captions to your photos or videos (optional).</p>
         </div>
-        <button class="ghost-action" id="clearSelectedBtn" type="button">Clear</button>
       </div>
 
       <div class="selected-media-list" id="selectedMediaList"></div>
 
       <div class="selected-media-footer">
+        <button class="ghost-action selected-back-btn" id="clearSelectedBtn" type="button">Back</button>
         <button class="secondary-btn selected-upload-btn" id="uploadSelectedBtn" type="button">
-          Continue Upload
+          Upload
         </button>
       </div>
 
@@ -2301,14 +3025,40 @@
 
   <div class="upload-progress-modal" id="uploadProgressModal" role="dialog" aria-modal="true" aria-labelledby="uploadProgressTitle" aria-hidden="true">
     <div class="upload-progress-card">
-      <div class="upload-progress-icon" id="uploadProgressIcon" aria-hidden="true">↑</div>
-      <h2 class="upload-progress-title" id="uploadProgressTitle">Uploading your files</h2>
-      <p class="upload-progress-copy" id="uploadProgressCopy">Please keep this page open while your memories are being uploaded.</p>
-      <div class="upload-progress-track" aria-hidden="true">
-        <div class="upload-progress-fill" id="uploadProgressFill"></div>
+      <div class="upload-stepper upload-stepper-progress" aria-label="Upload progress">
+        <div class="upload-step is-complete"><span>1</span><small>Select</small></div>
+        <i></i>
+        <div class="upload-step is-complete"><span>2</span><small>Captions</small></div>
+        <i></i>
+        <div class="upload-step is-active"><span>3</span><small>Upload</small></div>
       </div>
-      <p class="upload-progress-percent" id="uploadProgressPercent">0%</p>
-      <button class="upload-progress-done" id="uploadProgressDone" type="button">Done</button>
+      <div class="upload-progress-loading">
+        <div class="upload-progress-icon" id="uploadProgressIcon" aria-hidden="true">↑</div>
+        <h2 class="upload-progress-title" id="uploadProgressTitle">Uploading your files</h2>
+        <p class="upload-progress-copy" id="uploadProgressCopy">Please keep this page open while your memories are being uploaded.</p>
+        <div class="upload-progress-track" aria-hidden="true">
+          <div class="upload-progress-fill" id="uploadProgressFill"></div>
+        </div>
+        <p class="upload-progress-percent" id="uploadProgressPercent">0%</p>
+      </div>
+
+      <div class="upload-progress-success" aria-live="polite">
+        <div class="upload-success-head">
+          <div>
+            <h2 class="upload-success-title">Upload complete</h2>
+            <p class="upload-success-copy" id="uploadSuccessCopy">Your files have been submitted successfully.</p>
+          </div>
+          <button class="upload-progress-done" id="uploadProgressDone" type="button">Close</button>
+        </div>
+
+        <div class="thank-you-box upload-success-thanks">
+          <span class="thank-you-icon" aria-hidden="true">♥</span>
+          <div>
+            <strong>Thank you for sharing.</strong>
+            <p>Your memories were uploaded successfully.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -2406,6 +3156,13 @@
       afterparty: "Afterparty"
     };
 
+    const selectMediaModal = document.querySelector("#selectMediaModal");
+    const selectThumbGrid = document.querySelector("#selectThumbGrid");
+    const selectCount = document.querySelector("#selectCount");
+    const selectRemaining = document.querySelector("#selectRemaining");
+    const selectValidCount = document.querySelector("#selectValidCount");
+    const selectCloseBtn = document.querySelector("#selectCloseBtn");
+    const selectNextBtn = document.querySelector("#selectNextBtn");
     const guestNameInput = document.querySelector("#guestNameInput");
     const albumSelect = document.querySelector("#albumSelect");
     const selectedMediaPanel = document.querySelector("#selectedMediaPanel");
@@ -2418,6 +3175,7 @@
     const uploadProgressPercent = document.querySelector("#uploadProgressPercent");
     const uploadProgressIcon = document.querySelector("#uploadProgressIcon");
     const uploadProgressDone = document.querySelector("#uploadProgressDone");
+    const uploadSuccessCopy = document.querySelector("#uploadSuccessCopy");
     const clearSelectedBtn = document.querySelector("#clearSelectedBtn");
     const uploadThanks = document.querySelector("#uploadThanks");
     const photoInput = document.querySelector("#photoInput");
@@ -2493,6 +3251,7 @@
       accessGranted: true
     };
     let selectedMediaItems = [];
+    let fileSelectionMode = "replace";
 
     function getFileExtension(file) {
       return file.name.split(".").pop()?.toLowerCase() || "";
@@ -2581,6 +3340,84 @@
       }
     }
 
+    function openSelectModal() {
+      renderSelectMediaPreview();
+      selectMediaModal.classList.add("is-open");
+      selectMediaModal.setAttribute("aria-hidden", "false");
+      selectedMediaPanel.hidden = true;
+      document.body.classList.add("upload-review-open");
+    }
+
+    function closeSelectModal({ clear = false } = {}) {
+      selectMediaModal.classList.remove("is-open");
+      selectMediaModal.setAttribute("aria-hidden", "true");
+      if (clear) clearSelectedMedia();
+      if (selectedMediaPanel.hidden) document.body.classList.remove("upload-review-open");
+    }
+
+    function removeSelectedItem(id) {
+      const item = getSelectedItemById(id);
+      if (item?.previewUrl) URL.revokeObjectURL(item.previewUrl);
+      selectedMediaItems = selectedMediaItems.filter((entry) => entry.id !== id);
+      renderSelectMediaPreview();
+      if (!selectedMediaItems.length) selectNextBtn.disabled = true;
+    }
+
+    function renderSelectMediaPreview() {
+      selectThumbGrid.innerHTML = "";
+
+      selectedMediaItems.forEach((item, index) => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "select-thumb-item";
+
+        if (item.previewUrl && item.mediaKind === "video") {
+          const video = document.createElement("video");
+          video.src = item.previewUrl;
+          video.muted = true;
+          video.playsInline = true;
+          wrapper.appendChild(video);
+        } else if (item.previewUrl && item.mediaKind === "photo") {
+          const img = document.createElement("img");
+          img.src = item.previewUrl;
+          img.alt = `Selected upload ${index + 1}`;
+          wrapper.appendChild(img);
+        } else {
+          const fallback = document.createElement("span");
+          fallback.className = "select-thumb-fallback";
+          fallback.textContent = item.isHeic ? "HEIC" : item.mediaKind;
+          wrapper.appendChild(fallback);
+        }
+
+        const remove = document.createElement("button");
+        remove.className = "select-remove";
+        remove.type = "button";
+        remove.setAttribute("aria-label", `Remove ${item.file.name}`);
+        remove.textContent = "×";
+        remove.addEventListener("click", () => removeSelectedItem(item.id));
+        wrapper.appendChild(remove);
+        selectThumbGrid.appendChild(wrapper);
+      });
+
+      const addMore = document.createElement("button");
+      addMore.className = "select-add-more";
+      addMore.type = "button";
+      addMore.setAttribute("aria-label", "Add more photos or videos");
+      addMore.textContent = "+";
+      addMore.addEventListener("click", () => {
+        fileSelectionMode = "append";
+        photoInput.value = "";
+        photoInput.click();
+      });
+      selectThumbGrid.appendChild(addMore);
+
+      const validCount = selectedMediaItems.filter((item) => item.valid).length;
+      const skippedCount = selectedMediaItems.length - validCount;
+      selectCount.textContent = `${selectedMediaItems.length} file${selectedMediaItems.length !== 1 ? "s" : ""} selected`;
+      selectRemaining.textContent = skippedCount ? `${skippedCount} unsupported or oversized` : "Ready to add captions";
+      selectValidCount.textContent = `${validCount} valid`;
+      selectNextBtn.disabled = validCount === 0;
+    }
+
     function renderSelectedMediaPreview() {
       selectedMediaList.innerHTML = "";
 
@@ -2591,17 +3428,19 @@
         return;
       }
 
+      selectMediaModal.classList.remove("is-open");
+      selectMediaModal.setAttribute("aria-hidden", "true");
       selectedMediaPanel.hidden = false;
       selectedMediaPanel.classList.remove("is-success");
       document.body.classList.add("upload-review-open");
-      selectedMediaTitle.textContent = "Review your uploads";
-      document.querySelector(".selected-media-copy").textContent = "Add a different message for each photo or video before uploading.";
-      clearSelectedBtn.textContent = "Clear";
+      selectedMediaTitle.textContent = "Add captions";
+      document.querySelector(".selected-media-copy").textContent = "Add captions to your photos or videos (optional).";
+      clearSelectedBtn.textContent = "Back";
       uploadThanks.hidden = true;
 
       const validCount = selectedMediaItems.filter((item) => item.valid).length;
       uploadSelectedBtn.disabled = !currentSettings.isOpen || validCount === 0;
-      uploadSelectedBtn.textContent = validCount === 1 ? "Upload 1 File" : `Upload ${validCount} Files`;
+      uploadSelectedBtn.textContent = "Upload";
 
       selectedMediaItems.forEach((item, index) => {
         const card = document.createElement("article");
@@ -2626,34 +3465,18 @@
           thumb.textContent = item.isHeic ? "HEIC" : item.mediaKind;
         }
 
-        const badge = document.createElement("span");
-        badge.className = "selected-type-badge";
-        badge.textContent = item.mediaKind === "video" ? "Video" : "Photo";
-        thumb.appendChild(badge);
-
         const details = document.createElement("div");
         details.className = "selected-details";
-
-        const name = document.createElement("p");
-        name.className = "selected-file-name";
-        name.textContent = item.file.name;
-
-        const meta = document.createElement("p");
-        meta.className = "selected-file-meta";
-        meta.textContent = `${formatBytes(item.file.size)} • ${item.valid ? "Ready" : "Skipped"}`;
 
         const caption = document.createElement("textarea");
         caption.className = "selected-caption";
         caption.maxLength = 240;
-        caption.placeholder = "Message for this photo/video...";
+        caption.placeholder = "Write a caption...";
         caption.value = item.caption || "";
         caption.disabled = !item.valid;
         caption.addEventListener("input", () => {
           item.caption = caption.value.slice(0, 240);
         });
-
-        details.appendChild(name);
-        details.appendChild(meta);
 
         if (!item.valid) {
           const error = document.createElement("p");
@@ -2669,29 +3492,33 @@
       });
     }
 
-    function selectFilesForReview(files) {
-      revokeSelectedPreviewUrls();
+    function makeSelectedItem(file) {
+      const extension = getFileExtension(file);
+      const validation = validateSelectedFile(file);
+      const mediaKind = isVideoFile(file) || VIDEO_EXTENSIONS.includes(extension) ? "video" : "photo";
+      const isHeic = isHeicFile(file);
+      const canPreview = validation.valid && !isHeic;
 
-      selectedMediaItems = files.map((file) => {
-        const extension = getFileExtension(file);
-        const validation = validateSelectedFile(file);
-        const mediaKind = isVideoFile(file) || VIDEO_EXTENSIONS.includes(extension) ? "video" : "photo";
-        const isHeic = isHeicFile(file);
-        const canPreview = validation.valid && !isHeic;
+      return {
+        id: crypto.randomUUID(),
+        file,
+        caption: "",
+        mediaKind,
+        isHeic,
+        valid: validation.valid,
+        reason: validation.reason,
+        previewUrl: canPreview ? URL.createObjectURL(file) : ""
+      };
+    }
 
-        return {
-          id: crypto.randomUUID(),
-          file,
-          caption: "",
-          mediaKind,
-          isHeic,
-          valid: validation.valid,
-          reason: validation.reason,
-          previewUrl: canPreview ? URL.createObjectURL(file) : ""
-        };
-      });
+    function selectFilesForReview(files, append = false) {
+      if (!append) {
+        revokeSelectedPreviewUrls();
+        selectedMediaItems = [];
+      }
 
-      renderSelectedMediaPreview();
+      selectedMediaItems.push(...files.map(makeSelectedItem));
+      openSelectModal();
     }
 
     function getDatabaseFileType(mediaType) {
@@ -2777,16 +3604,18 @@
 
     function showUploadSuccess(uploaded, failed) {
       uploadProgressModal.classList.add("is-success");
-      uploadProgressIcon.textContent = failed ? "!" : "✓";
-      uploadProgressTitle.textContent = failed ? "Upload finished" : "Success!";
-      uploadProgressCopy.textContent = failed
+      uploadSuccessCopy.textContent = failed
         ? `${uploaded} file${uploaded !== 1 ? "s" : ""} uploaded successfully. ${failed} failed.`
-        : `${uploaded} file${uploaded !== 1 ? "s" : ""} uploaded successfully. Thank you for sharing.`;
+        : "Your files have been submitted successfully.";
     }
 
     function closeUploadProgress() {
       uploadProgressModal.classList.remove("is-open", "is-success");
       uploadProgressModal.setAttribute("aria-hidden", "true");
+      selectedMediaPanel.hidden = true;
+      selectedMediaPanel.classList.remove("is-success");
+      uploadThanks.hidden = true;
+      document.body.classList.remove("upload-review-open");
     }
 
     function setProgress(current, total) {
@@ -3516,6 +4345,8 @@
 
     chooseBtn.addEventListener("click", () => {
       if (!currentSettings.isOpen) return;
+      fileSelectionMode = "replace";
+      photoInput.value = "";
       photoInput.click();
     });
 
@@ -3654,17 +4485,25 @@
         return;
       }
 
-      selectFilesForReview(files);
+      selectFilesForReview(files, fileSelectionMode === "append");
+      fileSelectionMode = "replace";
 
       const validCount = selectedMediaItems.filter((item) => item.valid).length;
       const skippedCount = selectedMediaItems.length - validCount;
       const skippedText = skippedCount ? ` ${skippedCount} skipped.` : "";
-      statusText.textContent = `${validCount} file${validCount !== 1 ? "s" : ""} ready for review.${skippedText} Add a message per file, then continue upload.`;
+      statusText.textContent = `${validCount} file${validCount !== 1 ? "s" : ""} selected.${skippedText}`;
     });
 
-    clearSelectedBtn.addEventListener("click", () => {
-      clearSelectedMedia();
+    selectCloseBtn.addEventListener("click", () => {
+      closeSelectModal({ clear: true });
       updateUploadAvailability();
+    });
+
+    selectNextBtn.addEventListener("click", renderSelectedMediaPreview);
+
+    clearSelectedBtn.addEventListener("click", () => {
+      selectedMediaPanel.hidden = true;
+      openSelectModal();
     });
 
     uploadSelectedBtn.addEventListener("click", async () => {
@@ -3772,12 +4611,10 @@
         const firstReason = failureReasons[0] ? ` Last error: ${failureReasons[0]}` : "";
         statusText.textContent = `${uploaded} uploaded. ${failed} failed.${skippedText}${firstReason}`;
       } else if (currentSettings.requireApproval) {
-        clearSelectedMedia({ keepThankYou: true, keepPanel: true });
-        uploadThanks.hidden = false;
+        clearSelectedMedia();
         statusText.textContent = `${uploaded} file${uploaded !== 1 ? "s" : ""} uploaded.${skippedText} Thank you. Waiting for approval before showing in the gallery.`;
       } else {
-        clearSelectedMedia({ keepThankYou: true, keepPanel: true });
-        uploadThanks.hidden = false;
+        clearSelectedMedia();
         statusText.textContent = `${uploaded} file${uploaded !== 1 ? "s" : ""} uploaded.${skippedText} Thank you.`;
       }
 
@@ -3811,6 +4648,23 @@
     }
 
     init();
+  
+    function removeUploadUsageCounters() {
+      document.querySelectorAll("body *").forEach((element) => {
+        if (element.children.length) return;
+        const value = (element.textContent || "").trim();
+        if (/^\d+\s*\/\s*\d+\s+uploads?\s+used$/i.test(value)) {
+          element.remove();
+        }
+      });
+    }
+
+    removeUploadUsageCounters();
+    new MutationObserver(removeUploadUsageCounters).observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+
   </script>
 </body>
 </html>
