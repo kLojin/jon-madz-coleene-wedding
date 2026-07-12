@@ -322,6 +322,15 @@
       justify-content: flex-end;
     }
 
+    .selected-media-thanks {
+      margin-top: 2px;
+    }
+
+    .selected-media-panel.is-success .selected-media-list,
+    .selected-media-panel.is-success .selected-media-footer {
+      display: none;
+    }
+
     .selected-upload-btn {
       background: var(--text);
       color: #fff;
@@ -2010,14 +2019,6 @@
           📷 Choose Photos &amp; Videos
         </button>
 
-        <div class="thank-you-box" id="uploadThanks" hidden>
-          <span class="thank-you-icon" aria-hidden="true">♥</span>
-          <div>
-            <strong>Thank you for sharing.</strong>
-            <p>Your memories were uploaded successfully.</p>
-          </div>
-        </div>
-
         <div class="progress-wrap" id="progressWrap" aria-hidden="true">
           <div class="progress-bar" id="progressBar"></div>
         </div>
@@ -2169,6 +2170,14 @@
         <button class="secondary-btn selected-upload-btn" id="uploadSelectedBtn" type="button">
           Continue Upload
         </button>
+      </div>
+
+      <div class="thank-you-box selected-media-thanks" id="uploadThanks" hidden>
+        <span class="thank-you-icon" aria-hidden="true">♥</span>
+        <div>
+          <strong>Thank you for sharing.</strong>
+          <p>Your memories were uploaded successfully.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -2414,10 +2423,21 @@
       revokeSelectedPreviewUrls();
       selectedMediaItems = [];
       selectedMediaList.innerHTML = "";
-      selectedMediaPanel.hidden = true;
-      document.body.classList.remove("upload-review-open");
       uploadSelectedBtn.disabled = true;
       photoInput.value = "";
+
+      if (options.keepPanel) {
+        selectedMediaPanel.hidden = false;
+        selectedMediaPanel.classList.add("is-success");
+        document.body.classList.add("upload-review-open");
+        selectedMediaTitle.textContent = "Upload complete";
+        document.querySelector(".selected-media-copy").textContent = "Your files have been submitted successfully.";
+        clearSelectedBtn.textContent = "Close";
+      } else {
+        selectedMediaPanel.hidden = true;
+        selectedMediaPanel.classList.remove("is-success");
+        document.body.classList.remove("upload-review-open");
+      }
 
       if (!options.keepThankYou) {
         uploadThanks.hidden = true;
@@ -2435,7 +2455,11 @@
       }
 
       selectedMediaPanel.hidden = false;
+      selectedMediaPanel.classList.remove("is-success");
       document.body.classList.add("upload-review-open");
+      selectedMediaTitle.textContent = "Review your uploads";
+      document.querySelector(".selected-media-copy").textContent = "Add a different message for each photo or video before uploading.";
+      clearSelectedBtn.textContent = "Clear";
       uploadThanks.hidden = true;
 
       const validCount = selectedMediaItems.filter((item) => item.valid).length;
@@ -3577,11 +3601,11 @@
         const firstReason = failureReasons[0] ? ` Last error: ${failureReasons[0]}` : "";
         statusText.textContent = `${uploaded} uploaded. ${failed} failed.${skippedText}${firstReason}`;
       } else if (currentSettings.requireApproval) {
-        clearSelectedMedia({ keepThankYou: true });
+        clearSelectedMedia({ keepThankYou: true, keepPanel: true });
         uploadThanks.hidden = false;
         statusText.textContent = `${uploaded} file${uploaded !== 1 ? "s" : ""} uploaded.${skippedText} Thank you. Waiting for approval before showing in the gallery.`;
       } else {
-        clearSelectedMedia({ keepThankYou: true });
+        clearSelectedMedia({ keepThankYou: true, keepPanel: true });
         uploadThanks.hidden = false;
         statusText.textContent = `${uploaded} file${uploaded !== 1 ? "s" : ""} uploaded.${skippedText} Thank you.`;
       }
