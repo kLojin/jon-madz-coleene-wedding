@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <meta name="description" content="Share and view photos and videos from Jon Madz and Coleene's wedding." />
+  <meta name="theme-color" content="#faf7f2" />
+
   <title>Share Wedding Photos</title>
 
   <style>
@@ -1833,14 +1836,14 @@
   <div id="top"></div>
 
   <img
-    src="assets/images/floral-top-left.png"
+    src="../assets/images/floral-top-left.webp"
     alt=""
     class="floral floral-top-left"
     aria-hidden="true"
   />
 
   <img
-    src="assets/images/floral-bottom-right.png"
+    src="../assets/images/floral-bottom-right.webp"
     alt=""
     class="floral floral-bottom-right"
     aria-hidden="true"
@@ -1927,7 +1930,7 @@
           <div class="progress-bar" id="progressBar"></div>
         </div>
 
-        <p class="status" id="status">
+        <p class="status" id="status" role="status" aria-live="polite">
           Upload JPG, PNG, iPhone photos, MP4, MOV, or WEBM. Max 50MB per file.
         </p>
       </div>
@@ -2008,7 +2011,7 @@
         <div class="dashboard-toolbar">
           <button class="admin-action" id="adminUnlockBtn" type="button">Unlock Dashboard</button>
         </div>
-        <p class="status" id="adminStatus">Default admin passcode from SQL is admin1234. Change it after unlocking.</p>
+        <p class="status" id="adminStatus" role="status" aria-live="polite">Enter the private admin passcode to continue.</p>
       </div>
 
       <div id="adminControls" hidden>
@@ -2049,14 +2052,14 @@
           <button class="admin-action" id="adminDownloadAllBtn" type="button">Download All Non-deleted ZIP</button>
         </div>
 
-        <p class="status" id="adminActionStatus">Admin dashboard unlocked.</p>
+        <p class="status" id="adminActionStatus" role="status" aria-live="polite">Admin dashboard unlocked.</p>
 
         <div class="admin-list" id="adminUploadList"></div>
       </div>
     </section>
   </main>
 
-  <div class="media-modal" id="mediaModal" aria-hidden="true">
+  <div class="media-modal" id="mediaModal" role="dialog" aria-modal="true" aria-label="Wedding media preview" aria-hidden="true">
     <div class="modal-toolbar">
       <p class="modal-count" id="modalCount">1 / 1</p>
 
