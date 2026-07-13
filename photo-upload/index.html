@@ -3332,7 +3332,42 @@
       animation: sectionReveal 480ms var(--motion-ease) both;
     }
 
+    /* Stable animated stage for Couple View / Admin. */
+    .dashboard-panel-stage {
+      position: relative;
+      width: 100%;
+      height: 0;
+      margin: 0 auto;
+      overflow: hidden;
+      overflow-anchor: none;
+      transition: height 420ms var(--motion-ease), margin-top 420ms var(--motion-ease);
+      will-change: height;
+    }
+
+    .dashboard-panel-stage.has-panel {
+      margin-top: 28px;
+    }
+
+    .dashboard-panel-stage .dashboard-panel {
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .dashboard-panel-stage.is-switching .dashboard-panel {
+      position: absolute;
+      inset: 0 0 auto;
+    }
+
+    .dashboard-panel-stage .dashboard-panel.is-entering {
+      opacity: 0;
+      transform: translateY(12px) scale(.992);
+      pointer-events: none;
+    }
+
     @media (prefers-reduced-motion: reduce) {
+      .dashboard-panel-stage {
+        transition: none;
+      }
       *,
       *::before,
       *::after {
@@ -3587,6 +3622,216 @@
     }
 
 
+
+
+    /* MULTI-LAYOUT SLIDESHOW MODE */
+    .media-modal.is-slideshow {
+      padding: 0;
+      background: #020604;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+
+    .media-modal.is-slideshow .modal-viewer-shell {
+      width: 100%;
+      height: 100dvh;
+      max-height: none;
+      display: block;
+      overflow: hidden;
+      border: 0;
+      border-radius: 0;
+      background: #020604;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .media-modal.is-slideshow .modal-media-area {
+      width: 100%;
+      height: 100%;
+      padding: 64px 54px 86px;
+      background:
+        radial-gradient(circle at 50% 40%, rgba(24, 52, 38, .22), transparent 46%),
+        #020604;
+    }
+
+    .media-modal.is-slideshow .modal-stage,
+    .media-modal.is-slideshow .modal-frame {
+      width: 100%;
+      height: 100%;
+    }
+
+    .media-modal.is-slideshow .modal-frame {
+      display: grid;
+      place-items: center;
+      gap: 12px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .media-modal.is-slideshow .modal-frame.layout-single {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: minmax(0, 1fr);
+    }
+
+    .media-modal.is-slideshow .modal-frame.layout-split {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: minmax(0, 1fr);
+    }
+
+    .media-modal.is-slideshow .modal-frame.layout-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: repeat(2, minmax(0, 1fr));
+    }
+
+    .slideshow-media-cell {
+      width: 100%;
+      height: 100%;
+      min-width: 0;
+      min-height: 0;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border: 1px solid rgba(234, 209, 154, .14);
+      border-radius: 14px;
+      background: rgba(255,255,255,.025);
+      box-shadow: 0 18px 54px rgba(0,0,0,.28);
+    }
+
+    .media-modal.is-slideshow .modal-frame img,
+    .media-modal.is-slideshow .modal-frame video {
+      width: 100%;
+      height: 100%;
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 0;
+      box-shadow: none;
+      object-fit: contain;
+      background: #020604;
+    }
+
+    .media-modal.is-slideshow .modal-info-panel {
+      display: none !important;
+    }
+
+    .media-modal.is-slideshow .modal-count,
+    .media-modal.is-slideshow .modal-close,
+    .media-modal.is-slideshow .modal-nav {
+      display: grid !important;
+    }
+
+    .media-modal.is-slideshow .modal-count {
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255,255,255,.88);
+      font-size: .72rem;
+      letter-spacing: .08em;
+    }
+
+    .media-modal.is-slideshow .modal-close {
+      top: 14px;
+      right: 16px;
+      background: rgba(255,255,255,.14);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,.18);
+      backdrop-filter: blur(10px);
+    }
+
+    .media-modal.is-slideshow .modal-nav {
+      background: rgba(255,255,255,.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,.16);
+      backdrop-filter: blur(10px);
+    }
+
+    .slideshow-toolbar {
+      position: absolute;
+      left: 50%;
+      bottom: 18px;
+      z-index: 1002;
+      display: none;
+      align-items: center;
+      gap: 8px;
+      padding: 7px;
+      border: 1px solid rgba(234, 209, 154, .2);
+      border-radius: 999px;
+      background: rgba(6, 25, 18, .74);
+      box-shadow: 0 18px 50px rgba(0,0,0,.38);
+      backdrop-filter: blur(14px);
+      transform: translateX(-50%);
+    }
+
+    .media-modal.is-slideshow .slideshow-toolbar {
+      display: flex;
+    }
+
+    .slideshow-toolbar-group {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .slideshow-toolbar-divider {
+      width: 1px;
+      height: 26px;
+      background: rgba(234, 209, 154, .18);
+    }
+
+    .slideshow-tool-btn {
+      min-width: 38px;
+      min-height: 38px;
+      padding: 0 11px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      background: transparent;
+      color: rgba(255,248,234,.72);
+      font: inherit;
+      font-size: .72rem;
+      font-weight: 900;
+      cursor: pointer;
+      transition: background 180ms ease, color 180ms ease, transform 180ms ease, border-color 180ms ease;
+    }
+
+    .slideshow-tool-btn:hover {
+      color: #fff8ea;
+      background: rgba(255,248,234,.1);
+      transform: translateY(-1px);
+    }
+
+    .slideshow-tool-btn.is-active {
+      color: #092116;
+      border-color: rgba(255,231,168,.38);
+      background: linear-gradient(135deg, #f0d28d, #bd8f45);
+    }
+
+    .slideshow-layout-icon {
+      display: grid;
+      place-items: center;
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    @media (max-width: 720px) {
+      .media-modal.is-slideshow .modal-media-area {
+        padding: 54px 42px 82px;
+      }
+
+      .media-modal.is-slideshow .modal-frame.layout-split,
+      .media-modal.is-slideshow .modal-frame.layout-grid {
+        gap: 8px;
+      }
+
+      .slideshow-toolbar {
+        width: calc(100% - 24px);
+        justify-content: center;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+
+      .slideshow-toolbar::-webkit-scrollbar { display: none; }
+      .slideshow-tool-btn { min-width: 34px; padding-inline: 9px; }
+    }
+
     /* MODAL SHARE, FULLSCREEN, AND COMMENTS */
     .modal-utility-actions {
       display: flex;
@@ -3781,20 +4026,35 @@
       text-align: right;
     }
 
-    .modal-media-area:fullscreen,
-    .modal-media-area:-webkit-full-screen {
-      width: 100vw;
-      height: 100vh;
-      padding: 70px 70px 30px;
+    /* Stable in-page fullscreen mode. Avoids browser Fullscreen API exit freezes. */
+    .media-modal.is-media-fullscreen {
+      padding: 0;
       background: #020604;
     }
 
-    .modal-media-area:fullscreen .modal-frame img,
-    .modal-media-area:fullscreen .modal-frame video,
-    .modal-media-area:-webkit-full-screen .modal-frame img,
-    .modal-media-area:-webkit-full-screen .modal-frame video {
+    .media-modal.is-media-fullscreen .modal-viewer {
+      width: 100vw;
+      max-width: none;
+      min-height: 100dvh;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    .media-modal.is-media-fullscreen .modal-media-area {
+      min-height: 100dvh;
+      padding: clamp(64px, 8vh, 90px) clamp(18px, 6vw, 72px) 30px;
+      border-radius: 0;
+    }
+
+    .media-modal.is-media-fullscreen .modal-frame img,
+    .media-modal.is-media-fullscreen .modal-frame video {
       max-width: 100%;
-      max-height: calc(100vh - 110px);
+      max-height: calc(100dvh - 120px);
+    }
+
+    .media-modal.is-media-fullscreen .modal-info-panel {
+      display: none;
     }
 
     @media (max-width: 620px) {
@@ -3805,6 +4065,290 @@
       .modal-comments-list { max-height: 180px; }
     }
 
+
+    /* Keep the modal Download label readable on the cream information panel */
+    .media-modal .modal-download,
+    .media-modal .modal-download:hover,
+    .media-modal .modal-download:focus-visible,
+    .media-modal .modal-download:disabled {
+      background: #ffffff;
+      color: #2f2521;
+      -webkit-text-fill-color: #2f2521;
+      border-color: rgba(47, 37, 33, 0.14);
+    }
+
+    .media-modal .modal-download:hover {
+      background: #f8f3ea;
+    }
+
+
+    /* HEART FILTER + SLIDESHOW CONTROLS */
+    .gallery-experience-actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      width: min(100%, 560px);
+      margin: 22px auto 0;
+    }
+
+    .gallery-experience-btn {
+      min-height: 52px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 20px;
+      border: 1px solid rgba(234, 209, 154, 0.28);
+      border-radius: 999px;
+      background: rgba(255, 248, 234, 0.08);
+      color: var(--cream);
+      font-weight: 800;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: transform 180ms ease, background 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+    }
+
+    .gallery-experience-btn:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 248, 234, 0.14);
+      border-color: rgba(234, 209, 154, 0.48);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+    }
+
+    .gallery-experience-btn:active {
+      transform: translateY(0) scale(.98);
+    }
+
+    .gallery-experience-btn.is-active {
+      background: linear-gradient(135deg, #f0d28d, #bd8f45);
+      border-color: rgba(255, 231, 168, 0.58);
+      color: #092116;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.24);
+    }
+
+    .gallery-experience-icon {
+      font-size: 1.15rem;
+      line-height: 1;
+    }
+
+    @media (max-width: 520px) {
+      .gallery-experience-actions {
+        gap: 10px;
+      }
+
+      .gallery-experience-btn {
+        min-height: 48px;
+        padding-inline: 14px;
+        font-size: .86rem;
+      }
+    }
+
+
+    /* UNIFIED GALLERY CONTROL BAR */
+    .gallery-bottom-actions,
+    .gallery-experience-actions {
+      display: none !important;
+    }
+
+    .gallery-control-bar {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      gap: 8px;
+      width: min(calc(100% - 24px), 920px);
+      margin: clamp(40px, 6vw, 68px) auto 0;
+      padding: 8px;
+      border: 1px solid rgba(234, 209, 154, 0.28);
+      border-radius: 30px;
+      background: rgba(255, 248, 234, 0.08);
+      box-shadow:
+        0 18px 44px rgba(0, 0, 0, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .gallery-control-row {
+      display: grid;
+      align-items: stretch;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      margin-inline: auto;
+    }
+
+    .gallery-control-row-primary {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .gallery-control-row-secondary {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      width: min(66.666%, 600px);
+    }
+
+    .gallery-control-btn {
+      position: relative;
+      min-width: 0;
+      min-height: 58px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 0 14px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      background: transparent;
+      color: rgba(255, 248, 234, 0.86);
+      font-size: 0.9rem;
+      font-weight: 800;
+      white-space: nowrap;
+      cursor: pointer;
+      transition:
+        transform 220ms cubic-bezier(.22, 1, .36, 1),
+        background 220ms ease,
+        border-color 220ms ease,
+        color 220ms ease,
+        box-shadow 220ms ease;
+    }
+
+    .gallery-control-btn::after {
+      content: "";
+      position: absolute;
+      inset: 7px;
+      border-radius: inherit;
+      background: radial-gradient(circle at 50% 0%, rgba(255,255,255,.12), transparent 72%);
+      opacity: 0;
+      transition: opacity 220ms ease;
+      pointer-events: none;
+    }
+
+    .gallery-control-btn:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 248, 234, 0.11);
+      border-color: rgba(234, 209, 154, 0.24);
+      color: #fff8ea;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+    }
+
+    .gallery-control-btn:hover::after {
+      opacity: 1;
+    }
+
+    .gallery-control-btn:active {
+      transform: translateY(0) scale(.98);
+    }
+
+    .gallery-control-btn:focus-visible {
+      outline: 2px solid rgba(243, 214, 143, 0.95);
+      outline-offset: 2px;
+    }
+
+    .gallery-control-btn.is-active,
+    .gallery-control-btn[aria-expanded="true"] {
+      background: linear-gradient(135deg, rgba(243, 214, 143, 0.96), rgba(190, 144, 71, 0.96));
+      border-color: rgba(255, 231, 168, 0.54);
+      color: #092116;
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.22);
+    }
+
+    .gallery-control-icon {
+      flex: 0 0 auto;
+      display: inline-grid;
+      place-items: center;
+      width: 24px;
+      height: 24px;
+      font-size: 1.15rem;
+      line-height: 1;
+      transition: transform 220ms cubic-bezier(.22, 1, .36, 1);
+    }
+
+    .gallery-control-btn:hover .gallery-control-icon {
+      transform: scale(1.08);
+    }
+
+    #refreshBtn:hover .gallery-control-icon {
+      transform: rotate(24deg) scale(1.08);
+    }
+
+    @media (max-width: 760px) {
+      .gallery-control-bar {
+        width: min(calc(100% - 16px), 560px);
+        border-radius: 26px;
+      }
+
+      .gallery-control-row-secondary {
+        width: 100%;
+      }
+
+      .gallery-control-btn {
+        min-height: 54px;
+        padding-inline: 10px;
+        font-size: 0.82rem;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .gallery-control-bar {
+        gap: 6px;
+        padding: 6px;
+        border-radius: 22px;
+      }
+
+      .gallery-control-row {
+        gap: 5px;
+      }
+
+      .gallery-control-btn {
+        min-height: 52px;
+        padding-inline: 7px;
+        gap: 6px;
+        font-size: 0.76rem;
+      }
+
+      .gallery-control-icon {
+        width: 20px;
+        height: 20px;
+        font-size: 1rem;
+      }
+    }
+
+  
+
+    /* SLIDESHOW: PRESERVE EACH MEDIA ITEM'S FULL ASPECT RATIO */
+    .media-modal.is-slideshow .slideshow-media-cell {
+      width: 100%;
+      height: 100%;
+      min-width: 0;
+      min-height: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: visible;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .media-modal.is-slideshow .slideshow-media-cell img,
+    .media-modal.is-slideshow .slideshow-media-cell video {
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      object-position: center;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .media-modal.is-slideshow .modal-frame.layout-split,
+    .media-modal.is-slideshow .modal-frame.layout-grid {
+      align-items: stretch;
+      justify-items: stretch;
+    }
 </style>
 </head>
 
@@ -3902,13 +4446,39 @@
         <div class="empty">Loading photos and videos...</div>
       </div>
 
-      <div class="gallery-actions gallery-bottom-actions" aria-label="Gallery controls">
-        <button class="refresh-btn" id="refreshBtn" type="button">Refresh</button>
-        <button class="secondary-btn" id="coupleToggleBtn" type="button">Couple View</button>
-        <button class="secondary-btn" id="adminToggleBtn" type="button">Admin</button>
+      <div class="gallery-control-bar" aria-label="Gallery controls">
+        <div class="gallery-control-row gallery-control-row-primary">
+          <button class="gallery-control-btn" id="refreshBtn" type="button">
+            <span class="gallery-control-icon" aria-hidden="true">↻</span>
+            <span>Refresh</span>
+          </button>
+
+          <button class="gallery-control-btn" id="heartFilterBtn" type="button" aria-pressed="false">
+            <span class="gallery-experience-icon gallery-control-icon" aria-hidden="true">♡</span>
+            <span>Heart Filter</span>
+          </button>
+
+          <button class="gallery-control-btn" id="slideshowBtn" type="button" aria-pressed="false">
+            <span class="gallery-experience-icon gallery-control-icon" aria-hidden="true">▶</span>
+            <span>Slideshow</span>
+          </button>
+        </div>
+
+        <div class="gallery-control-row gallery-control-row-secondary">
+          <button class="gallery-control-btn" id="coupleToggleBtn" type="button" aria-expanded="false" aria-controls="couplePanel">
+            <span class="gallery-control-icon" aria-hidden="true">♡</span>
+            <span>Couple View</span>
+          </button>
+
+          <button class="gallery-control-btn" id="adminToggleBtn" type="button" aria-expanded="false" aria-controls="adminPanel">
+            <span class="gallery-control-icon" aria-hidden="true">⚙</span>
+            <span>Admin</span>
+          </button>
+        </div>
       </div>
     </section>
 
+    <div class="dashboard-panel-stage" id="dashboardPanelStage" aria-live="polite">
     <section class="dashboard-panel" id="couplePanel" hidden>
       <div class="dashboard-head">
         <div>
@@ -3999,6 +4569,7 @@
         <div class="admin-list" id="adminUploadList"></div>
       </div>
     </section>
+    </div>
   </main>
 
   <div class="select-media-modal" id="selectMediaModal" role="dialog" aria-modal="true" aria-labelledby="selectMediaTitle" aria-hidden="true">
@@ -4135,6 +4706,26 @@
           <div class="modal-frame" id="modalFrame"></div>
           <button class="modal-nav modal-next" id="modalNextBtn" type="button" aria-label="Next upload">›</button>
         </div>
+
+        <div class="slideshow-toolbar" id="slideshowToolbar" aria-label="Slideshow controls">
+          <div class="slideshow-toolbar-group" aria-label="Layout">
+            <button class="slideshow-tool-btn slideshow-layout-btn is-active" type="button" data-layout="single" aria-label="Single image layout" title="Single image">
+              <span class="slideshow-layout-icon">▣</span>
+            </button>
+            <button class="slideshow-tool-btn slideshow-layout-btn" type="button" data-layout="split" aria-label="Two image layout" title="Two images">
+              <span class="slideshow-layout-icon">▥</span>
+            </button>
+            <button class="slideshow-tool-btn slideshow-layout-btn" type="button" data-layout="grid" aria-label="Four image grid layout" title="Four images">
+              <span class="slideshow-layout-icon">▦</span>
+            </button>
+          </div>
+          <span class="slideshow-toolbar-divider" aria-hidden="true"></span>
+          <div class="slideshow-toolbar-group" aria-label="Slideshow speed">
+            <button class="slideshow-tool-btn slideshow-speed-btn" type="button" data-speed="6000">Slow</button>
+            <button class="slideshow-tool-btn slideshow-speed-btn is-active" type="button" data-speed="4000">Normal</button>
+            <button class="slideshow-tool-btn slideshow-speed-btn" type="button" data-speed="2200">Fast</button>
+          </div>
+        </div>
       </div>
 
       <div class="modal-info-panel">
@@ -4149,7 +4740,7 @@
               <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="m8.6 10.7 6.8-4.1M8.6 13.3l6.8 4.1"></path></svg>
               <span>Share</span>
             </button>
-            <button class="modal-icon-action" id="modalFullscreenBtn" type="button" aria-label="View media in fullscreen">
+            <button class="modal-icon-action" id="modalFullscreenBtn" type="button" aria-label="View media in fullscreen" aria-pressed="false">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"></path></svg>
               <span>Fullscreen</span>
             </button>
@@ -4286,6 +4877,8 @@
     const photoInput = document.querySelector("#photoInput");
     const chooseBtn = document.querySelector("#chooseBtn");
     const refreshBtn = document.querySelector("#refreshBtn");
+    const heartFilterBtn = document.querySelector("#heartFilterBtn");
+    const slideshowBtn = document.querySelector("#slideshowBtn");
     const statusText = document.querySelector("#status");
     const progressWrap = document.querySelector("#progressWrap");
     const progressBar = document.querySelector("#progressBar");
@@ -4322,8 +4915,12 @@
     const modalCommentsList = document.querySelector("#modalCommentsList");
     const modalCommentForm = document.querySelector("#modalCommentForm");
     const modalCommentInput = document.querySelector("#modalCommentInput");
+    const slideshowToolbar = document.querySelector("#slideshowToolbar");
+    const slideshowLayoutButtons = document.querySelectorAll(".slideshow-layout-btn");
+    const slideshowSpeedButtons = document.querySelectorAll(".slideshow-speed-btn");
     const scrollTopBtn = document.querySelector("#scrollTopBtn");
 
+    const dashboardPanelStage = document.querySelector("#dashboardPanelStage");
     const coupleToggleBtn = document.querySelector("#coupleToggleBtn");
     const couplePanel = document.querySelector("#couplePanel");
     const coupleCloseBtn = document.querySelector("#coupleCloseBtn");
@@ -4362,6 +4959,10 @@
     let visibleMediaItems = [];
     let adminMediaItems = [];
     let activeFilter = "all";
+    let heartFilterActive = false;
+    let slideshowTimer = null;
+    let slideshowLayout = "single";
+    let slideshowSpeed = 4000;
     let activeAlbumFilter = "all";
     let activeModalIndex = 0;
     let touchStartX = 0;
@@ -4873,7 +5474,8 @@
       return allMediaItems.filter((item) => {
         const matchesType = activeFilter === "all" || item.type === activeFilter;
         const matchesAlbum = activeAlbumFilter === "all" || item.album === activeAlbumFilter;
-        return matchesType && matchesAlbum;
+        const matchesHeart = !heartFilterActive || Boolean(item.liked);
+        return matchesType && matchesAlbum && matchesHeart;
       });
     }
 
@@ -5240,16 +5842,85 @@
       window.setTimeout(() => { modalShareStatus.textContent = ""; }, 2200);
     }
 
-    async function toggleMediaFullscreen() {
-      try {
-        if (!document.fullscreenElement) {
-          await modalMediaArea.requestFullscreen();
-        } else {
-          await document.exitFullscreen();
+    function setMediaFullscreen(isFullscreen) {
+      mediaModal.classList.toggle("is-media-fullscreen", isFullscreen);
+      modalFullscreenBtn.setAttribute("aria-pressed", String(isFullscreen));
+      modalFullscreenBtn.querySelector("span").textContent = isFullscreen
+        ? "Exit Fullscreen"
+        : "Fullscreen";
+
+      requestAnimationFrame(() => {
+        modalMediaArea.scrollTop = 0;
+        modalFrame.getBoundingClientRect();
+      });
+    }
+
+    function toggleMediaFullscreen() {
+      setMediaFullscreen(!mediaModal.classList.contains("is-media-fullscreen"));
+    }
+
+    function updateHeartFilterButton() {
+      heartFilterBtn.classList.toggle("is-active", heartFilterActive);
+      heartFilterBtn.setAttribute("aria-pressed", String(heartFilterActive));
+      heartFilterBtn.querySelector(".gallery-experience-icon").textContent = heartFilterActive ? "♥" : "♡";
+    }
+
+    function getSlideshowItemsPerSlide() {
+      if (slideshowLayout === "grid") return 4;
+      if (slideshowLayout === "split") return 2;
+      return 1;
+    }
+
+    function syncSlideshowControls() {
+      slideshowLayoutButtons.forEach((button) => {
+        button.classList.toggle("is-active", button.dataset.layout === slideshowLayout);
+      });
+      slideshowSpeedButtons.forEach((button) => {
+        button.classList.toggle("is-active", Number(button.dataset.speed) === slideshowSpeed);
+      });
+    }
+
+    function scheduleSlideshow() {
+      if (slideshowTimer) window.clearInterval(slideshowTimer);
+      slideshowTimer = window.setInterval(() => {
+        if (!mediaModal.classList.contains("is-open")) {
+          stopSlideshow();
+          return;
         }
-      } catch (error) {
-        console.error("Fullscreen error:", error);
+        showNextMedia();
+      }, slideshowSpeed);
+    }
+
+    function stopSlideshow() {
+      if (slideshowTimer) {
+        window.clearInterval(slideshowTimer);
+        slideshowTimer = null;
       }
+      slideshowBtn.classList.remove("is-active");
+      slideshowBtn.setAttribute("aria-pressed", "false");
+      slideshowBtn.querySelector(".gallery-experience-icon").textContent = "▶";
+      slideshowBtn.querySelector("span:last-child").textContent = "Slideshow";
+      mediaModal.classList.remove("is-slideshow");
+      modalFrame.classList.remove("layout-single", "layout-split", "layout-grid");
+    }
+
+    function startSlideshow() {
+      visibleMediaItems = getVisibleItems();
+      if (!visibleMediaItems.length) {
+        alert(heartFilterActive ? "No hearted uploads are available for the slideshow yet." : "No uploads are available for the slideshow yet.");
+        return;
+      }
+
+      stopSlideshow();
+      slideshowBtn.classList.add("is-active");
+      slideshowBtn.setAttribute("aria-pressed", "true");
+      slideshowBtn.querySelector(".gallery-experience-icon").textContent = "❚❚";
+      slideshowBtn.querySelector("span:last-child").textContent = "Stop Slideshow";
+      mediaModal.classList.add("is-slideshow");
+      syncSlideshowControls();
+
+      openMediaModal(0);
+      scheduleSlideshow();
     }
 
     function openMediaModal(index) {
@@ -5261,11 +5932,50 @@
       document.body.style.overflow = "hidden";
     }
 
+    function createSlideshowMedia(item) {
+      const cell = document.createElement("div");
+      cell.className = "slideshow-media-cell";
+
+      if (item.type === "video") {
+        const video = document.createElement("video");
+        video.src = item.url;
+        video.autoplay = true;
+        video.muted = true;
+        video.loop = true;
+        video.playsInline = true;
+        cell.appendChild(video);
+      } else {
+        const img = document.createElement("img");
+        img.src = item.url;
+        img.alt = item.caption || "Wedding guest upload";
+        cell.appendChild(img);
+      }
+
+      return cell;
+    }
+
     function renderModalMedia() {
       const item = visibleMediaItems[activeModalIndex];
       if (!item) return;
 
       modalFrame.innerHTML = "";
+
+      if (mediaModal.classList.contains("is-slideshow")) {
+        const count = getSlideshowItemsPerSlide();
+        modalFrame.className = `modal-frame layout-${slideshowLayout}`;
+
+        for (let offset = 0; offset < Math.min(count, visibleMediaItems.length); offset++) {
+          const slideItem = visibleMediaItems[(activeModalIndex + offset) % visibleMediaItems.length];
+          modalFrame.appendChild(createSlideshowMedia(slideItem));
+        }
+
+        const page = Math.floor(activeModalIndex / count) + 1;
+        const totalPages = Math.ceil(visibleMediaItems.length / count);
+        modalCount.textContent = `${page} / ${totalPages}`;
+        return;
+      }
+
+      modalFrame.className = "modal-frame";
       modalDownload.disabled = false;
       modalLikeBtn.disabled = !item.id || item.likeBusy;
       modalDownload.textContent = "Download";
@@ -5366,7 +6076,9 @@
     }
 
     function closeMediaModal() {
-      mediaModal.classList.remove("is-open");
+      stopSlideshow();
+      setMediaFullscreen(false);
+      mediaModal.classList.remove("is-open", "is-slideshow");
       mediaModal.setAttribute("aria-hidden", "true");
       modalFrame.innerHTML = "";
       document.body.style.overflow = "";
@@ -5374,13 +6086,15 @@
 
     function showNextMedia() {
       if (!visibleMediaItems.length) return;
-      activeModalIndex = (activeModalIndex + 1) % visibleMediaItems.length;
+      const step = mediaModal.classList.contains("is-slideshow") ? getSlideshowItemsPerSlide() : 1;
+      activeModalIndex = (activeModalIndex + step) % visibleMediaItems.length;
       renderModalMedia();
     }
 
     function showPreviousMedia() {
       if (!visibleMediaItems.length) return;
-      activeModalIndex = (activeModalIndex - 1 + visibleMediaItems.length) % visibleMediaItems.length;
+      const step = mediaModal.classList.contains("is-slideshow") ? getSlideshowItemsPerSlide() : 1;
+      activeModalIndex = (activeModalIndex - step + visibleMediaItems.length) % visibleMediaItems.length;
       renderModalMedia();
     }
 
@@ -5648,6 +6362,40 @@
 
     refreshBtn.addEventListener("click", loadGallery);
 
+    heartFilterBtn.addEventListener("click", () => {
+      heartFilterActive = !heartFilterActive;
+      updateHeartFilterButton();
+      renderGallery();
+    });
+
+    slideshowBtn.addEventListener("click", () => {
+      if (slideshowTimer) {
+        stopSlideshow();
+      } else {
+        startSlideshow();
+      }
+    });
+
+    slideshowLayoutButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        slideshowLayout = button.dataset.layout || "single";
+        activeModalIndex = 0;
+        syncSlideshowControls();
+        if (mediaModal.classList.contains("is-slideshow")) {
+          renderModalMedia();
+          scheduleSlideshow();
+        }
+      });
+    });
+
+    slideshowSpeedButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        slideshowSpeed = Number(button.dataset.speed) || 4000;
+        syncSlideshowControls();
+        if (mediaModal.classList.contains("is-slideshow")) scheduleSlideshow();
+      });
+    });
+
     function setGalleryFilterMode(mode) {
       const showMedia = mode === "media";
 
@@ -5706,68 +6454,108 @@
       if (event.key === "Enter") galleryUnlockBtn.click();
     });
 
-    const panelCloseTimers = new WeakMap();
+    let activeDashboardPanel = null;
+    let dashboardTransitionToken = 0;
 
-    function openDashboardPanel(panel) {
-      const pendingTimer = panelCloseTimers.get(panel);
-      if (pendingTimer) window.clearTimeout(pendingTimer);
-
-      panelCloseTimers.delete(panel);
-      panel.hidden = false;
-      panel.classList.remove("is-closing");
-
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => panel.classList.add("is-open"));
-      });
+    function setPanelButtonStates(panel) {
+      const coupleActive = panel === couplePanel;
+      const adminActive = panel === adminPanel;
+      coupleToggleBtn.classList.toggle("is-active", coupleActive);
+      adminToggleBtn.classList.toggle("is-active", adminActive);
+      coupleToggleBtn.setAttribute("aria-expanded", String(coupleActive));
+      adminToggleBtn.setAttribute("aria-expanded", String(adminActive));
     }
 
-    function closeDashboardPanel(panel, { immediate = false } = {}) {
-      const pendingTimer = panelCloseTimers.get(panel);
-      if (pendingTimer) window.clearTimeout(pendingTimer);
-      panelCloseTimers.delete(panel);
+    function finishDashboardTransition(token, targetPanel) {
+      if (token !== dashboardTransitionToken) return;
 
-      if (panel.hidden) return;
+      [couplePanel, adminPanel].forEach((panel) => {
+        const isTarget = panel === targetPanel;
+        panel.hidden = !isTarget;
+        panel.classList.toggle("is-open", isTarget);
+        panel.classList.remove("is-closing", "is-entering");
+      });
 
-      if (immediate || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        panel.classList.remove("is-open", "is-closing");
-        panel.hidden = true;
+      dashboardPanelStage.classList.remove("is-switching");
+      dashboardPanelStage.classList.toggle("has-panel", Boolean(targetPanel));
+      dashboardPanelStage.style.height = targetPanel ? `${targetPanel.scrollHeight}px` : "0px";
+      activeDashboardPanel = targetPanel;
+      setPanelButtonStates(targetPanel);
+
+      if (targetPanel) {
+        requestAnimationFrame(() => {
+          if (token !== dashboardTransitionToken) return;
+          dashboardPanelStage.style.height = "auto";
+        });
+      }
+    }
+
+    function switchDashboardPanel(targetPanel) {
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const currentPanel = activeDashboardPanel && !activeDashboardPanel.hidden
+        ? activeDashboardPanel
+        : [couplePanel, adminPanel].find((panel) => !panel.hidden) || null;
+
+      if (targetPanel === currentPanel) targetPanel = null;
+
+      const token = ++dashboardTransitionToken;
+      const currentHeight = dashboardPanelStage.getBoundingClientRect().height;
+
+      if (reduceMotion) {
+        finishDashboardTransition(token, targetPanel);
         return;
       }
 
-      panel.classList.remove("is-open");
-      panel.classList.add("is-closing");
+      dashboardPanelStage.style.height = `${currentHeight}px`;
+      dashboardPanelStage.classList.toggle("has-panel", Boolean(currentPanel || targetPanel));
+      dashboardPanelStage.classList.add("is-switching");
 
-      const timer = window.setTimeout(() => {
-        panel.hidden = true;
-        panel.classList.remove("is-closing");
-        panelCloseTimers.delete(panel);
-      }, 300);
+      if (currentPanel) {
+        currentPanel.hidden = false;
+        currentPanel.classList.remove("is-entering");
+        currentPanel.classList.add("is-closing");
+        currentPanel.classList.remove("is-open");
+      }
 
-      panelCloseTimers.set(panel, timer);
+      if (targetPanel) {
+        targetPanel.hidden = false;
+        targetPanel.classList.remove("is-closing", "is-open");
+        targetPanel.classList.add("is-entering");
+      }
+
+      // Measure after the target is mounted, then animate the stage height.
+      const targetHeight = targetPanel ? targetPanel.scrollHeight : 0;
+      dashboardPanelStage.getBoundingClientRect();
+
+      requestAnimationFrame(() => {
+        if (token !== dashboardTransitionToken) return;
+        dashboardPanelStage.style.height = `${targetHeight}px`;
+
+        if (targetPanel) {
+          targetPanel.classList.remove("is-entering");
+          targetPanel.classList.add("is-open");
+        }
+      });
+
+      window.setTimeout(() => finishDashboardTransition(token, targetPanel), 440);
     }
 
-    function scrollPanelIntoView(panel) {
-      window.setTimeout(() => {
-        panel.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 90);
+    function openDashboardPanel(panel) {
+      if (activeDashboardPanel === panel && !panel.hidden) return;
+      switchDashboardPanel(panel);
+    }
+
+    function closeDashboardPanel(panel) {
+      if (activeDashboardPanel === panel || !panel.hidden) switchDashboardPanel(null);
     }
 
     coupleToggleBtn.addEventListener("click", () => {
-      const shouldOpen = couplePanel.hidden || !couplePanel.classList.contains("is-open");
-
-      closeDashboardPanel(adminPanel);
-
-      if (shouldOpen) {
-        renderCoupleStats();
-        openDashboardPanel(couplePanel);
-        scrollPanelIntoView(couplePanel);
-      } else {
-        closeDashboardPanel(couplePanel);
-      }
+      if (activeDashboardPanel !== couplePanel) renderCoupleStats();
+      switchDashboardPanel(couplePanel);
     });
 
     coupleCloseBtn.addEventListener("click", () => {
-      closeDashboardPanel(couplePanel);
+      switchDashboardPanel(null);
     });
 
     coupleDownloadApprovedBtn.addEventListener("click", () => {
@@ -5783,26 +6571,19 @@
     });
 
     adminToggleBtn.addEventListener("click", () => {
-      const shouldOpen = adminPanel.hidden || !adminPanel.classList.contains("is-open");
+      const openingAdmin = activeDashboardPanel !== adminPanel;
 
-      closeDashboardPanel(couplePanel);
-
-      if (shouldOpen) {
-        openDashboardPanel(adminPanel);
-        scrollPanelIntoView(adminPanel);
-
-        if (currentAdminPasscode) {
-          adminLoginBox.hidden = true;
-          adminControls.hidden = false;
-          refreshAdminDashboard();
-        }
-      } else {
-        closeDashboardPanel(adminPanel);
+      if (openingAdmin && currentAdminPasscode) {
+        adminLoginBox.hidden = true;
+        adminControls.hidden = false;
+        refreshAdminDashboard();
       }
+
+      switchDashboardPanel(adminPanel);
     });
 
     adminCloseBtn.addEventListener("click", () => {
-      closeDashboardPanel(adminPanel);
+      switchDashboardPanel(null);
     });
 
     adminUnlockBtn.addEventListener("click", unlockAdmin);
@@ -5857,10 +6638,6 @@
       renderModalComments(item);
       modalCommentsList.scrollTop = modalCommentsList.scrollHeight;
     });
-    document.addEventListener("fullscreenchange", () => {
-      modalFullscreenBtn.querySelector("span").textContent = document.fullscreenElement ? "Exit Fullscreen" : "Fullscreen";
-    });
-
     mediaModal.addEventListener("click", (event) => {
       if (event.target === mediaModal) closeMediaModal();
     });
@@ -5878,6 +6655,11 @@
     }, { passive: true });
 
     window.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && mediaModal.classList.contains("is-media-fullscreen")) {
+        event.preventDefault();
+        setMediaFullscreen(false);
+        return;
+      }
       if (!mediaModal.classList.contains("is-open")) return;
       if (event.key === "Escape") closeMediaModal();
       if (event.key === "ArrowRight") showNextMedia();
