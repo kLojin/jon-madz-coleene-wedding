@@ -3340,7 +3340,7 @@
       margin: 0 auto;
       overflow: hidden;
       overflow-anchor: none;
-      transition: height 420ms var(--motion-ease), margin-top 420ms var(--motion-ease);
+      transition: height 240ms var(--motion-ease), margin-top 240ms var(--motion-ease);
       will-change: height;
     }
 
@@ -4251,6 +4251,20 @@
       box-shadow: 0 10px 26px rgba(0, 0, 0, 0.22);
     }
 
+
+    /* Instant interaction feedback; avoids delayed mobile tap highlighting. */
+    .gallery-control-btn,
+    .like-btn,
+    .modal-like {
+      touch-action: manipulation;
+      user-select: none;
+    }
+
+    .like-btn.is-liked,
+    .modal-like.is-liked {
+      animation: none !important;
+    }
+
     .gallery-control-icon {
       flex: 0 0 auto;
       display: inline-grid;
@@ -4349,6 +4363,212 @@
       align-items: stretch;
       justify-items: stretch;
     }
+
+
+    /* PORTRAIT MEDIA MODAL: keep media inside the black viewer area */
+    .media-modal:not(.is-slideshow) .modal-viewer-shell {
+      height: min(960px, calc(100dvh - 24px));
+      grid-template-rows: minmax(0, 1fr) auto;
+    }
+
+    .media-modal:not(.is-slideshow) .modal-media-area,
+    .media-modal:not(.is-slideshow) .modal-stage,
+    .media-modal:not(.is-slideshow) .modal-frame {
+      min-width: 0;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .media-modal:not(.is-slideshow) .modal-stage,
+    .media-modal:not(.is-slideshow) .modal-frame {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .media-modal:not(.is-slideshow) .modal-frame img,
+    .media-modal:not(.is-slideshow) .modal-frame video {
+      display: block;
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      flex: 0 1 auto;
+    }
+
+    .media-modal:not(.is-slideshow) .modal-info-panel {
+      max-height: min(42dvh, 430px);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+
+    .media-modal.is-media-fullscreen .modal-viewer-shell {
+      width: 100vw;
+      max-width: none;
+      height: 100dvh;
+      max-height: none;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    @media (max-width: 620px) {
+      .media-modal:not(.is-slideshow) .modal-viewer-shell {
+        height: calc(100dvh - 16px);
+      }
+
+      .media-modal:not(.is-slideshow) .modal-info-panel {
+        max-height: 46dvh;
+      }
+    }
+
+
+    /* UPLOAD ALBUM PICKER */
+    .upload-stepper.upload-stepper-four {
+      grid-template-columns: auto minmax(16px, 1fr) auto minmax(16px, 1fr) auto minmax(16px, 1fr) auto;
+    }
+
+    .select-upload-stage[hidden] {
+      display: none;
+    }
+
+    .select-album-intro {
+      margin: -4px 0 16px;
+      color: rgba(255, 244, 220, 0.74);
+      font-size: 0.9rem;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .album-picker {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      max-height: min(52vh, 520px);
+      padding: 2px;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+
+    .album-choice {
+      position: relative;
+      display: grid;
+      grid-template-columns: 46px minmax(0, 1fr) 24px;
+      align-items: center;
+      gap: 12px;
+      min-height: 92px;
+      padding: 15px;
+      border: 1px solid rgba(234, 209, 154, 0.22);
+      border-radius: 18px;
+      background: rgba(255, 248, 234, 0.08);
+      color: var(--cream);
+      text-align: left;
+      cursor: pointer;
+      touch-action: manipulation;
+      transition: transform 150ms ease, border-color 150ms ease, background 150ms ease, box-shadow 150ms ease;
+    }
+
+    .album-choice:hover {
+      transform: translateY(-1px);
+      border-color: rgba(234, 209, 154, 0.46);
+      background: rgba(255, 248, 234, 0.13);
+    }
+
+    .album-choice.is-selected {
+      border-color: rgba(243, 214, 143, 0.82);
+      background: linear-gradient(135deg, rgba(243, 214, 143, 0.2), rgba(190, 144, 71, 0.14));
+      box-shadow: 0 0 0 3px rgba(215, 180, 106, 0.12);
+    }
+
+    .album-choice-icon {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: rgba(255, 248, 234, 0.1);
+      color: var(--champagne);
+      font-size: 1.25rem;
+    }
+
+    .album-choice-copy {
+      min-width: 0;
+    }
+
+    .album-choice-copy strong,
+    .album-choice-copy small {
+      display: block;
+    }
+
+    .album-choice-copy strong {
+      color: #fff8ea;
+      font-size: 0.92rem;
+      line-height: 1.25;
+    }
+
+    .album-choice-copy small {
+      margin-top: 4px;
+      color: rgba(255, 244, 220, 0.68);
+      font-size: 0.74rem;
+      line-height: 1.35;
+    }
+
+    .album-choice-check {
+      width: 24px;
+      height: 24px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(234, 209, 154, 0.3);
+      border-radius: 999px;
+      color: transparent;
+      font-size: 0.78rem;
+      font-weight: 900;
+    }
+
+    .album-choice.is-selected .album-choice-check {
+      border-color: #f3d68f;
+      background: linear-gradient(135deg, #f3d68f, #bd8f45);
+      color: #092116;
+    }
+
+    .selected-album-summary {
+      width: max-content;
+      max-width: 100%;
+      margin-top: 10px;
+      padding: 7px 11px;
+      border: 1px solid rgba(234, 209, 154, 0.22);
+      border-radius: 999px;
+      background: rgba(255, 248, 234, 0.08);
+      color: rgba(255, 244, 220, 0.72);
+      font-size: 0.78rem;
+    }
+
+    .selected-album-summary strong {
+      color: var(--champagne);
+    }
+
+    @media (max-width: 620px) {
+      .album-picker {
+        grid-template-columns: 1fr;
+      }
+
+      .upload-stepper.upload-stepper-four {
+        grid-template-columns: auto 14px auto 14px auto 14px auto;
+        gap: 4px;
+      }
+
+      .upload-stepper.upload-stepper-four .upload-step small {
+        font-size: 0.62rem;
+      }
+    }
+
+    @media (max-width: 390px) {
+      .upload-stepper.upload-stepper-four .upload-step small {
+        display: none;
+      }
+    }
+
 </style>
 </head>
 
@@ -4387,6 +4607,11 @@
         <input id="guestNameInput" type="hidden" value="" />
         <select id="albumSelect" hidden aria-hidden="true" tabindex="-1">
           <option value="guest-gallery" selected>Guest Gallery</option>
+          <option value="ceremony">Ceremony</option>
+          <option value="reception">Reception</option>
+          <option value="portraits">Portraits</option>
+          <option value="preparation">Preparation</option>
+          <option value="afterparty">After Party</option>
         </select>
 
         <input
@@ -4436,6 +4661,8 @@
           <button class="album-btn" type="button" data-album-filter="guest-gallery">Guest Gallery</button>
           <button class="album-btn" type="button" data-album-filter="ceremony">Ceremony</button>
           <button class="album-btn" type="button" data-album-filter="reception">Reception</button>
+          <button class="album-btn" type="button" data-album-filter="portraits">Portraits</button>
+          <button class="album-btn" type="button" data-album-filter="preparation">Preparation</button>
           <button class="album-btn" type="button" data-album-filter="afterparty">After Party</button>
         </div>
       </div>
@@ -4574,16 +4801,19 @@
 
   <div class="select-media-modal" id="selectMediaModal" role="dialog" aria-modal="true" aria-labelledby="selectMediaTitle" aria-hidden="true">
     <div class="select-media-dialog">
-      <div class="upload-stepper" aria-label="Upload progress">
-        <div class="upload-step is-active"><span>1</span><small>Select</small></div>
+      <div class="upload-stepper upload-stepper-four" id="selectUploadStepper" aria-label="Upload progress">
+        <div class="upload-step is-active" data-upload-step="1"><span>1</span><small>Select</small></div>
         <i></i>
-        <div class="upload-step"><span>2</span><small>Captions</small></div>
+        <div class="upload-step" data-upload-step="2"><span>2</span><small>Album</small></div>
         <i></i>
-        <div class="upload-step"><span>3</span><small>Upload</small></div>
+        <div class="upload-step" data-upload-step="3"><span>3</span><small>Captions</small></div>
+        <i></i>
+        <div class="upload-step" data-upload-step="4"><span>4</span><small>Upload</small></div>
       </div>
 
       <h2 class="select-media-heading" id="selectMediaTitle">Upload here</h2>
 
+      <div class="select-upload-stage" id="selectFilesStage">
       <div class="select-preview-box">
         <div class="select-thumb-grid" id="selectThumbGrid"></div>
         <p class="select-count" id="selectCount">0 files selected</p>
@@ -4611,6 +4841,13 @@
         </label>
       </div>
 
+      </div>
+
+      <div class="select-upload-stage" id="selectAlbumStage" hidden>
+        <p class="select-album-intro">Choose where these photos and videos should appear.</p>
+        <div class="album-picker" id="uploadAlbumPicker" role="radiogroup" aria-label="Choose upload album"></div>
+      </div>
+
       <div class="select-modal-actions">
         <button class="select-close-btn" id="selectCloseBtn" type="button">Close</button>
         <button class="select-next-btn" id="selectNextBtn" type="button" disabled>Next</button>
@@ -4622,17 +4859,20 @@
     <div class="selected-media-backdrop" aria-hidden="true"></div>
 
     <div class="selected-media-dialog">
-      <div class="upload-stepper" aria-label="Upload progress">
+      <div class="upload-stepper upload-stepper-four" aria-label="Upload progress">
         <div class="upload-step is-complete"><span>1</span><small>Select</small></div>
         <i></i>
-        <div class="upload-step is-active"><span>2</span><small>Captions</small></div>
+        <div class="upload-step is-complete"><span>2</span><small>Album</small></div>
         <i></i>
-        <div class="upload-step"><span>3</span><small>Upload</small></div>
+        <div class="upload-step is-active"><span>3</span><small>Captions</small></div>
+        <i></i>
+        <div class="upload-step"><span>4</span><small>Upload</small></div>
       </div>
       <div class="selected-media-head">
         <div>
           <h2 class="selected-media-title" id="selectedMediaTitle">Add captions</h2>
           <p class="selected-media-copy">Add captions to your photos or videos (optional).</p>
+          <p class="selected-album-summary">Uploading to: <strong id="selectedAlbumName">Guest Gallery</strong></p>
         </div>
       </div>
 
@@ -4658,12 +4898,14 @@
 
   <div class="upload-progress-modal" id="uploadProgressModal" role="dialog" aria-modal="true" aria-labelledby="uploadProgressTitle" aria-hidden="true">
     <div class="upload-progress-card">
-      <div class="upload-stepper upload-stepper-progress" aria-label="Upload progress">
+      <div class="upload-stepper upload-stepper-progress upload-stepper-four" aria-label="Upload progress">
         <div class="upload-step is-complete"><span>1</span><small>Select</small></div>
         <i></i>
-        <div class="upload-step is-complete"><span>2</span><small>Captions</small></div>
+        <div class="upload-step is-complete"><span>2</span><small>Album</small></div>
         <i></i>
-        <div class="upload-step is-active"><span>3</span><small>Upload</small></div>
+        <div class="upload-step is-complete"><span>3</span><small>Captions</small></div>
+        <i></i>
+        <div class="upload-step is-active"><span>4</span><small>Upload</small></div>
       </div>
       <div class="upload-progress-loading">
         <div class="upload-progress-icon" id="uploadProgressIcon" aria-hidden="true">↑</div>
@@ -4841,14 +5083,21 @@
       if (cleanName) localStorage.setItem(COMMENT_AUTHOR_STORAGE_KEY, cleanName);
     }
 
-    const ALBUM_LABELS = {
-      "guest-gallery": "Guest Gallery",
-      ceremony: "Ceremony",
-      reception: "Reception",
-      afterparty: "Afterparty"
-    };
+    const UPLOAD_ALBUMS = [
+      { value: "guest-gallery", label: "Guest Gallery", description: "General wedding photos and videos", icon: "✦" },
+      { value: "ceremony", label: "Ceremony", description: "Vows, church, and ceremony moments", icon: "◇" },
+      { value: "reception", label: "Reception", description: "Dinner, speeches, and celebration", icon: "♢" },
+      { value: "portraits", label: "Portraits", description: "Couple, family, and guest portraits", icon: "◎" },
+      { value: "preparation", label: "Preparation", description: "Getting ready and behind-the-scenes", icon: "✧" },
+      { value: "afterparty", label: "After Party", description: "Dancing and late-night memories", icon: "♪" }
+    ];
+
+    const ALBUM_LABELS = Object.fromEntries(
+      UPLOAD_ALBUMS.map((album) => [album.value, album.label])
+    );
 
     const selectMediaModal = document.querySelector("#selectMediaModal");
+    const selectMediaTitle = document.querySelector("#selectMediaTitle");
     const selectThumbGrid = document.querySelector("#selectThumbGrid");
     const selectCount = document.querySelector("#selectCount");
     const selectRemaining = document.querySelector("#selectRemaining");
@@ -4861,7 +5110,13 @@
     const selectGuestNameInput = document.querySelector("#selectGuestNameInput");
     const guestNameInput = document.querySelector("#guestNameInput");
     const albumSelect = document.querySelector("#albumSelect");
+    const selectFilesStage = document.querySelector("#selectFilesStage");
+    const selectAlbumStage = document.querySelector("#selectAlbumStage");
+    const uploadAlbumPicker = document.querySelector("#uploadAlbumPicker");
+    const selectUploadStepper = document.querySelector("#selectUploadStepper");
+    const selectedAlbumName = document.querySelector("#selectedAlbumName");
     const selectedMediaPanel = document.querySelector("#selectedMediaPanel");
+    const selectedMediaTitle = document.querySelector("#selectedMediaTitle");
     const selectedMediaList = document.querySelector("#selectedMediaList");
     const uploadSelectedBtn = document.querySelector("#uploadSelectedBtn");
     const uploadProgressModal = document.querySelector("#uploadProgressModal");
@@ -5079,10 +5334,67 @@
       }
     }
 
+    let selectUploadStep = 1;
+
+    function renderUploadAlbumPicker() {
+      uploadAlbumPicker.innerHTML = "";
+
+      UPLOAD_ALBUMS.forEach((album) => {
+        const button = document.createElement("button");
+        const isSelected = albumSelect.value === album.value;
+        button.type = "button";
+        button.className = `album-choice${isSelected ? " is-selected" : ""}`;
+        button.dataset.album = album.value;
+        button.setAttribute("role", "radio");
+        button.setAttribute("aria-checked", String(isSelected));
+        button.innerHTML = `
+          <span class="album-choice-icon" aria-hidden="true">${album.icon}</span>
+          <span class="album-choice-copy">
+            <strong>${album.label}</strong>
+            <small>${album.description}</small>
+          </span>
+          <span class="album-choice-check" aria-hidden="true">✓</span>
+        `;
+
+        button.addEventListener("click", () => {
+          albumSelect.value = album.value;
+          renderUploadAlbumPicker();
+          selectNextBtn.disabled = false;
+        });
+
+        uploadAlbumPicker.appendChild(button);
+      });
+    }
+
+    function updateSelectUploadStep(step) {
+      selectUploadStep = step;
+      const isAlbumStep = step === 2;
+      selectFilesStage.hidden = isAlbumStep;
+      selectAlbumStage.hidden = !isAlbumStep;
+      selectMediaTitle.textContent = isAlbumStep ? "Choose an album" : "Upload here";
+      selectCloseBtn.textContent = isAlbumStep ? "Back" : "Close";
+      selectNextBtn.textContent = isAlbumStep ? "Continue" : "Next";
+
+      selectUploadStepper.querySelectorAll(".upload-step").forEach((node) => {
+        const nodeStep = Number(node.dataset.uploadStep);
+        node.classList.toggle("is-active", nodeStep === step);
+        node.classList.toggle("is-complete", nodeStep < step);
+      });
+
+      if (isAlbumStep) {
+        renderUploadAlbumPicker();
+        selectNextBtn.disabled = !albumSelect.value;
+      } else {
+        const validCount = selectedMediaItems.filter((item) => item.valid).length;
+        selectNextBtn.disabled = validCount === 0;
+      }
+    }
+
     function openSelectModal() {
       selectGuestNameInput.value = guestNameInput.value;
       updateAnonymousUploadState();
       renderSelectMediaPreview();
+      updateSelectUploadStep(1);
       selectMediaModal.classList.add("is-open");
       selectMediaModal.setAttribute("aria-hidden", "false");
       selectedMediaPanel.hidden = true;
@@ -5176,6 +5488,7 @@
       document.body.classList.add("upload-review-open");
       selectedMediaTitle.textContent = "Add captions";
       document.querySelector(".selected-media-copy").textContent = "Add captions to your photos or videos (optional).";
+      selectedAlbumName.textContent = ALBUM_LABELS[albumSelect.value] || "Guest Gallery";
       clearSelectedBtn.textContent = "Back";
       uploadThanks.hidden = true;
 
@@ -5628,6 +5941,7 @@
         const likeButton = document.createElement("button");
         likeButton.className = "like-btn gallery-like-overlay";
         likeButton.type = "button";
+        if (item.id) likeButton.dataset.likeId = String(item.id);
         likeButton.textContent = getLikeLabel(item);
         likeButton.disabled = !item.id || item.likeBusy;
         likeButton.classList.toggle("is-liked", Boolean(item.liked));
@@ -5702,12 +6016,36 @@
       if (error) throw error;
     }
 
+    function syncLikeControls(item) {
+      if (!item?.id) return;
+
+      document.querySelectorAll(`[data-like-id="${CSS.escape(String(item.id))}"]`).forEach((button) => {
+        button.textContent = getLikeLabel(item);
+        button.disabled = Boolean(item.likeBusy);
+        button.classList.toggle("is-liked", Boolean(item.liked));
+        button.setAttribute("aria-label", item.liked ? "Remove reaction" : "React to this upload");
+      });
+
+      const activeItem = visibleMediaItems[activeModalIndex];
+      if (mediaModal.classList.contains("is-open") && activeItem?.id === item.id) {
+        modalLikeBtn.textContent = getLikeLabel(item);
+        modalLikeBtn.disabled = Boolean(item.likeBusy);
+        modalLikeBtn.classList.toggle("is-liked", Boolean(item.liked));
+        modalLikeBtn.setAttribute("aria-label", item.liked ? "Remove reaction" : "React to this upload");
+      }
+    }
+
     async function likeMediaItem(item) {
       if (!item?.id || item.likeBusy) return;
 
+      const previousLiked = Boolean(item.liked);
+      const previousCount = Number(item.likeCount || 0);
+
+      // Optimistic update: react immediately without rebuilding the gallery DOM.
+      item.liked = !previousLiked;
+      item.likeCount = Math.max(0, previousCount + (item.liked ? 1 : -1));
       item.likeBusy = true;
-      renderGallery();
-      if (mediaModal.classList.contains("is-open")) renderModalMedia();
+      syncLikeControls(item);
 
       const { data, error } = await client.rpc("toggle_upload_like", {
         p_upload_id: item.id,
@@ -5718,8 +6056,9 @@
 
       if (error) {
         console.error("Like error:", error);
-        renderGallery();
-        if (mediaModal.classList.contains("is-open")) renderModalMedia();
+        item.liked = previousLiked;
+        item.likeCount = previousCount;
+        syncLikeControls(item);
         return;
       }
 
@@ -5734,8 +6073,7 @@
         globalItem.likeBusy = false;
       }
 
-      renderGallery();
-      if (mediaModal.classList.contains("is-open")) renderModalMedia();
+      syncLikeControls(item);
     }
 
 
@@ -6499,6 +6837,10 @@
       if (targetPanel === currentPanel) targetPanel = null;
 
       const token = ++dashboardTransitionToken;
+
+      // Update the highlighted control immediately on pointer/click response.
+      setPanelButtonStates(targetPanel);
+
       const currentHeight = dashboardPanelStage.getBoundingClientRect().height;
 
       if (reduceMotion) {
@@ -6537,7 +6879,7 @@
         }
       });
 
-      window.setTimeout(() => finishDashboardTransition(token, targetPanel), 440);
+      window.setTimeout(() => finishDashboardTransition(token, targetPanel), 260);
     }
 
     function openDashboardPanel(panel) {
@@ -6688,15 +7030,36 @@
     });
 
     selectCloseBtn.addEventListener("click", () => {
+      if (selectUploadStep === 2) {
+        updateSelectUploadStep(1);
+        return;
+      }
+
       closeSelectModal({ clear: true });
       updateUploadAvailability();
     });
 
-    selectNextBtn.addEventListener("click", renderSelectedMediaPreview);
+    selectNextBtn.addEventListener("click", () => {
+      if (selectUploadStep === 1) {
+        guestNameInput.value = anonymousUploadToggle.checked
+          ? ""
+          : selectGuestNameInput.value.trim();
+
+        if (!anonymousUploadToggle.checked) {
+          rememberCommentAuthor(selectGuestNameInput.value);
+        }
+
+        updateSelectUploadStep(2);
+        return;
+      }
+
+      renderSelectedMediaPreview();
+    });
 
     clearSelectedBtn.addEventListener("click", () => {
       selectedMediaPanel.hidden = true;
       openSelectModal();
+      updateSelectUploadStep(2);
     });
 
     anonymousUploadToggle.addEventListener("change", updateAnonymousUploadState);
@@ -6704,16 +7067,6 @@
     selectGuestNameInput.addEventListener("input", () => {
       if (!anonymousUploadToggle.checked) {
         guestNameInput.value = selectGuestNameInput.value.trimStart();
-        rememberCommentAuthor(selectGuestNameInput.value);
-      }
-    });
-
-    selectNextBtn.addEventListener("click", () => {
-      guestNameInput.value = anonymousUploadToggle.checked
-        ? ""
-        : selectGuestNameInput.value.trim();
-
-      if (!anonymousUploadToggle.checked) {
         rememberCommentAuthor(selectGuestNameInput.value);
       }
     });
