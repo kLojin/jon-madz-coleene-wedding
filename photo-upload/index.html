@@ -2567,6 +2567,129 @@
       font-size: .7rem;
     }
 
+    .select-upload-identity {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .select-identity-label {
+      display: block;
+      margin-bottom: 7px;
+      color: rgba(255, 244, 220, 0.72);
+      font-size: .68rem;
+      font-weight: 900;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+
+    .anonymous-toggle-row {
+      min-height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 10px 12px 10px 15px;
+      border: 1px solid rgba(234, 209, 154, 0.18);
+      border-radius: 14px;
+      background: rgba(255, 248, 234, 0.07);
+      cursor: pointer;
+      transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
+    }
+
+    .anonymous-toggle-row:hover {
+      border-color: rgba(234, 209, 154, 0.34);
+      background: rgba(255, 248, 234, 0.10);
+    }
+
+    .anonymous-toggle-copy {
+      color: var(--cream);
+      font-size: .82rem;
+      font-weight: 800;
+    }
+
+    .anonymous-toggle {
+      position: relative;
+      flex: 0 0 auto;
+      width: 48px;
+      height: 28px;
+    }
+
+    .anonymous-toggle input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .anonymous-toggle-track {
+      position: absolute;
+      inset: 0;
+      border: 1px solid rgba(234, 209, 154, 0.28);
+      border-radius: 999px;
+      background: rgba(255, 248, 234, 0.12);
+      transition: background 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+    }
+
+    .anonymous-toggle-track::after {
+      content: "";
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #fff8ea;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, .24);
+      transition: transform 220ms cubic-bezier(.2,.8,.2,1), background 220ms ease;
+    }
+
+    .anonymous-toggle input:checked + .anonymous-toggle-track {
+      background: linear-gradient(135deg, #f3d68f, #b98740);
+      border-color: rgba(255, 231, 168, .56);
+      box-shadow: 0 0 0 4px rgba(215, 180, 106, .12);
+    }
+
+    .anonymous-toggle input:checked + .anonymous-toggle-track::after {
+      transform: translateX(20px);
+      background: #082117;
+    }
+
+    .select-name-field {
+      display: grid;
+      gap: 7px;
+      max-height: 100px;
+      opacity: 1;
+      overflow: hidden;
+      transform: translateY(0);
+      transition: max-height 240ms ease, opacity 180ms ease, transform 240ms ease;
+    }
+
+    .select-name-field.is-hidden {
+      max-height: 0;
+      opacity: 0;
+      transform: translateY(-8px);
+      pointer-events: none;
+    }
+
+    .select-name-input {
+      width: 100%;
+      min-height: 50px;
+      padding: 0 15px;
+      border: 1px solid rgba(234, 209, 154, 0.34);
+      border-radius: 14px;
+      outline: none;
+      background: rgba(255, 250, 239, 0.97);
+      color: #123025;
+      font: inherit;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, .14);
+      transition: border-color 180ms ease, box-shadow 180ms ease;
+    }
+
+    .select-name-input:focus {
+      border-color: rgba(215, 180, 106, .95);
+      box-shadow: 0 0 0 4px rgba(215, 180, 106, .16), 0 12px 30px rgba(0, 0, 0, .18);
+    }
+
     .select-modal-actions {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -2772,6 +2895,916 @@
       padding: 14px 16px;
     }
 
+
+
+    /* SUCCESS CONFETTI */
+    .upload-progress-card {
+      position: relative;
+    }
+
+    .success-confetti {
+      position: absolute;
+      inset: 0;
+      z-index: 20;
+      overflow: hidden;
+      border-radius: inherit;
+      pointer-events: none;
+    }
+
+    .confetti-piece {
+      --x-start: 50%;
+      --x-end: 0px;
+      --y-end: 360px;
+      --rotation: 360deg;
+      --delay: 0ms;
+      --duration: 1700ms;
+
+      position: absolute;
+      top: 20%;
+      left: var(--x-start);
+      width: 7px;
+      height: 13px;
+      border-radius: 2px;
+      opacity: 0;
+      background: var(--confetti-color, #e4c578);
+      animation: confettiBurst var(--duration) cubic-bezier(.15, .75, .3, 1) var(--delay) forwards;
+    }
+
+    .confetti-piece.is-round {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .confetti-piece.is-ribbon {
+      width: 5px;
+      height: 17px;
+      border-radius: 999px;
+    }
+
+    @keyframes confettiBurst {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, 0) rotate(0deg) scale(.7);
+      }
+
+      12% {
+        opacity: 1;
+      }
+
+      55% {
+        opacity: 1;
+        transform: translate(calc(-50% + var(--x-end)), calc(var(--y-end) * .38)) rotate(calc(var(--rotation) * .55)) scale(1);
+      }
+
+      100% {
+        opacity: 0;
+        transform: translate(calc(-50% + var(--x-end)), var(--y-end)) rotate(var(--rotation)) scale(.85);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .success-confetti {
+        display: none;
+      }
+    }
+
+  
+
+    /* =========================================================
+       GALLERY FILTER NAVIGATION
+       Compact Media / Albums segmented control
+    ========================================================= */
+    .gallery-header-clean {
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .gallery-header-clean .gallery-title {
+      width: 100%;
+      text-align: center;
+    }
+
+    .gallery-header-clean .gallery-actions {
+      display: none;
+    }
+
+    .gallery-bottom-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      width: 100%;
+      margin: clamp(38px, 6vw, 64px) auto 0;
+      padding: 8px 20px 4px;
+    }
+
+    .gallery-bottom-actions .refresh-btn,
+    .gallery-bottom-actions .secondary-btn {
+      min-width: 132px;
+      min-height: 48px;
+      padding: 0 22px;
+    }
+
+    @media (max-width: 520px) {
+      .gallery-bottom-actions {
+        gap: 12px;
+        margin-top: 38px;
+        padding-inline: 8px;
+      }
+
+      .gallery-bottom-actions .refresh-btn,
+      .gallery-bottom-actions .secondary-btn {
+        flex: 1 1 calc(50% - 12px);
+        min-width: 0;
+      }
+
+      .gallery-bottom-actions .secondary-btn:last-child {
+        flex-basis: 100%;
+      }
+    }
+
+    .gallery-filter-nav {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      justify-items: center;
+      gap: 24px;
+      width: 100%;
+      margin: 0 auto 24px;
+      padding: 4px 0;
+    }
+
+    .gallery-mode-switch {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      width: min(calc(100% - 44px), 472px);
+      gap: 4px;
+      padding: 4px;
+      border: 1px solid rgba(234, 209, 154, 0.22);
+      border-radius: 18px;
+      background: rgba(255, 248, 234, 0.10);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        0 12px 28px rgba(0, 0, 0, 0.18);
+    }
+
+    .gallery-mode-btn {
+      min-height: 48px;
+      padding: 0 22px;
+      border: 1px solid transparent;
+      border-radius: 14px;
+      background: transparent;
+      color: rgba(255, 248, 234, 0.78);
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition:
+        color 180ms ease,
+        background 180ms ease,
+        border-color 180ms ease,
+        box-shadow 180ms ease,
+        transform 180ms ease;
+    }
+
+    .gallery-mode-btn:hover {
+      color: var(--cream);
+      background: rgba(255, 248, 234, 0.07);
+    }
+
+    .gallery-mode-btn.is-active {
+      color: #fff8ea;
+      background: linear-gradient(145deg, rgba(17, 62, 44, 0.98), rgba(5, 26, 18, 0.98));
+      border-color: rgba(215, 180, 106, 0.28);
+      box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.24),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .gallery-filter-options {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 16px 32px;
+      width: min(100%, 760px);
+      margin: 0 auto;
+      padding: 4px 18px 8px;
+    }
+
+    .gallery-filter-options[hidden] {
+      display: none;
+    }
+
+    .gallery-filter-options .filter-btn,
+    .gallery-filter-options .album-btn {
+      min-height: auto;
+      padding: 4px 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      color: rgba(255, 244, 220, 0.78);
+      font-size: clamp(0.94rem, 2.3vw, 1.05rem);
+      font-weight: 700;
+      box-shadow: none;
+      backdrop-filter: none;
+      position: relative;
+    }
+
+    .gallery-filter-options .filter-btn::after,
+    .gallery-filter-options .album-btn::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -3px;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #f3d68f, #b98740);
+      opacity: 0;
+      transform: scaleX(0.35);
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    .gallery-filter-options .filter-btn:hover,
+    .gallery-filter-options .album-btn:hover {
+      color: #fff8ea;
+      background: transparent;
+      transform: none;
+    }
+
+    .gallery-filter-options .filter-btn.is-active,
+    .gallery-filter-options .album-btn.is-active {
+      color: var(--champagne);
+      background: transparent;
+      border: 0;
+    }
+
+    .gallery-filter-options .filter-btn.is-active::after,
+    .gallery-filter-options .album-btn.is-active::after {
+      opacity: 1;
+      transform: scaleX(1);
+    }
+
+    .gallery-header-clean + .gallery-filter-nav + .gallery-meta,
+    .gallery-filter-nav + .gallery-meta {
+      margin: 2px auto 24px;
+      text-align: center;
+      line-height: 1.65;
+    }
+
+    @media (max-width: 520px) {
+      .gallery-mode-switch {
+        width: calc(100% - 44px);
+        max-width: 472px;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .gallery-mode-btn {
+        min-height: 46px;
+        padding-inline: 16px;
+      }
+
+      .gallery-filter-options {
+        width: 100%;
+        justify-content: center;
+        gap: 14px 24px;
+        padding: 2px 10px 6px;
+      }
+
+      .gallery-filter-options .filter-btn,
+      .gallery-filter-options .album-btn {
+        flex: 0 0 auto;
+      }
+    }
+
+  
+
+    /* =========================================================
+       MOTION & MICRO-INTERACTIONS
+       Subtle transitions for a more responsive, polished UI.
+    ========================================================= */
+    :root {
+      --motion-fast: 180ms;
+      --motion-medium: 280ms;
+      --motion-slow: 520ms;
+      --motion-ease: cubic-bezier(.22, 1, .36, 1);
+    }
+
+    .hero,
+    .gallery-header-clean,
+    .gallery-filter-nav,
+    .gallery-meta {
+      animation: sectionReveal var(--motion-slow) var(--motion-ease) both;
+    }
+
+    .gallery-filter-nav { animation-delay: 70ms; }
+    .gallery-meta { animation-delay: 120ms; }
+
+    @keyframes sectionReveal {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    button,
+    .upload-btn,
+    .filter-btn,
+    .album-btn,
+    .gallery-mode-btn,
+    .refresh-btn,
+    .secondary-btn,
+    .admin-action,
+    .ghost-action,
+    .danger-action,
+    .like-btn {
+      transition:
+        transform var(--motion-fast) var(--motion-ease),
+        background-color var(--motion-fast) ease,
+        border-color var(--motion-fast) ease,
+        color var(--motion-fast) ease,
+        box-shadow var(--motion-fast) ease,
+        opacity var(--motion-fast) ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button:not(:disabled):active,
+    .upload-btn:not(:disabled):active,
+    .filter-btn:not(:disabled):active,
+    .album-btn:not(:disabled):active,
+    .gallery-mode-btn:not(:disabled):active,
+    .refresh-btn:not(:disabled):active,
+    .secondary-btn:not(:disabled):active,
+    .admin-action:not(:disabled):active,
+    .ghost-action:not(:disabled):active,
+    .danger-action:not(:disabled):active,
+    .like-btn:not(:disabled):active {
+      transform: translateY(1px) scale(.975);
+    }
+
+    .gallery-mode-btn.is-active,
+    .filter-btn.is-active,
+    .album-btn.is-active {
+      animation: activeControlPop 260ms var(--motion-ease) both;
+    }
+
+    @keyframes activeControlPop {
+      0% { transform: scale(.97); }
+      65% { transform: scale(1.018); }
+      100% { transform: scale(1); }
+    }
+
+    .photo-card {
+      animation: galleryCardReveal 440ms var(--motion-ease) both;
+    }
+
+    .photo-card:nth-child(2n) { animation-delay: 35ms; }
+    .photo-card:nth-child(3n) { animation-delay: 70ms; }
+
+    @keyframes galleryCardReveal {
+      from {
+        opacity: 0;
+        transform: translateY(16px) scale(.985);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* Panels remain mounted briefly while closing, allowing a true fade-out. */
+    .dashboard-panel:not([hidden]) {
+      display: block;
+      opacity: 0;
+      transform: translateY(18px) scale(.985);
+      transform-origin: top center;
+      transition:
+        opacity var(--motion-medium) ease,
+        transform var(--motion-medium) var(--motion-ease),
+        box-shadow var(--motion-medium) ease;
+      will-change: opacity, transform;
+    }
+
+    .dashboard-panel.is-open {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .dashboard-panel.is-closing {
+      opacity: 0;
+      transform: translateY(10px) scale(.99);
+      pointer-events: none;
+    }
+
+    .dashboard-panel.is-open .dashboard-head,
+    .dashboard-panel.is-open .dashboard-grid,
+    .dashboard-panel.is-open .dashboard-form,
+    .dashboard-panel.is-open .dashboard-toolbar,
+    .dashboard-panel.is-open .admin-list,
+    .dashboard-panel.is-open .download-note {
+      animation: panelContentReveal 360ms var(--motion-ease) both;
+    }
+
+    .dashboard-panel.is-open .dashboard-grid,
+    .dashboard-panel.is-open .dashboard-form { animation-delay: 45ms; }
+    .dashboard-panel.is-open .dashboard-toolbar,
+    .dashboard-panel.is-open .admin-list,
+    .dashboard-panel.is-open .download-note { animation-delay: 90ms; }
+
+    @keyframes panelContentReveal {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .gallery-bottom-actions {
+      animation: sectionReveal 480ms var(--motion-ease) both;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+  
+
+    /* =========================================================
+       CLEAN GALLERY CARDS + EDITORIAL MEDIA VIEWER
+    ========================================================= */
+    .photo-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 22px;
+      background: #071a12;
+    }
+
+    .photo-card .photo-details { display: none !important; }
+
+    .photo-card .photo,
+    .photo-card .photo img,
+    .photo-card .photo video {
+      border-radius: inherit;
+    }
+
+    .gallery-like-overlay {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 4;
+      min-width: 42px;
+      min-height: 34px;
+      padding: 0 11px;
+      border: 1px solid rgba(255, 244, 220, .34);
+      border-radius: 999px;
+      background: rgba(4, 20, 14, .72);
+      color: #fff7e6;
+      box-shadow: 0 10px 26px rgba(0, 0, 0, .28);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .gallery-like-overlay:hover {
+      background: rgba(10, 42, 29, .9);
+      transform: translateY(-1px) scale(1.03);
+    }
+
+    .gallery-like-overlay.is-liked {
+      background: linear-gradient(135deg, #f0d28d, #bd8f45);
+      color: #092116;
+      border-color: rgba(255, 231, 168, .62);
+    }
+
+    .media-modal {
+      display: grid;
+      place-items: center;
+      padding: clamp(12px, 3vw, 28px);
+      background: rgba(2, 8, 5, .88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .modal-viewer-shell {
+      width: min(100%, 920px);
+      max-height: calc(100dvh - 24px);
+      display: grid;
+      grid-template-rows: minmax(300px, 1fr) auto;
+      overflow: hidden;
+      border: 1px solid rgba(234, 209, 154, .24);
+      border-radius: 26px;
+      background: #fffaf0;
+      box-shadow: 0 34px 110px rgba(0, 0, 0, .5);
+      transform: translateY(18px) scale(.98);
+      transition: transform 280ms var(--motion-ease, cubic-bezier(.22,1,.36,1));
+    }
+
+    .media-modal.is-open .modal-viewer-shell {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal-media-area {
+      position: relative;
+      min-height: 0;
+      display: grid;
+      place-items: center;
+      padding: 54px clamp(44px, 7vw, 78px) 24px;
+      background:
+        radial-gradient(circle at center, rgba(34, 72, 53, .34), transparent 55%),
+        #020604;
+    }
+
+    .modal-count {
+      position: absolute;
+      top: 18px;
+      left: 50%;
+      z-index: 5;
+      transform: translateX(-50%);
+      margin: 0;
+      color: rgba(255,255,255,.88);
+      font-size: .82rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 7;
+      width: 40px;
+      height: 40px;
+      background: rgba(255,255,255,.94);
+      color: #13251d;
+    }
+
+    .modal-stage,
+    .modal-frame {
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+    }
+
+    .modal-frame img,
+    .modal-frame video {
+      width: auto;
+      max-width: 100%;
+      height: auto;
+      max-height: min(62vh, 650px);
+      border-radius: 12px;
+      object-fit: contain;
+      box-shadow: 0 20px 70px rgba(0,0,0,.5);
+    }
+
+    .modal-nav {
+      width: 44px;
+      height: 44px;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.18);
+      color: #fff;
+      box-shadow: none;
+      backdrop-filter: blur(8px);
+    }
+
+    .modal-prev { left: 10px; }
+    .modal-next { right: 10px; }
+
+    .modal-info-panel {
+      display: grid;
+      gap: 18px;
+      padding: clamp(18px, 3vw, 28px);
+      background: #fffaf0;
+      color: #2f2521;
+      border-top: 1px solid rgba(47,37,33,.1);
+    }
+
+    .modal-person-row {
+      display: grid;
+      grid-template-columns: 44px 1fr auto;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .modal-avatar {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #d9bd78, #9c7439);
+      color: #092116;
+      font-weight: 900;
+    }
+
+    .modal-person-copy {
+      min-width: 0;
+      display: grid;
+      gap: 3px;
+    }
+
+    .modal-person-copy strong {
+      overflow: hidden;
+      color: #2f2521;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: .96rem;
+    }
+
+    .modal-person-copy span {
+      color: #82736b;
+      font-size: .76rem;
+    }
+
+    .modal-caption-text {
+      margin: 0;
+      color: #5f514a;
+      font-size: .92rem;
+      line-height: 1.6;
+    }
+
+    .modal-engagement-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 4px;
+    }
+
+    .modal-like,
+    .modal-download {
+      min-height: 40px;
+      border: 1px solid rgba(47,37,33,.14);
+      background: #fff;
+      color: #2f2521;
+      box-shadow: none;
+    }
+
+    .modal-like.is-liked {
+      background: linear-gradient(135deg, #f0d28d, #bd8f45);
+      color: #092116;
+    }
+
+    .modal-album-label {
+      color: #8b6b3d;
+      font-size: .74rem;
+      font-weight: 900;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 620px) {
+      .media-modal { padding: 8px; }
+      .modal-viewer-shell {
+        max-height: calc(100dvh - 16px);
+        border-radius: 20px;
+        grid-template-rows: minmax(260px, 1fr) auto;
+      }
+      .modal-media-area { padding: 52px 44px 16px; }
+      .modal-frame img,
+      .modal-frame video { max-height: 52vh; }
+      .modal-info-panel { gap: 14px; padding: 17px; }
+      .modal-person-row { grid-template-columns: 40px 1fr auto; }
+      .modal-avatar { width: 40px; height: 40px; }
+      .modal-download { padding-inline: 12px; font-size: .78rem; }
+      .modal-nav { width: 38px; height: 38px; }
+      .modal-prev { left: 2px; }
+      .modal-next { right: 2px; }
+    }
+
+
+    /* MODAL SHARE, FULLSCREEN, AND COMMENTS */
+    .modal-utility-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: auto;
+    }
+
+    .modal-icon-action,
+    .modal-comments-toggle {
+      min-width: 40px;
+      min-height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 0 13px;
+      border: 1px solid rgba(47,37,33,.14);
+      border-radius: 999px;
+      background: #fff;
+      color: #2f2521;
+      font: inherit;
+      font-size: .78rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
+    }
+
+    .modal-icon-action:hover,
+    .modal-comments-toggle:hover {
+      transform: translateY(-1px);
+      background: #fff6e8;
+      border-color: rgba(183,139,69,.35);
+    }
+
+    .modal-icon-action svg,
+    .modal-comments-toggle svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .modal-engagement-actions {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .modal-comments-panel {
+      display: grid;
+      gap: 14px;
+      padding-top: 4px;
+      border-top: 1px solid rgba(47,37,33,.1);
+    }
+
+    .modal-comments-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .modal-comments-head strong {
+      font-size: .9rem;
+      color: #2f2521;
+    }
+
+    .modal-comments-count {
+      color: #8b6b3d;
+      font-size: .74rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    .modal-comments-list {
+      display: grid;
+      gap: 12px;
+      max-height: 220px;
+      overflow-y: auto;
+      padding-right: 4px;
+      scrollbar-width: thin;
+    }
+
+    .modal-comment {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 10px;
+      align-items: start;
+    }
+
+    .modal-comment-avatar {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #d9bd78, #9c7439);
+      color: #092116;
+      font-size: .76rem;
+      font-weight: 900;
+    }
+
+    .modal-comment-body {
+      min-width: 0;
+      display: grid;
+      gap: 3px;
+    }
+
+    .modal-comment-meta {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .modal-comment-name {
+      color: #2f2521;
+      font-size: .82rem;
+      font-weight: 900;
+    }
+
+    .modal-comment-time {
+      color: #9a8d84;
+      font-size: .68rem;
+      white-space: nowrap;
+    }
+
+    .modal-comment-text {
+      color: #5f514a;
+      font-size: .84rem;
+      line-height: 1.45;
+      overflow-wrap: anywhere;
+    }
+
+    .modal-comments-empty {
+      padding: 10px 0;
+      color: #91847c;
+      font-size: .82rem;
+    }
+
+    .modal-comment-form {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+    }
+
+    .modal-comment-input {
+      min-width: 0;
+      min-height: 42px;
+      padding: 0 13px;
+      border: 1px solid rgba(47,37,33,.14);
+      border-radius: 999px;
+      background: #fff;
+      color: #2f2521;
+      outline: none;
+      font: inherit;
+      font-size: .82rem;
+    }
+
+    .modal-comment-input:focus {
+      border-color: rgba(183,139,69,.65);
+      box-shadow: 0 0 0 3px rgba(215,180,106,.14);
+    }
+
+    .modal-comment-submit {
+      min-height: 42px;
+      padding: 0 18px;
+      border: 0;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #f0d28d, #bd8f45);
+      color: #092116;
+      font: inherit;
+      font-size: .82rem;
+      font-weight: 900;
+      cursor: pointer;
+      transition: transform 180ms ease, filter 180ms ease;
+    }
+
+    .modal-comment-submit:hover { transform: translateY(-1px); filter: brightness(1.04); }
+
+    .modal-share-status {
+      min-height: 16px;
+      margin: -6px 0 0;
+      color: #8b6b3d;
+      font-size: .72rem;
+      text-align: right;
+    }
+
+    .modal-media-area:fullscreen,
+    .modal-media-area:-webkit-full-screen {
+      width: 100vw;
+      height: 100vh;
+      padding: 70px 70px 30px;
+      background: #020604;
+    }
+
+    .modal-media-area:fullscreen .modal-frame img,
+    .modal-media-area:fullscreen .modal-frame video,
+    .modal-media-area:-webkit-full-screen .modal-frame img,
+    .modal-media-area:-webkit-full-screen .modal-frame video {
+      max-width: 100%;
+      max-height: calc(100vh - 110px);
+    }
+
+    @media (max-width: 620px) {
+      .modal-person-row { grid-template-columns: 40px 1fr; }
+      .modal-utility-actions { grid-column: 1 / -1; width: 100%; }
+      .modal-icon-action { flex: 1; }
+      .modal-comment-form { grid-template-columns: 1fr auto; }
+      .modal-comments-list { max-height: 180px; }
+    }
+
 </style>
 </head>
 
@@ -2835,33 +3868,44 @@
     </section>
 
     <section>
-      <div class="gallery-header">
+      <div class="gallery-header gallery-header-clean">
         <h2 class="gallery-title">Guest Gallery</h2>
-        <div class="gallery-actions">
-          <button class="refresh-btn" id="refreshBtn" type="button">Refresh</button>
-          <button class="secondary-btn" id="coupleToggleBtn" type="button">Couple View</button>
-          <button class="secondary-btn" id="adminToggleBtn" type="button">Admin</button>
+
+      </div>
+
+      <div class="gallery-filter-nav">
+        <div class="gallery-mode-switch" role="tablist" aria-label="Gallery filter category">
+          <button class="gallery-mode-btn is-active" id="mediaModeBtn" type="button" role="tab" aria-selected="true" aria-controls="mediaFilterOptions">
+            Media
+          </button>
+          <button class="gallery-mode-btn" id="albumsModeBtn" type="button" role="tab" aria-selected="false" aria-controls="albumFilterOptions">
+            Albums
+          </button>
         </div>
-      </div>
 
-      <div class="filter-tabs" aria-label="Filter gallery uploads by media type">
-        <button class="filter-btn is-active" type="button" data-filter="all">All</button>
-        <button class="filter-btn" type="button" data-filter="photo">Photos</button>
-        <button class="filter-btn" type="button" data-filter="video">Videos</button>
-      </div>
+        <div class="gallery-filter-options filter-tabs" id="mediaFilterOptions" role="group" aria-label="Filter by media type">
+          <button class="filter-btn" type="button" data-filter="photo">Photos</button>
+          <button class="filter-btn" type="button" data-filter="video">Videos</button>
+        </div>
 
-      <div class="album-tabs" aria-label="Filter gallery uploads by album">
-        <button class="album-btn is-active" type="button" data-album-filter="all">All Albums</button>
-        <button class="album-btn" type="button" data-album-filter="guest-gallery">Guest Gallery</button>
-        <button class="album-btn" type="button" data-album-filter="ceremony">Ceremony</button>
-        <button class="album-btn" type="button" data-album-filter="reception">Reception</button>
-        <button class="album-btn" type="button" data-album-filter="afterparty">Afterparty</button>
+        <div class="gallery-filter-options album-tabs" id="albumFilterOptions" role="group" aria-label="Filter by album" hidden>
+          <button class="album-btn" type="button" data-album-filter="guest-gallery">Guest Gallery</button>
+          <button class="album-btn" type="button" data-album-filter="ceremony">Ceremony</button>
+          <button class="album-btn" type="button" data-album-filter="reception">Reception</button>
+          <button class="album-btn" type="button" data-album-filter="afterparty">After Party</button>
+        </div>
       </div>
 
       <p class="gallery-meta" id="galleryMeta">Loading gallery...</p>
 
       <div class="gallery" id="gallery">
         <div class="empty">Loading photos and videos...</div>
+      </div>
+
+      <div class="gallery-actions gallery-bottom-actions" aria-label="Gallery controls">
+        <button class="refresh-btn" id="refreshBtn" type="button">Refresh</button>
+        <button class="secondary-btn" id="coupleToggleBtn" type="button">Couple View</button>
+        <button class="secondary-btn" id="adminToggleBtn" type="button">Admin</button>
       </div>
     </section>
 
@@ -2978,6 +4022,24 @@
         </div>
       </div>
 
+      <div class="select-upload-identity">
+        <div>
+          <span class="select-identity-label">Upload anonymously</span>
+          <label class="anonymous-toggle-row" for="anonymousUploadToggle">
+            <span class="anonymous-toggle-copy" id="anonymousToggleState">Off</span>
+            <span class="anonymous-toggle">
+              <input id="anonymousUploadToggle" type="checkbox" />
+              <span class="anonymous-toggle-track" aria-hidden="true"></span>
+            </span>
+          </label>
+        </div>
+
+        <label class="select-name-field" id="selectNameField">
+          <span class="select-identity-label">Your name</span>
+          <input class="select-name-input" id="selectGuestNameInput" type="text" maxlength="80" placeholder="Enter your name" autocomplete="name" />
+        </label>
+      </div>
+
       <div class="select-modal-actions">
         <button class="select-close-btn" id="selectCloseBtn" type="button">Close</button>
         <button class="select-next-btn" id="selectNextBtn" type="button" disabled>Next</button>
@@ -3063,37 +4125,66 @@
   </div>
 
   <div class="media-modal" id="mediaModal" role="dialog" aria-modal="true" aria-label="Wedding media preview" aria-hidden="true">
-    <div class="modal-toolbar">
-      <p class="modal-count" id="modalCount">1 / 1</p>
+    <div class="modal-viewer-shell">
+      <div class="modal-media-area">
+        <p class="modal-count" id="modalCount">1 / 1</p>
+        <button class="modal-close" id="modalCloseBtn" type="button" aria-label="Close preview">×</button>
 
-      <div class="modal-actions">
-        <button class="modal-like" id="modalLikeBtn" type="button">
-          ♡ 0
-        </button>
+        <div class="modal-stage" id="modalStage">
+          <button class="modal-nav modal-prev" id="modalPrevBtn" type="button" aria-label="Previous upload">‹</button>
+          <div class="modal-frame" id="modalFrame"></div>
+          <button class="modal-nav modal-next" id="modalNextBtn" type="button" aria-label="Next upload">›</button>
+        </div>
+      </div>
 
-        <button class="modal-download" id="modalDownload" type="button">
-          Download
-        </button>
+      <div class="modal-info-panel">
+        <div class="modal-person-row">
+          <div class="modal-avatar" id="modalAvatar" aria-hidden="true">G</div>
+          <div class="modal-person-copy">
+            <strong id="modalGuestName">Wedding Guest</strong>
+            <span id="modalUploadDate"></span>
+          </div>
+          <div class="modal-utility-actions">
+            <button class="modal-icon-action" id="modalShareBtn" type="button" aria-label="Share this upload">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="m8.6 10.7 6.8-4.1M8.6 13.3l6.8 4.1"></path></svg>
+              <span>Share</span>
+            </button>
+            <button class="modal-icon-action" id="modalFullscreenBtn" type="button" aria-label="View media in fullscreen">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"></path></svg>
+              <span>Fullscreen</span>
+            </button>
+            <button class="modal-download" id="modalDownload" type="button">Download</button>
+          </div>
+        </div>
 
-        <button class="modal-close" id="modalCloseBtn" type="button" aria-label="Close preview">
-          ×
-        </button>
+        <p class="modal-caption-text" id="modalCaptionText">No caption provided.</p>
+
+        <div class="modal-engagement-row">
+          <div class="modal-engagement-actions">
+            <button class="modal-like" id="modalLikeBtn" type="button">♡ 0</button>
+            <button class="modal-comments-toggle" id="modalCommentsToggle" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"></path></svg>
+              <span id="modalCommentsButtonText">0 Comments</span>
+            </button>
+          </div>
+          <span class="modal-album-label" id="modalAlbumLabel">Guest Gallery</span>
+        </div>
+
+        <p class="modal-share-status" id="modalShareStatus" aria-live="polite"></p>
+
+        <section class="modal-comments-panel" id="modalCommentsPanel" aria-label="Comments">
+          <div class="modal-comments-head">
+            <strong>Comments</strong>
+            <span class="modal-comments-count" id="modalCommentsCount">0 comments</span>
+          </div>
+          <div class="modal-comments-list" id="modalCommentsList"></div>
+          <form class="modal-comment-form" id="modalCommentForm">
+            <input class="modal-comment-input" id="modalCommentInput" type="text" maxlength="240" placeholder="Add a comment..." required />
+            <button class="modal-comment-submit" type="submit">Post</button>
+          </form>
+        </section>
       </div>
     </div>
-
-    <div class="modal-stage" id="modalStage">
-      <button class="modal-nav modal-prev" id="modalPrevBtn" type="button" aria-label="Previous upload">
-        ‹
-      </button>
-
-      <div class="modal-frame" id="modalFrame"></div>
-
-      <button class="modal-nav modal-next" id="modalNextBtn" type="button" aria-label="Next upload">
-        ›
-      </button>
-    </div>
-
-    <p class="modal-hint">Tap outside to close. Use arrows or swipe to browse.</p>
   </div>
 
 
@@ -3148,6 +4239,16 @@
     }
 
     const DEVICE_ID = getOrCreateDeviceId();
+    const COMMENT_AUTHOR_STORAGE_KEY = "wedding-comment-author";
+
+    function getStoredCommentAuthor() {
+      return localStorage.getItem(COMMENT_AUTHOR_STORAGE_KEY)?.trim() || "Wedding Guest";
+    }
+
+    function rememberCommentAuthor(name) {
+      const cleanName = (name || "").trim().slice(0, 50);
+      if (cleanName) localStorage.setItem(COMMENT_AUTHOR_STORAGE_KEY, cleanName);
+    }
 
     const ALBUM_LABELS = {
       "guest-gallery": "Guest Gallery",
@@ -3163,6 +4264,10 @@
     const selectValidCount = document.querySelector("#selectValidCount");
     const selectCloseBtn = document.querySelector("#selectCloseBtn");
     const selectNextBtn = document.querySelector("#selectNextBtn");
+    const anonymousUploadToggle = document.querySelector("#anonymousUploadToggle");
+    const anonymousToggleState = document.querySelector("#anonymousToggleState");
+    const selectNameField = document.querySelector("#selectNameField");
+    const selectGuestNameInput = document.querySelector("#selectGuestNameInput");
     const guestNameInput = document.querySelector("#guestNameInput");
     const albumSelect = document.querySelector("#albumSelect");
     const selectedMediaPanel = document.querySelector("#selectedMediaPanel");
@@ -3188,6 +4293,10 @@
     const galleryMeta = document.querySelector("#galleryMeta");
     const filterButtons = document.querySelectorAll(".filter-btn");
     const albumButtons = document.querySelectorAll(".album-btn");
+    const mediaModeBtn = document.querySelector("#mediaModeBtn");
+    const albumsModeBtn = document.querySelector("#albumsModeBtn");
+    const mediaFilterOptions = document.querySelector("#mediaFilterOptions");
+    const albumFilterOptions = document.querySelector("#albumFilterOptions");
     const mediaModal = document.querySelector("#mediaModal");
     const modalStage = document.querySelector("#modalStage");
     const modalFrame = document.querySelector("#modalFrame");
@@ -3196,7 +4305,23 @@
     const modalNextBtn = document.querySelector("#modalNextBtn");
     const modalDownload = document.querySelector("#modalDownload");
     const modalLikeBtn = document.querySelector("#modalLikeBtn");
+    const modalGuestName = document.querySelector("#modalGuestName");
+    const modalUploadDate = document.querySelector("#modalUploadDate");
+    const modalCaptionText = document.querySelector("#modalCaptionText");
+    const modalAlbumLabel = document.querySelector("#modalAlbumLabel");
+    const modalAvatar = document.querySelector("#modalAvatar");
     const modalCount = document.querySelector("#modalCount");
+    const modalMediaArea = document.querySelector(".modal-media-area");
+    const modalShareBtn = document.querySelector("#modalShareBtn");
+    const modalFullscreenBtn = document.querySelector("#modalFullscreenBtn");
+    const modalShareStatus = document.querySelector("#modalShareStatus");
+    const modalCommentsToggle = document.querySelector("#modalCommentsToggle");
+    const modalCommentsButtonText = document.querySelector("#modalCommentsButtonText");
+    const modalCommentsPanel = document.querySelector("#modalCommentsPanel");
+    const modalCommentsCount = document.querySelector("#modalCommentsCount");
+    const modalCommentsList = document.querySelector("#modalCommentsList");
+    const modalCommentForm = document.querySelector("#modalCommentForm");
+    const modalCommentInput = document.querySelector("#modalCommentInput");
     const scrollTopBtn = document.querySelector("#scrollTopBtn");
 
     const coupleToggleBtn = document.querySelector("#coupleToggleBtn");
@@ -3340,7 +4465,22 @@
       }
     }
 
+    function updateAnonymousUploadState() {
+      const isAnonymous = anonymousUploadToggle.checked;
+      anonymousToggleState.textContent = isAnonymous ? "On" : "Off";
+      selectNameField.classList.toggle("is-hidden", isAnonymous);
+      selectNameField.setAttribute("aria-hidden", String(isAnonymous));
+
+      if (isAnonymous) {
+        guestNameInput.value = "";
+      } else {
+        guestNameInput.value = selectGuestNameInput.value.trim();
+      }
+    }
+
     function openSelectModal() {
+      selectGuestNameInput.value = guestNameInput.value;
+      updateAnonymousUploadState();
       renderSelectMediaPreview();
       selectMediaModal.classList.add("is-open");
       selectMediaModal.setAttribute("aria-hidden", "false");
@@ -3602,11 +4742,64 @@
       uploadProgressPercent.textContent = `${percent}%`;
     }
 
+    function launchSuccessConfetti() {
+      const card = uploadProgressModal.querySelector(".upload-progress-card");
+
+      if (!card || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        return;
+      }
+
+      card.querySelector(".success-confetti")?.remove();
+
+      const confetti = document.createElement("div");
+      confetti.className = "success-confetti";
+      confetti.setAttribute("aria-hidden", "true");
+
+      const colors = [
+        "#f3d68f",
+        "#d7b46a",
+        "#fff4dc",
+        "#b8914d",
+        "#7fa58d"
+      ];
+
+      const shapes = ["", "is-round", "is-ribbon"];
+      const pieceCount = window.innerWidth <= 560 ? 30 : 48;
+
+      for (let index = 0; index < pieceCount; index++) {
+        const piece = document.createElement("span");
+        const direction = Math.random() < 0.5 ? -1 : 1;
+
+        piece.className = `confetti-piece ${shapes[Math.floor(Math.random() * shapes.length)]}`;
+        piece.style.setProperty("--x-start", `${42 + Math.random() * 16}%`);
+        piece.style.setProperty("--x-end", `${direction * (45 + Math.random() * 210)}px`);
+        piece.style.setProperty("--y-end", `${190 + Math.random() * 270}px`);
+        piece.style.setProperty("--rotation", `${direction * (260 + Math.random() * 720)}deg`);
+        piece.style.setProperty("--delay", `${Math.random() * 260}ms`);
+        piece.style.setProperty("--duration", `${1300 + Math.random() * 900}ms`);
+        piece.style.setProperty("--confetti-color", colors[Math.floor(Math.random() * colors.length)]);
+
+        confetti.appendChild(piece);
+      }
+
+      card.appendChild(confetti);
+
+      window.setTimeout(() => {
+        confetti.remove();
+      }, 2600);
+    }
+
     function showUploadSuccess(uploaded, failed) {
       uploadProgressModal.classList.add("is-success");
       uploadSuccessCopy.textContent = failed
         ? `${uploaded} file${uploaded !== 1 ? "s" : ""} uploaded successfully. ${failed} failed.`
         : "Your files have been submitted successfully.";
+
+      if (uploaded > 0) {
+        requestAnimationFrame(() => {
+          launchSuccessConfetti();
+        });
+      }
     }
 
     function closeUploadProgress() {
@@ -3830,25 +5023,8 @@
 
         previewButton.addEventListener("click", () => openMediaModal(index));
 
-        const details = document.createElement("div");
-        details.className = "photo-details";
-
-        const albumPill = document.createElement("span");
-        albumPill.className = "album-pill";
-        albumPill.textContent = getAlbumLabel(item.album);
-        details.appendChild(albumPill);
-
-        if (item.guestName) details.appendChild(createTextElement("photo-uploader", item.guestName));
-        if (item.caption) details.appendChild(createTextElement("photo-caption", item.caption));
-
-        const footer = document.createElement("div");
-        footer.className = "photo-footer";
-
-        const dateText = document.createElement("span");
-        dateText.textContent = item.createdAt ? formatDateTime(item.createdAt) : "";
-
         const likeButton = document.createElement("button");
-        likeButton.className = "like-btn";
+        likeButton.className = "like-btn gallery-like-overlay";
         likeButton.type = "button";
         likeButton.textContent = getLikeLabel(item);
         likeButton.disabled = !item.id || item.likeBusy;
@@ -3859,11 +5035,8 @@
           likeMediaItem(item);
         });
 
-        footer.appendChild(dateText);
-        footer.appendChild(likeButton);
-        details.appendChild(footer);
         card.appendChild(previewButton);
-        card.appendChild(details);
+        card.appendChild(likeButton);
         gallery.appendChild(card);
       });
 
@@ -3963,6 +5136,122 @@
       if (mediaModal.classList.contains("is-open")) renderModalMedia();
     }
 
+
+
+    function getCommentStorageKey(item) {
+      return `wedding-comments-${item?.id || encodeURIComponent(item?.url || "unknown")}`;
+    }
+
+    function getCommentsForItem(item) {
+      try {
+        const saved = JSON.parse(localStorage.getItem(getCommentStorageKey(item)) || "[]");
+        return Array.isArray(saved) ? saved : [];
+      } catch (error) {
+        console.warn("Could not read comments:", error);
+        return [];
+      }
+    }
+
+    function saveCommentsForItem(item, comments) {
+      localStorage.setItem(getCommentStorageKey(item), JSON.stringify(comments));
+    }
+
+    function formatCommentTime(value) {
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return "Just now";
+      return new Intl.DateTimeFormat("en", {
+        month: "short",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit"
+      }).format(date);
+    }
+
+    function renderModalComments(item) {
+      const comments = getCommentsForItem(item);
+      modalCommentsList.innerHTML = "";
+      modalCommentsCount.textContent = `${comments.length} comment${comments.length === 1 ? "" : "s"}`;
+      modalCommentsButtonText.textContent = `${comments.length} Comment${comments.length === 1 ? "" : "s"}`;
+
+      if (!comments.length) {
+        const empty = document.createElement("p");
+        empty.className = "modal-comments-empty";
+        empty.textContent = "No comments yet. Be the first to leave one.";
+        modalCommentsList.appendChild(empty);
+        return;
+      }
+
+      comments.forEach((comment) => {
+        const article = document.createElement("article");
+        article.className = "modal-comment";
+
+        const avatar = document.createElement("div");
+        avatar.className = "modal-comment-avatar";
+        avatar.textContent = (comment.author || "G").trim().charAt(0).toUpperCase() || "G";
+
+        const body = document.createElement("div");
+        body.className = "modal-comment-body";
+
+        const meta = document.createElement("div");
+        meta.className = "modal-comment-meta";
+
+        const name = document.createElement("strong");
+        name.className = "modal-comment-name";
+        name.textContent = comment.author || "Wedding Guest";
+
+        const time = document.createElement("span");
+        time.className = "modal-comment-time";
+        time.textContent = formatCommentTime(comment.createdAt);
+
+        const text = document.createElement("p");
+        text.className = "modal-comment-text";
+        text.textContent = comment.text;
+
+        meta.append(name, time);
+        body.append(meta, text);
+        article.append(avatar, body);
+        modalCommentsList.appendChild(article);
+      });
+    }
+
+    async function shareCurrentMedia() {
+      const item = visibleMediaItems[activeModalIndex];
+      if (!item) return;
+      const shareData = {
+        title: "Wedding Gallery",
+        text: item.caption || "View this wedding memory.",
+        url: item.url || window.location.href
+      };
+
+      try {
+        if (navigator.share) {
+          await navigator.share(shareData);
+          modalShareStatus.textContent = "Shared successfully.";
+        } else {
+          await navigator.clipboard.writeText(shareData.url);
+          modalShareStatus.textContent = "Media link copied.";
+        }
+      } catch (error) {
+        if (error?.name !== "AbortError") {
+          console.error("Share error:", error);
+          modalShareStatus.textContent = "Could not share this upload.";
+        }
+      }
+      window.setTimeout(() => { modalShareStatus.textContent = ""; }, 2200);
+    }
+
+    async function toggleMediaFullscreen() {
+      try {
+        if (!document.fullscreenElement) {
+          await modalMediaArea.requestFullscreen();
+        } else {
+          await document.exitFullscreen();
+        }
+      } catch (error) {
+        console.error("Fullscreen error:", error);
+      }
+    }
+
     function openMediaModal(index) {
       if (!visibleMediaItems.length) return;
       activeModalIndex = index;
@@ -3983,7 +5272,14 @@
       modalLikeBtn.textContent = getLikeLabel(item);
       modalLikeBtn.classList.toggle("is-liked", Boolean(item.liked));
       modalLikeBtn.setAttribute("aria-label", item.liked ? "Remove reaction" : "React to this upload");
-      modalCount.textContent = `${activeModalIndex + 1} / ${visibleMediaItems.length}${item.guestName ? ` • ${item.guestName}` : ""}${item.createdAt ? ` • ${formatDateTime(item.createdAt)}` : ""}`;
+      modalCount.textContent = `${activeModalIndex + 1} / ${visibleMediaItems.length}`;
+      const guestLabel = item.guestName || "Wedding Guest";
+      modalGuestName.textContent = guestLabel;
+      modalUploadDate.textContent = item.createdAt ? formatDateTime(item.createdAt) : "";
+      modalCaptionText.textContent = item.caption || "No caption provided.";
+      modalAlbumLabel.textContent = getAlbumLabel(item.album);
+      modalAvatar.textContent = guestLabel.trim().charAt(0).toUpperCase() || "G";
+      renderModalComments(item);
 
       if (item.type === "video") {
         const video = document.createElement("video");
@@ -4352,6 +5648,30 @@
 
     refreshBtn.addEventListener("click", loadGallery);
 
+    function setGalleryFilterMode(mode) {
+      const showMedia = mode === "media";
+
+      mediaModeBtn.classList.toggle("is-active", showMedia);
+      albumsModeBtn.classList.toggle("is-active", !showMedia);
+      mediaModeBtn.setAttribute("aria-selected", String(showMedia));
+      albumsModeBtn.setAttribute("aria-selected", String(!showMedia));
+      mediaFilterOptions.hidden = !showMedia;
+      albumFilterOptions.hidden = showMedia;
+
+      if (showMedia) {
+        activeAlbumFilter = "all";
+        albumButtons.forEach((item) => item.classList.remove("is-active"));
+      } else {
+        activeFilter = "all";
+        filterButtons.forEach((item) => item.classList.remove("is-active"));
+      }
+
+      renderGallery();
+    }
+
+    mediaModeBtn.addEventListener("click", () => setGalleryFilterMode("media"));
+    albumsModeBtn.addEventListener("click", () => setGalleryFilterMode("albums"));
+
     filterButtons.forEach((button) => {
       button.addEventListener("click", () => {
         activeFilter = button.dataset.filter;
@@ -4386,16 +5706,68 @@
       if (event.key === "Enter") galleryUnlockBtn.click();
     });
 
+    const panelCloseTimers = new WeakMap();
+
+    function openDashboardPanel(panel) {
+      const pendingTimer = panelCloseTimers.get(panel);
+      if (pendingTimer) window.clearTimeout(pendingTimer);
+
+      panelCloseTimers.delete(panel);
+      panel.hidden = false;
+      panel.classList.remove("is-closing");
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => panel.classList.add("is-open"));
+      });
+    }
+
+    function closeDashboardPanel(panel, { immediate = false } = {}) {
+      const pendingTimer = panelCloseTimers.get(panel);
+      if (pendingTimer) window.clearTimeout(pendingTimer);
+      panelCloseTimers.delete(panel);
+
+      if (panel.hidden) return;
+
+      if (immediate || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        panel.classList.remove("is-open", "is-closing");
+        panel.hidden = true;
+        return;
+      }
+
+      panel.classList.remove("is-open");
+      panel.classList.add("is-closing");
+
+      const timer = window.setTimeout(() => {
+        panel.hidden = true;
+        panel.classList.remove("is-closing");
+        panelCloseTimers.delete(panel);
+      }, 300);
+
+      panelCloseTimers.set(panel, timer);
+    }
+
+    function scrollPanelIntoView(panel) {
+      window.setTimeout(() => {
+        panel.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 90);
+    }
+
     coupleToggleBtn.addEventListener("click", () => {
-      couplePanel.hidden = !couplePanel.hidden;
-      if (!couplePanel.hidden) {
+      const shouldOpen = couplePanel.hidden || !couplePanel.classList.contains("is-open");
+
+      closeDashboardPanel(adminPanel);
+
+      if (shouldOpen) {
         renderCoupleStats();
-        couplePanel.scrollIntoView({ behavior: "smooth", block: "start" });
+        openDashboardPanel(couplePanel);
+        scrollPanelIntoView(couplePanel);
+      } else {
+        closeDashboardPanel(couplePanel);
       }
     });
 
     coupleCloseBtn.addEventListener("click", () => {
-      couplePanel.hidden = true;
+      closeDashboardPanel(couplePanel);
     });
 
     coupleDownloadApprovedBtn.addEventListener("click", () => {
@@ -4411,19 +5783,26 @@
     });
 
     adminToggleBtn.addEventListener("click", () => {
-      adminPanel.hidden = !adminPanel.hidden;
-      if (!adminPanel.hidden) {
-        adminPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+      const shouldOpen = adminPanel.hidden || !adminPanel.classList.contains("is-open");
+
+      closeDashboardPanel(couplePanel);
+
+      if (shouldOpen) {
+        openDashboardPanel(adminPanel);
+        scrollPanelIntoView(adminPanel);
+
         if (currentAdminPasscode) {
           adminLoginBox.hidden = true;
           adminControls.hidden = false;
           refreshAdminDashboard();
         }
+      } else {
+        closeDashboardPanel(adminPanel);
       }
     });
 
     adminCloseBtn.addEventListener("click", () => {
-      adminPanel.hidden = true;
+      closeDashboardPanel(adminPanel);
     });
 
     adminUnlockBtn.addEventListener("click", unlockAdmin);
@@ -4448,6 +5827,38 @@
     modalLikeBtn.addEventListener("click", () => {
       const item = visibleMediaItems[activeModalIndex];
       likeMediaItem(item);
+    });
+
+
+    modalShareBtn.addEventListener("click", shareCurrentMedia);
+    modalFullscreenBtn.addEventListener("click", toggleMediaFullscreen);
+    modalCommentsToggle.addEventListener("click", () => {
+      modalCommentsPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      modalCommentInput.focus({ preventScroll: true });
+    });
+    modalCommentForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const item = visibleMediaItems[activeModalIndex];
+      if (!item) return;
+
+      const author = getStoredCommentAuthor();
+      const text = modalCommentInput.value.trim().slice(0, 240);
+      if (!text) return;
+
+      const comments = getCommentsForItem(item);
+      comments.push({
+        id: crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`,
+        author,
+        text,
+        createdAt: new Date().toISOString()
+      });
+      saveCommentsForItem(item, comments);
+      modalCommentInput.value = "";
+      renderModalComments(item);
+      modalCommentsList.scrollTop = modalCommentsList.scrollHeight;
+    });
+    document.addEventListener("fullscreenchange", () => {
+      modalFullscreenBtn.querySelector("span").textContent = document.fullscreenElement ? "Exit Fullscreen" : "Fullscreen";
     });
 
     mediaModal.addEventListener("click", (event) => {
@@ -4504,6 +5915,25 @@
     clearSelectedBtn.addEventListener("click", () => {
       selectedMediaPanel.hidden = true;
       openSelectModal();
+    });
+
+    anonymousUploadToggle.addEventListener("change", updateAnonymousUploadState);
+
+    selectGuestNameInput.addEventListener("input", () => {
+      if (!anonymousUploadToggle.checked) {
+        guestNameInput.value = selectGuestNameInput.value.trimStart();
+        rememberCommentAuthor(selectGuestNameInput.value);
+      }
+    });
+
+    selectNextBtn.addEventListener("click", () => {
+      guestNameInput.value = anonymousUploadToggle.checked
+        ? ""
+        : selectGuestNameInput.value.trim();
+
+      if (!anonymousUploadToggle.checked) {
+        rememberCommentAuthor(selectGuestNameInput.value);
+      }
     });
 
     uploadSelectedBtn.addEventListener("click", async () => {
@@ -4637,11 +6067,11 @@
 
     async function init() {
       if (new URLSearchParams(window.location.search).has("admin")) {
-        adminPanel.hidden = false;
+        openDashboardPanel(adminPanel);
       }
 
       if (new URLSearchParams(window.location.search).has("couple")) {
-        couplePanel.hidden = false;
+        openDashboardPanel(couplePanel);
       }
 
       await loadGallery();
