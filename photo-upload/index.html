@@ -4631,7 +4631,7 @@
         </div>
 
         <p class="status" id="status" role="status" aria-live="polite">
-          Upload JPG, PNG, iPhone photos, MP4, MOV, or WEBM. Max 50MB per file.
+          Upload JPG, PNG, WebP, iPhone photos, MP4, MOV, or WEBM. Photos are optimized for the gallery while originals remain downloadable. Max 50MB per file.
         </p>
       </div>
     </section>
@@ -5054,6 +5054,10 @@
     const UPLOADS_TABLE = "wedding_uploads";
     const MAX_FILE_SIZE_MB = 50;
     const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+    const WEB_IMAGE_MAX_DIMENSION = 2400;
+    const WEB_IMAGE_QUALITY = 0.82;
+    const ORIGINALS_FOLDER = "originals";
+    const OPTIMIZED_FOLDER = "optimized";
     const VIDEO_EXTENSIONS = ["mp4", "mov", "webm"];
     const DEVICE_ID_STORAGE_KEY = "wedding_gallery_device_id";
     const GALLERY_PASSCODE_STORAGE_KEY = "wedding_gallery_passcode";
@@ -5260,6 +5264,8 @@
     function getContentType(file, extension) {
       const normalizedExtension = (extension || getFileExtension(file)).toLowerCase();
       if (normalizedExtension === "jpg" || normalizedExtension === "jpeg") return "image/jpeg";
+      if (normalizedExtension === "heic") return "image/heic";
+      if (normalizedExtension === "heif") return "image/heif";
       if (normalizedExtension === "png") return "image/png";
       if (normalizedExtension === "webp") return "image/webp";
       if (normalizedExtension === "gif") return "image/gif";
@@ -5759,28 +5765,117 @@
       };
     }
 
-    async function prepareMediaForUpload(file) {
-      if (!isHeicFile(file)) {
-        const extension = getFileExtension(file) || (isVideoFile(file) ? "mp4" : "jpg");
-        return { file, extension };
-      }
+    function isGifFile(file) {
+      return getFileExtension(file) === "gif" || file.type === "image/gif";
+    }
 
-      statusText.textContent = `Converting ${file.name} to JPG...`;
+    async function decodeImageForCanvas(file) {
+      if (!isHeicFile(file)) return file;
 
+      statusText.textContent = `Preparing ${file.name} for web preview...`;
       const converted = await heic2any({
         blob: file,
         toType: "image/jpeg",
-        quality: 0.86
+        quality: 0.92
+      });
+      return Array.isArray(converted) ? converted[0] : converted;
+    }
+
+    async function loadImageElement(blob) {
+      const objectUrl = URL.createObjectURL(blob);
+      try {
+        const image = new Image();
+        image.decoding = "async";
+        await new Promise((resolve, reject) => {
+          image.onload = resolve;
+          image.onerror = () => reject(new Error("The image could not be decoded."));
+          image.src = objectUrl;
+        });
+        return image;
+      } finally {
+        URL.revokeObjectURL(objectUrl);
+      }
+    }
+
+    async function createOptimizedWebP(file) {
+      if (isVideoFile(file) || isGifFile(file)) return null;
+
+      const sourceBlob = await decodeImageForCanvas(file);
+      let source;
+      let sourceWidth;
+      let sourceHeight;
+      let closeSource = () => {};
+
+      if ("createImageBitmap" in window) {
+        try {
+          source = await createImageBitmap(sourceBlob, { imageOrientation: "from-image" });
+          sourceWidth = source.width;
+          sourceHeight = source.height;
+          closeSource = () => source.close?.();
+        } catch (error) {
+          console.warn("createImageBitmap fallback:", error);
+        }
+      }
+
+      if (!source) {
+        source = await loadImageElement(sourceBlob);
+        sourceWidth = source.naturalWidth;
+        sourceHeight = source.naturalHeight;
+      }
+
+      if (!sourceWidth || !sourceHeight) {
+        closeSource();
+        throw new Error("The image dimensions could not be read.");
+      }
+
+      const scale = Math.min(
+        1,
+        WEB_IMAGE_MAX_DIMENSION / Math.max(sourceWidth, sourceHeight)
+      );
+      const width = Math.max(1, Math.round(sourceWidth * scale));
+      const height = Math.max(1, Math.round(sourceHeight * scale));
+
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const context = canvas.getContext("2d");
+      if (!context) {
+        closeSource();
+        throw new Error("Image optimization is not supported by this browser.");
+      }
+
+      context.imageSmoothingEnabled = true;
+      context.imageSmoothingQuality = "high";
+      context.drawImage(source, 0, 0, width, height);
+      closeSource();
+
+      const webpBlob = await new Promise((resolve, reject) => {
+        canvas.toBlob(
+          (blob) => blob ? resolve(blob) : reject(new Error("WebP conversion failed.")),
+          "image/webp",
+          WEB_IMAGE_QUALITY
+        );
       });
 
-      const convertedBlob = Array.isArray(converted) ? converted[0] : converted;
-      const jpgFile = new File(
-        [convertedBlob],
-        file.name.replace(/\.(heic|heif)$/i, ".jpg"),
-        { type: "image/jpeg" }
-      );
+      canvas.width = 1;
+      canvas.height = 1;
 
-      return { file: jpgFile, extension: "jpg" };
+      if (webpBlob.type !== "image/webp") {
+        throw new Error("This browser could not create a WebP image.");
+      }
+
+      const baseName = file.name.replace(/\.[^.]+$/, "") || "wedding-photo";
+      return new File([webpBlob], `${baseName}.webp`, { type: "image/webp" });
+    }
+
+    async function uploadStorageFile(path, file, contentType) {
+      const { error } = await client.storage.from(BUCKET_NAME).upload(path, file, {
+        cacheControl: "3600",
+        upsert: false,
+        contentType
+      });
+      if (error) throw error;
+      return client.storage.from(BUCKET_NAME).getPublicUrl(path).data.publicUrl;
     }
 
     function getVisibleItems() {
@@ -5814,8 +5909,8 @@
         uploadSelectedBtn.disabled = !selectedMediaItems.some((item) => item.valid);
       }
       statusText.textContent = currentSettings.requireApproval
-        ? `Upload JPG, PNG, iPhone photos, MP4, MOV, or WEBM. Max ${MAX_FILE_SIZE_MB}MB. Uploads will appear after approval.`
-        : `Upload JPG, PNG, iPhone photos, MP4, MOV, or WEBM. Max ${MAX_FILE_SIZE_MB}MB per file.`;
+        ? `Upload photos or videos up to ${MAX_FILE_SIZE_MB}MB. Photos are optimized for viewing; originals stay downloadable. Uploads will appear after approval.`
+        : `Upload photos or videos up to ${MAX_FILE_SIZE_MB}MB. Photos are optimized for viewing; originals stay downloadable.`;
     }
 
     function showPrivateGate(message = "") {
@@ -5855,13 +5950,16 @@
 
     function mapDatabaseRowToItem(row) {
       const extension = getExtensionFromName(row.file_name || row.file_path || "");
-      const { data: publicData } = client.storage.from(BUCKET_NAME).getPublicUrl(row.file_path);
+      const { data: originalPublicData } = client.storage.from(BUCKET_NAME).getPublicUrl(row.file_path);
+      const originalUrl = originalPublicData.publicUrl;
+      const displayUrl = row.file_url || originalUrl;
 
       return {
         id: row.id,
         name: row.file_name || row.file_path.split("/").pop(),
         path: row.file_path,
-        url: row.file_url || publicData.publicUrl,
+        url: displayUrl,
+        originalUrl,
         extension,
         type: getDisplayMediaType(row.file_type, extension),
         size: 0,
@@ -6345,7 +6443,8 @@
     }
 
     async function forceDownloadItem(item, prefix = "wedding-upload") {
-      const response = await fetch(item.url, { mode: "cors" });
+      const downloadUrl = item.originalUrl || item.url;
+      const response = await fetch(downloadUrl, { mode: "cors" });
       if (!response.ok) throw new Error(`Download failed: ${response.status}`);
       const blob = await response.blob();
       const blobUrl = URL.createObjectURL(blob);
@@ -6370,7 +6469,7 @@
         await forceDownloadItem(item);
       } catch (error) {
         console.error("Download error:", error);
-        window.open(item.url, "_blank", "noopener");
+        window.open(item.originalUrl || item.url, "_blank", "noopener");
       } finally {
         modalDownload.disabled = false;
         modalDownload.textContent = "Download";
@@ -6394,7 +6493,7 @@
         const safeName = `${String(index + 1).padStart(3, "0")}-${album}-${item.name || `upload.${extension}`}`.replace(/[^a-z0-9._-]/gi, "-");
 
         statusText.textContent = `Preparing ZIP ${index + 1} of ${validItems.length}: ${item.name}`;
-        const response = await fetch(item.url, { mode: "cors" });
+        const response = await fetch(item.originalUrl || item.url, { mode: "cors" });
         if (!response.ok) throw new Error(`Could not download ${item.name}`);
         const blob = await response.blob();
         folder.file(safeName, blob);
@@ -7111,38 +7210,52 @@
         try {
           statusText.textContent = `Preparing ${itemNumber} of ${uploadableItems.length}: ${originalFile.name} (${formatBytes(originalFile.size)})...`;
 
-          const prepared = await prepareMediaForUpload(originalFile);
-          const uploadFile = prepared.file;
-          const fileExt = prepared.extension;
+          const originalExtension = getFileExtension(originalFile) || (isVideoFile(originalFile) ? "mp4" : "jpg");
+          const originalContentType = getContentType(originalFile, originalExtension);
+          const mediaType = isVideoFile(originalFile) ? "video" : "photo";
           const safeName = crypto.randomUUID();
-          const filePath = `${FOLDER_NAME}/${Date.now()}-${safeName}.${fileExt}`;
-          const contentType = getContentType(uploadFile, fileExt);
-          const mediaType = getMediaTypeFromExtension(fileExt);
+          const timestamp = Date.now();
+          const originalPath = `${ORIGINALS_FOLDER}/${FOLDER_NAME}/${timestamp}-${safeName}.${originalExtension}`;
 
-          if (contentType === "application/octet-stream") {
+          if (originalContentType === "application/octet-stream") {
             throw new Error(`Unsupported content type for ${originalFile.name}`);
           }
 
-          statusText.textContent = `Uploading ${itemNumber} of ${uploadableItems.length}: ${originalFile.name}...`;
+          statusText.textContent = `Uploading original ${itemNumber} of ${uploadableItems.length}: ${originalFile.name}...`;
+          const originalPublicUrl = await uploadStorageFile(
+            originalPath,
+            originalFile,
+            originalContentType
+          );
 
-          const { error: uploadError } = await client.storage.from(BUCKET_NAME).upload(filePath, uploadFile, {
-            cacheControl: "3600",
-            upsert: false,
-            contentType
-          });
+          let galleryPublicUrl = originalPublicUrl;
 
-          if (uploadError) throw uploadError;
-
-          const { data: publicData } = client.storage.from(BUCKET_NAME).getPublicUrl(filePath);
+          if (mediaType === "photo" && !isGifFile(originalFile)) {
+            try {
+              statusText.textContent = `Optimizing ${itemNumber} of ${uploadableItems.length}: ${originalFile.name}...`;
+              const optimizedFile = await createOptimizedWebP(originalFile);
+              if (optimizedFile) {
+                const optimizedPath = `${OPTIMIZED_FOLDER}/${FOLDER_NAME}/${timestamp}-${safeName}.webp`;
+                galleryPublicUrl = await uploadStorageFile(
+                  optimizedPath,
+                  optimizedFile,
+                  "image/webp"
+                );
+              }
+            } catch (optimizationError) {
+              console.warn(`WebP optimization failed for ${originalFile.name}; using original in gallery.`, optimizationError);
+              galleryPublicUrl = originalPublicUrl;
+            }
+          }
 
           statusText.textContent = `Saving details for ${originalFile.name}...`;
 
           await createUploadRecord({
-            filePath,
-            publicUrl: publicData.publicUrl,
-            fileName: uploadFile.name,
+            filePath: originalPath,
+            publicUrl: galleryPublicUrl,
+            fileName: originalFile.name,
             mediaType,
-            contentType,
+            contentType: originalContentType,
             guestName,
             caption: item.caption.trim().slice(0, 240),
             album
