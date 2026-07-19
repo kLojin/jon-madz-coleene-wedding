@@ -101,75 +101,68 @@ if (countdownBlock) {
   setInterval(updateCountdown, 1000);
 }
 
-/* Q&A ACCORDION */
 /* SMOOTH Q&A ACCORDION */
 const accordionItems = document.querySelectorAll(".accordion-item");
 
-const openAccordion = (item) => {
-  const content = item.querySelector(".accordion-content");
-  const button = item.querySelector(".accordion-button");
-
-  item.classList.add("active");
-  button.setAttribute("aria-expanded", "true");
-
-  content.style.height = `${content.scrollHeight}px`;
-
-  content.addEventListener(
-    "transitionend",
-    () => {
-      if (item.classList.contains("active")) {
-        content.style.height = "auto";
-      }
-    },
-    { once: true }
-  );
-};
-
-const closeAccordion = (item) => {
-  const content = item.querySelector(".accordion-content");
-  const button = item.querySelector(".accordion-button");
-
-  button.setAttribute("aria-expanded", "false");
-
-  content.style.height = `${content.scrollHeight}px`;
-
-  requestAnimationFrame(() => {
-    item.classList.remove("active");
-    content.style.height = "0px";
-  });
-};
-
 accordionItems.forEach((item) => {
   const button = item.querySelector(".accordion-button");
-  const content = item.querySelector(".accordion-content");
-
-  button.setAttribute(
-    "aria-expanded",
-    item.classList.contains("active") ? "true" : "false"
-  );
-
-  if (item.classList.contains("active")) {
-    content.style.height = "auto";
-  } else {
-    content.style.height = "0px";
-  }
 
   button.addEventListener("click", () => {
     const isActive = item.classList.contains("active");
 
     accordionItems.forEach((accordionItem) => {
       if (accordionItem !== item) {
-        closeAccordion(accordionItem);
+        accordionItem.classList.remove("active");
+        accordionItem
+          .querySelector(".accordion-button")
+          .setAttribute("aria-expanded", "false");
       }
     });
 
-    if (isActive) {
-      closeAccordion(item);
-    } else {
-      openAccordion(item);
-    }
+    item.classList.toggle("active", !isActive);
+    button.setAttribute("aria-expanded", String(!isActive));
   });
 });
+
+/* PROGRESSIVE RSVP FIELDS */
+const attendanceSelect = document.getElementById("attendanceSelect");
+const rsvpFollowUp = document.getElementById("rsvpFollowUp");
+const guestCount = document.getElementById("guestCount");
+
+if (attendanceSelect && rsvpFollowUp && guestCount) {
+  const followUpFields = rsvpFollowUp.querySelectorAll("input, textarea, select");
+  const attendingOnlyFields = rsvpFollowUp.querySelectorAll(".attending-only-field");
+  const progressiveRsvpForm = document.getElementById("rsvpForm");
+
+  const updateRsvpFields = () => {
+    const hasSelectedAttendance = attendanceSelect.value !== "";
+    const isAttending = attendanceSelect.value === "Yes, I will attend";
+
+    rsvpFollowUp.classList.toggle("is-visible", hasSelectedAttendance);
+    rsvpFollowUp.setAttribute("aria-hidden", String(!hasSelectedAttendance));
+    rsvpFollowUp.inert = !hasSelectedAttendance;
+    followUpFields.forEach((field) => {
+      field.disabled = !hasSelectedAttendance;
+    });
+    attendingOnlyFields.forEach((field) => {
+      field.hidden = !isAttending;
+      field.querySelectorAll("input, textarea, select").forEach((input) => {
+        input.disabled = !isAttending;
+      });
+    });
+    guestCount.required = isAttending;
+
+    if (!isAttending) {
+      guestCount.value = "";
+    }
+  };
+
+  attendanceSelect.addEventListener("change", updateRsvpFields);
+  progressiveRsvpForm?.addEventListener("reset", () => {
+    requestAnimationFrame(updateRsvpFields);
+  });
+  updateRsvpFields();
+}
 
 /* GIFT DETAILS TOGGLE */
 /* SMOOTH GIFT DETAILS TOGGLE */
@@ -303,4 +296,44 @@ if (rsvpForm && formStatus) {
       }
     }, 3500);
   });
+}
+
+/* HOME VIDEO SOUND TOGGLE */
+const homeHeroVideo = document.getElementById("homeHeroVideo");
+const musicToggle = document.getElementById("musicToggle");
+
+if (homeHeroVideo && musicToggle) {
+  const musicLabel = musicToggle.querySelector(".music-toggle-label");
+
+  const syncMusicToggle = () => {
+    const isPlayingWithSound = !homeHeroVideo.muted && !homeHeroVideo.paused;
+
+    musicToggle.setAttribute("aria-pressed", String(isPlayingWithSound));
+    musicToggle.setAttribute(
+      "aria-label",
+      isPlayingWithSound ? "Turn video sound off" : "Turn video sound on"
+    );
+    musicLabel.textContent = isPlayingWithSound ? "Music On" : "Music Off";
+  };
+
+  musicToggle.addEventListener("click", async () => {
+    if (homeHeroVideo.muted) {
+      homeHeroVideo.muted = false;
+
+      try {
+        await homeHeroVideo.play();
+      } catch (error) {
+        homeHeroVideo.muted = true;
+      }
+    } else {
+      homeHeroVideo.muted = true;
+    }
+
+    syncMusicToggle();
+  });
+
+  homeHeroVideo.addEventListener("volumechange", syncMusicToggle);
+  homeHeroVideo.addEventListener("pause", syncMusicToggle);
+  homeHeroVideo.addEventListener("play", syncMusicToggle);
+  syncMusicToggle();
 }

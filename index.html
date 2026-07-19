@@ -31,11 +31,6 @@
   <header class="site-header">
     <div class="header-inner">
 
-      <a href="#home" class="site-title">
-        Jon Madz & Coleene
-        <span>June 15, 2027</span>
-      </a>
-
       <button class="menu-toggle" aria-label="Open navigation" aria-expanded="false">
         <span></span>
         <span></span>
@@ -61,50 +56,56 @@
 
     <!-- HOME -->
     <section id="home" class="section section-home">
-      <div class="container narrow">
+      <div class="home-hero">
+        <video
+          id="homeHeroVideo"
+          class="home-hero-video"
+          autoplay
+          muted
+          loop
+          playsinline
+          poster="assets/images/home-hero.jpg"
+        >
+          <source src="assets/videos/home-hero.mp4" type="video/mp4" />
+        </video>
 
-        <div class="hero-image-wrap reveal">
-  <video
-    class="hero-image hero-video"
-    autoplay
-    muted
-    loop
-    playsinline
-    poster="assets/images/home-hero.jpg"
-  >
-    <source src="assets/videos/home-hero.mp4" type="video/mp4" />
-  </video>
-</div>
+        <div class="home-hero-shade" aria-hidden="true"></div>
 
-        <div class="home-actions reveal">
-          <a href="#rsvp" class="btn btn-dark">RSVP</a>
-        </div>
+        <button
+          id="musicToggle"
+          class="music-toggle"
+          type="button"
+          aria-label="Turn video sound on"
+          aria-pressed="false"
+        >
+          <span class="music-toggle-icon" aria-hidden="true">
+            <span class="music-bar"></span>
+            <span class="music-bar"></span>
+            <span class="music-bar"></span>
+          </span>
+          <span class="music-toggle-label">Music Off</span>
+        </button>
 
-        <div class="countdown-block reveal" data-wedding-date="2027-06-15T15:30:00">
-          <p class="eyebrow">Days Until We Say I Do</p>
+        <div class="home-hero-content reveal">
+          <p class="home-hero-date">June 15, 2027</p>
+          <h1>Jon Madz <span>&amp;</span> Coleene</h1>
 
-          <div class="countdown">
-            <div>
-              <strong id="days">00</strong>
-              <span>Days</span>
-            </div>
+          <a href="#rsvp" class="btn home-rsvp-btn">RSVP</a>
 
-            <div>
-              <strong id="hours">00</strong>
-              <span>Hours</span>
-            </div>
+          <div class="countdown-block" data-wedding-date="2027-06-15T15:30:00">
+            <p class="eyebrow">Days Until We Say I Do</p>
 
-            <div>
-              <strong id="minutes">00</strong>
-              <span>Minutes</span>
-            </div>
-
-            <div>
-              <strong id="seconds">00</strong>
-              <span>Seconds</span>
+            <div class="countdown">
+              <div><strong id="days">00</strong><span>Days</span></div>
+              <div><strong id="hours">00</strong><span>Hours</span></div>
+              <div><strong id="minutes">00</strong><span>Minutes</span></div>
+              <div><strong id="seconds">00</strong><span>Seconds</span></div>
             </div>
           </div>
         </div>
+      </div>
+
+      <div class="container narrow">
 
         <div class="wedding-day reveal">
           <p class="eyebrow">Wedding Day</p>
@@ -207,25 +208,29 @@
             <article class="person-card">
               <img src="assets/images/wedding-party/bridesmaid-01.jpg" alt="Bridesmaid" />
               <h3>Name Here</h3>
-              <p>Maid of Honor</p>
+              <p class="person-role">Maid of Honor</p>
+              <p class="person-description">Her closest confidante and steady source of joy.</p>
             </article>
 
             <article class="person-card">
               <img src="assets/images/wedding-party/bridesmaid-02.jpg" alt="Bridesmaid" />
               <h3>Name Here</h3>
-              <p>Bridesmaid</p>
+              <p class="person-role">Bridesmaid</p>
+              <p class="person-description">A dear friend who makes every moment brighter.</p>
             </article>
 
             <article class="person-card">
               <img src="assets/images/wedding-party/bridesmaid-03.jpg" alt="Bridesmaid" />
               <h3>Name Here</h3>
-              <p>Bridesmaid</p>
+              <p class="person-role">Bridesmaid</p>
+              <p class="person-description">Always ready with kindness, laughter, and love.</p>
             </article>
 
             <article class="person-card">
               <img src="assets/images/wedding-party/bridesmaid-04.jpg" alt="Bridesmaid" />
               <h3>Name Here</h3>
-              <p>Bridesmaid</p>
+              <p class="person-role">Bridesmaid</p>
+              <p class="person-description">A treasured friend through every beautiful chapter.</p>
             </article>
           </div>
         </div>
@@ -239,25 +244,29 @@
             <article class="person-card">
               <img src="assets/images/wedding-party/groomsman-01.jpg" alt="Groomsman" />
               <h3>Name Here</h3>
-              <p>Best Man</p>
+              <p class="person-role">Best Man</p>
+              <p class="person-description">His trusted brother and lifelong partner in adventure.</p>
             </article>
 
             <article class="person-card">
               <img src="assets/images/wedding-party/groomsman-02.jpg" alt="Groomsman" />
               <h3>Name Here</h3>
-              <p>Groomsman</p>
+              <p class="person-role">Groomsman</p>
+              <p class="person-description">A loyal friend who has always stood beside him.</p>
             </article>
 
             <article class="person-card">
               <img src="assets/images/wedding-party/groomsman-03.jpg" alt="Groomsman" />
               <h3>Name Here</h3>
-              <p>Groomsman</p>
+              <p class="person-role">Groomsman</p>
+              <p class="person-description">The one who brings good stories and better laughs.</p>
             </article>
 
             <article class="person-card">
               <img src="assets/images/wedding-party/groomsman-04.jpg" alt="Groomsman" />
               <h3>Name Here</h3>
-              <p>Groomsman</p>
+              <p class="person-role">Groomsman</p>
+              <p class="person-description">A true friend for every milestone and memory.</p>
             </article>
           </div>
         </div>
@@ -277,12 +286,12 @@
         <div class="accordion reveal">
 
           <article class="accordion-item active">
-            <button class="accordion-button">
+            <button class="accordion-button" type="button" aria-expanded="true">
               <span>What should I wear?</span>
               <span class="accordion-icon">+</span>
             </button>
 
-            <div class="accordion-content">
+            <div class="accordion-content"><div class="accordion-content-inner">
               <p>
                 Semi-formal or cocktail attire. We invite you to dress elegantly for the occasion.
               </p>
@@ -303,47 +312,47 @@
                 <span style="--color:#202947"></span>
                 <span style="--color:#d8cbb7"></span>
               </div>
-            </div>
+            </div></div>
           </article>
 
           <article class="accordion-item">
-            <button class="accordion-button">
+            <button class="accordion-button" type="button" aria-expanded="false">
               <span>Where can I park?</span>
               <span class="accordion-icon">+</span>
             </button>
 
-            <div class="accordion-content">
+            <div class="accordion-content"><div class="accordion-content-inner">
               <p>
                 Parking details will be added here once the venue confirms the final arrangement.
               </p>
-            </div>
+            </div></div>
           </article>
 
           <article class="accordion-item">
-            <button class="accordion-button">
+            <button class="accordion-button" type="button" aria-expanded="false">
               <span>Can I bring extra guests?</span>
               <span class="accordion-icon">+</span>
             </button>
 
-            <div class="accordion-content">
+            <div class="accordion-content"><div class="accordion-content-inner">
               <p>
                 Due to venue capacity, we can only accommodate guests named in the invitation.
               </p>
-            </div>
+            </div></div>
           </article>
 
           <article class="accordion-item">
-            <button class="accordion-button">
+            <button class="accordion-button" type="button" aria-expanded="false">
               <span>Is the ceremony unplugged?</span>
               <span class="accordion-icon">+</span>
             </button>
 
-            <div class="accordion-content">
+            <div class="accordion-content"><div class="accordion-content-inner">
               <p>
                 Yes. Please keep phones and cameras away during the ceremony so everyone can be fully present.
                 You are welcome to take photos during the reception.
               </p>
-            </div>
+            </div></div>
           </article>
 
         </div>
@@ -665,42 +674,46 @@
 
   <label>
     Will you attend?
-    <select name="Attendance" required>
+    <select name="Attendance" id="attendanceSelect" required>
       <option value="">Select an answer</option>
       <option value="Yes, I will attend">Yes, I will attend</option>
       <option value="Sorry, I cannot attend">Sorry, I cannot attend</option>
     </select>
   </label>
 
-  <label>
-    Number of Guests
-    <input
-      type="number"
-      name="Number of Guests"
-      min="1"
-      max="5"
-      placeholder="1"
-      required
-    />
-  </label>
+  <div class="rsvp-follow-up" id="rsvpFollowUp" aria-hidden="true">
+    <div class="rsvp-follow-up-inner">
+      <label class="attending-only-field">
+        Number of Guests
+        <input
+          id="guestCount"
+          type="number"
+          name="Number of Guests"
+          min="1"
+          max="5"
+          placeholder="1"
+        />
+      </label>
 
-  <label>
-    Contact Number
-    <input
-      type="tel"
-      name="Contact Number"
-      placeholder="09XX XXX XXXX"
-    />
-  </label>
+      <label class="attending-only-field">
+        Contact Number
+        <input
+          type="tel"
+          name="Contact Number"
+          placeholder="09XX XXX XXXX"
+        />
+      </label>
 
-  <label>
-    Message
-    <textarea
-      name="Message"
-      rows="4"
-      placeholder="Write a short message"
-    ></textarea>
-  </label>
+      <label>
+        Message
+        <textarea
+          name="Message"
+          rows="4"
+          placeholder="Write a short message"
+        ></textarea>
+      </label>
+    </div>
+  </div>
 
   <button type="submit" class="btn btn-dark rsvp-submit">
     Submit RSVP
@@ -721,7 +734,33 @@
 
   <!-- FOOTER -->
   <footer class="site-footer">
-    <div>
+    <div class="footer-upload reveal">
+      <a
+        href="photo-upload/"
+        class="footer-qr-link"
+        aria-label="Open the wedding photo upload page"
+      >
+        <img
+          src="assets/images/photo-upload-qr.png"
+          alt="QR code linking to the Jon Madz and Coleene wedding photo upload page"
+          class="footer-upload-qr"
+          width="720"
+          height="720"
+          loading="lazy"
+        />
+      </a>
+
+      <div class="footer-upload-copy">
+        <p class="eyebrow">Share Your Memories</p>
+        <h2>Captured a Special Moment?</h2>
+        <p class="footer-upload-message">
+          Scan the QR code or tap below to share your favorite photos and videos from our celebration.
+        </p>
+        <a href="photo-upload/" class="btn btn-dark">Upload Photos &amp; Videos</a>
+      </div>
+    </div>
+
+    <div class="footer-signature">
       <h2>J & C</h2>
       <p>06 . 15 . 2027</p>
       <span>Created with love</span>
