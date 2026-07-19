@@ -164,61 +164,18 @@ if (attendanceSelect && rsvpFollowUp && guestCount) {
   updateRsvpFields();
 }
 
-/* GIFT DETAILS TOGGLE */
 /* SMOOTH GIFT DETAILS TOGGLE */
 const giftToggle = document.querySelector(".gift-toggle");
 const bankDetails = document.querySelector(".bank-details");
 
 if (giftToggle && bankDetails) {
-  const openGiftDetails = () => {
-    bankDetails.removeAttribute("hidden");
-    bankDetails.style.height = "0px";
-
-    requestAnimationFrame(() => {
-      bankDetails.classList.add("is-open");
-      bankDetails.style.height = `${bankDetails.scrollHeight}px`;
-      giftToggle.textContent = "Hide Gift Details";
-    });
-
-    bankDetails.addEventListener(
-      "transitionend",
-      () => {
-        if (bankDetails.classList.contains("is-open")) {
-          bankDetails.style.height = "auto";
-        }
-      },
-      { once: true }
-    );
-  };
-
-  const closeGiftDetails = () => {
-    bankDetails.style.height = `${bankDetails.scrollHeight}px`;
-
-    requestAnimationFrame(() => {
-      bankDetails.classList.remove("is-open");
-      bankDetails.style.height = "0px";
-      giftToggle.textContent = "Show Gift Details";
-    });
-
-    bankDetails.addEventListener(
-      "transitionend",
-      () => {
-        if (!bankDetails.classList.contains("is-open")) {
-          bankDetails.setAttribute("hidden", "");
-        }
-      },
-      { once: true }
-    );
-  };
-
   giftToggle.addEventListener("click", () => {
-    const isOpen = bankDetails.classList.contains("is-open");
+    const willOpen = !bankDetails.classList.contains("is-open");
 
-    if (isOpen) {
-      closeGiftDetails();
-    } else {
-      openGiftDetails();
-    }
+    bankDetails.classList.toggle("is-open", willOpen);
+    bankDetails.setAttribute("aria-hidden", String(!willOpen));
+    giftToggle.setAttribute("aria-expanded", String(willOpen));
+    giftToggle.textContent = willOpen ? "Hide Gift Details" : "Show Gift Details";
   });
 }
 
@@ -246,6 +203,12 @@ revealElements.forEach((element) => {
 /* RSVP FORM SUBMISSION */
 const rsvpForm = document.getElementById("rsvpForm");
 const formStatus = document.getElementById("formStatus");
+const RSVP_SUPABASE_URL = "https://icwvatphuyjqvdowriss.supabase.co";
+const RSVP_SUPABASE_ANON_KEY = "sb_publishable_u-yjZ2caskNqkUbvkgMNTw_MHuWrpBv";
+const rsvpSupabase = window.supabase?.createClient(
+  RSVP_SUPABASE_URL,
+  RSVP_SUPABASE_ANON_KEY
+);
 
 if (rsvpForm && formStatus) {
   rsvpForm.addEventListener("submit", async (event) => {
@@ -254,21 +217,40 @@ if (rsvpForm && formStatus) {
     const submitButton = rsvpForm.querySelector(".rsvp-submit");
     const formData = new FormData(rsvpForm);
 
+    if (!rsvpForm.checkValidity()) {
+      rsvpForm.reportValidity();
+      return;
+    }
+
+    if (!rsvpSupabase) {
+      formStatus.textContent = "RSVP service is unavailable. Please try again.";
+      formStatus.classList.add("error");
+      return;
+    }
+
+    const isAttending = formData.get("Attendance") === "Yes, I will attend";
+    const guestCountValue = formData.get("Number of Guests");
+    const submission = {
+      full_name: String(formData.get("Full Name") || "").trim(),
+      attendance: String(formData.get("Attendance") || ""),
+      guest_count: isAttending && guestCountValue ? Number(guestCountValue) : null,
+      contact_number: isAttending
+        ? String(formData.get("Contact Number") || "").trim() || null
+        : null,
+      message: String(formData.get("Message") || "").trim() || null,
+    };
+
     submitButton.classList.add("is-loading");
     submitButton.textContent = "Sending...";
     formStatus.textContent = "";
     formStatus.classList.remove("success", "error");
 
     try {
-      const response = await fetch(rsvpForm.action, {
-        method: "POST",
-        body: formData,
-        headers: {
-          Accept: "application/json",
-        },
+      const { data, error } = await rsvpSupabase.functions.invoke("submit-rsvp", {
+        body: submission,
       });
 
-      if (response.ok) {
+      if (!error && data?.success) {
         rsvpForm.reset();
 
         formStatus.textContent = "Thank you. Your RSVP has been sent.";
@@ -276,6 +258,7 @@ if (rsvpForm && formStatus) {
 
         submitButton.textContent = "Submitted";
       } else {
+        console.error("RSVP submission failed:", error?.message || data?.error);
         formStatus.textContent = "Something went wrong. Please try again.";
         formStatus.classList.add("error");
 

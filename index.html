@@ -9,7 +9,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Jon Madz &amp; Coleene | Wedding Website" />
   <meta property="og:description" content="Join us as we celebrate our wedding on June 15, 2027." />
-  <meta property="og:image" content="assets/images/home-hero.jpg" />
+  <meta property="og:image" content="assets/images/Jon Madz &amp; Coleene.jpg" />
 
   <title>Jon Madz & Coleene | Wedding Website</title>
 
@@ -64,7 +64,6 @@
           muted
           loop
           playsinline
-          poster="assets/images/home-hero.jpg"
         >
           <source src="assets/videos/home-hero.mp4" type="video/mp4" />
         </video>
@@ -604,12 +603,13 @@
             as we begin this new chapter together.
           </p>
 
-          <button class="btn btn-dark gift-toggle" type="button">
+          <button class="btn btn-dark gift-toggle" type="button" aria-expanded="false">
             Show Gift Details
           </button>
         </div>
 
-        <div class="bank-details" hidden>
+        <div class="bank-details" aria-hidden="true">
+          <div class="bank-details-inner">
           <article>
             <p class="eyebrow">Bank Account</p>
             <div class="bank-row">
@@ -637,6 +637,7 @@
               <strong>09XX XXX XXXX</strong>
             </div>
           </article>
+          </div>
         </div>
 
       </div>
@@ -655,13 +656,10 @@
           </p>
 
           <form
-  class="rsvp-form"
-  id="rsvpForm"
-  action="https://formspree.io/f/mnjkyovw"
-  method="POST"
+            class="rsvp-form"
+            id="rsvpForm"
+            novalidate
 >
-  <input type="hidden" name="_subject" value="New Wedding RSVP - Jon Madz & Coleene" />
-
   <label>
     Full Name
     <input
@@ -772,6 +770,7 @@
     ↑
   </a>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/script.js" defer></script>
 </body>
 </html>
