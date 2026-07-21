@@ -1,9 +1,11 @@
-import { createClient } from "npm:@supabase/supabase-js@2";
+import { createClient } from "npm:@supabase/supabase-js@2.110.7";
 
+const allowedOrigin = Deno.env.get("ALLOWED_ORIGIN") || "";
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Origin": allowedOrigin || "null",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Vary": "Origin",
 };
 
 const jsonResponse = (body: Record<string, unknown>, status = 200) =>
@@ -21,8 +23,23 @@ const escapeHtml = (value: unknown) =>
     .replaceAll("'", "&#039;");
 
 Deno.serve(async (request) => {
+  const requestOrigin = request.headers.get("origin");
+  const originAllowed = !requestOrigin || requestOrigin === allowedOrigin;
+
   if (request.method === "OPTIONS") {
-    return new Response("ok", { headers: corsHeaders });
+    return new Response(originAllowed && allowedOrigin ? "ok" : "Origin not allowed", {
+      status: originAllowed && allowedOrigin ? 200 : 403,
+      headers: corsHeaders,
+    });
+  }
+
+  if (!allowedOrigin) {
+    console.error("Missing ALLOWED_ORIGIN secret");
+    return jsonResponse({ success: false, error: "Server configuration error" }, 500);
+  }
+
+  if (!originAllowed) {
+    return jsonResponse({ success: false, error: "Origin not allowed" }, 403);
   }
 
   if (request.method !== "POST") {
@@ -30,7 +47,16 @@ Deno.serve(async (request) => {
   }
 
   try {
-    const body = await request.json();
+    const rawBody = await request.text();
+    if (rawBody.length > 12_000) {
+      return jsonResponse({ success: false, error: "Request is too large" }, 413);
+    }
+
+    const body = JSON.parse(rawBody);
+    if (String(body.website ?? "").trim()) {
+      return jsonResponse({ success: true });
+    }
+
     const fullName = String(body.full_name ?? "").trim();
     const attendance = String(body.attendance ?? "");
     const isAttending = attendance === "Yes, I will attend";
@@ -73,6 +99,55 @@ Deno.serve(async (request) => {
     const adminClient = createClient(supabaseUrl, serviceRoleKey, {
       auth: { persistSession: false },
     });
+
+    const forwardedFor = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+    const clientAddress = forwardedFor
+      || request.headers.get("cf-connecting-ip")
+      || request.headers.get("x-real-ip")
+      || "unknown";
+    const rateKeyBytes = new TextEncoder().encode(`${serviceRoleKey}:${clientAddress}`);
+    const rateKeyDigest = await crypto.subtle.digest("SHA-256", rateKeyBytes);
+    const rateKey = [...new Uint8Array(rateKeyDigest)]
+      .map((byte) => byte.toString(16).padStart(2, "0"))
+      .join("");
+    const fifteenMinutesAgo = new Date(Date.now() - 15 * 60 * 1000).toISOString();
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+
+    const [{ count: addressAttempts, error: addressRateError }, { count: globalAttempts, error: globalRateError }] =
+      await Promise.all([
+        adminClient
+          .from("rsvp_rate_limits")
+          .select("id", { count: "exact", head: true })
+          .eq("key_hash", rateKey)
+          .gte("attempted_at", fifteenMinutesAgo),
+        adminClient
+          .from("rsvp_rate_limits")
+          .select("id", { count: "exact", head: true })
+          .gte("attempted_at", oneHourAgo),
+      ]);
+
+    if (addressRateError || globalRateError) {
+      console.error("RSVP rate-limit lookup failed", addressRateError || globalRateError);
+      return jsonResponse({ success: false, error: "Please try again later" }, 503);
+    }
+
+    if ((addressAttempts ?? 0) >= 5 || (globalAttempts ?? 0) >= 100) {
+      return jsonResponse({ success: false, error: "Too many RSVP attempts. Please try again later." }, 429);
+    }
+
+    const { error: rateInsertError } = await adminClient
+      .from("rsvp_rate_limits")
+      .insert({ key_hash: rateKey });
+
+    if (rateInsertError) {
+      console.error("RSVP rate-limit insert failed", rateInsertError);
+      return jsonResponse({ success: false, error: "Please try again later" }, 503);
+    }
+
+    if (Math.random() < 0.05) {
+      const cleanupBefore = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+      await adminClient.from("rsvp_rate_limits").delete().lt("attempted_at", cleanupBefore);
+    }
 
     const submission = {
       full_name: fullName,

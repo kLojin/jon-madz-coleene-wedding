@@ -1,6 +1,6 @@
 -- Run this once in Supabase Dashboard > SQL Editor.
--- It creates the RSVP table and allows public form submissions without
--- allowing website visitors to read, edit, or delete RSVP records.
+-- It creates a private RSVP table. Public submissions go through the
+-- validated and rate-limited submit-rsvp Edge Function.
 
 create table if not exists public.wedding_rsvps (
   id bigint generated always as identity primary key,
@@ -25,20 +25,24 @@ create table if not exists public.wedding_rsvps (
 alter table public.wedding_rsvps enable row level security;
 
 revoke all on table public.wedding_rsvps from anon, authenticated;
-grant insert on table public.wedding_rsvps to anon, authenticated;
-grant usage, select on sequence public.wedding_rsvps_id_seq to anon, authenticated;
 
 drop policy if exists "Anyone can submit a wedding RSVP"
   on public.wedding_rsvps;
 
-create policy "Anyone can submit a wedding RSVP"
-on public.wedding_rsvps
-for insert
-to anon, authenticated
-with check (
-  char_length(full_name) between 2 and 120
-  and attendance in ('Yes, I will attend', 'Sorry, I cannot attend')
+create table if not exists public.rsvp_rate_limits (
+  id bigint generated always as identity primary key,
+  key_hash text not null check (char_length(key_hash) = 64),
+  attempted_at timestamptz not null default now()
 );
+
+create index if not exists rsvp_rate_limits_lookup_idx
+  on public.rsvp_rate_limits (key_hash, attempted_at desc);
+
+create index if not exists rsvp_rate_limits_cleanup_idx
+  on public.rsvp_rate_limits (attempted_at);
+
+alter table public.rsvp_rate_limits enable row level security;
+revoke all on table public.rsvp_rate_limits from anon, authenticated;
 
 comment on table public.wedding_rsvps is
   'Private RSVP responses for the Jon Madz and Coleene wedding website.';

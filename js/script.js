@@ -238,6 +238,7 @@ if (rsvpForm && formStatus) {
         ? String(formData.get("Contact Number") || "").trim() || null
         : null,
       message: String(formData.get("Message") || "").trim() || null,
+      website: String(formData.get("Website") || "").trim(),
     };
 
     submitButton.classList.add("is-loading");

@@ -5102,7 +5102,7 @@
   </button>
 
   <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.7"></script>
   <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 
   <script>
@@ -5120,8 +5120,6 @@
     const OPTIMIZED_FOLDER = "optimized";
     const VIDEO_EXTENSIONS = ["mp4", "mov", "webm"];
     const DEVICE_ID_STORAGE_KEY = "wedding_gallery_device_id";
-    const GALLERY_PASSCODE_STORAGE_KEY = "wedding_gallery_passcode";
-    const ADMIN_PASSCODE_STORAGE_KEY = "wedding_gallery_admin_passcode";
     const REACTIONS_TABLE = "wedding_upload_reactions";
 
     const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -5286,8 +5284,11 @@
     let activeModalIndex = 0;
     let touchStartX = 0;
     let touchEndX = 0;
-    let currentGalleryPasscode = localStorage.getItem(GALLERY_PASSCODE_STORAGE_KEY) || "";
-    let currentAdminPasscode = sessionStorage.getItem(ADMIN_PASSCODE_STORAGE_KEY) || "";
+    // Remove values left by older builds, then keep passcodes in memory only.
+    localStorage.removeItem("wedding_gallery_passcode");
+    sessionStorage.removeItem("wedding_gallery_admin_passcode");
+    let currentGalleryPasscode = "";
+    let currentAdminPasscode = "";
     let currentSettings = {
       galleryPrivate: false,
       requireApproval: false,
@@ -6138,13 +6139,15 @@
       if (error) {
         console.error("Gallery RPC error:", error);
         if ((error.message || "").toLowerCase().includes("passcode")) {
-          localStorage.removeItem(GALLERY_PASSCODE_STORAGE_KEY);
           currentGalleryPasscode = "";
           showPrivateGate("Invalid passcode. Try again.");
         }
 
         galleryMeta.textContent = "Gallery failed to load.";
-        gallery.innerHTML = `<div class="empty">Could not load gallery.<br>Error: ${error.message || "Unknown database error"}</div>`;
+        const errorNotice = document.createElement("div");
+        errorNotice.className = "empty";
+        errorNotice.textContent = `Could not load gallery. Error: ${error.message || "Unknown database error"}`;
+        gallery.replaceChildren(errorNotice);
         return;
       }
 
@@ -6798,7 +6801,6 @@
         adminActionStatus.textContent = statsError.message || "Could not load dashboard.";
         adminControls.hidden = true;
         adminLoginBox.hidden = false;
-        sessionStorage.removeItem(ADMIN_PASSCODE_STORAGE_KEY);
         currentAdminPasscode = "";
         return;
       }
@@ -6828,7 +6830,6 @@
       }
 
       currentAdminPasscode = passcode;
-      sessionStorage.setItem(ADMIN_PASSCODE_STORAGE_KEY, passcode);
       adminLoginBox.hidden = true;
       adminControls.hidden = false;
       await refreshAdminDashboard();
@@ -6859,15 +6860,13 @@
 
       if (newAdminPasscode) {
         currentAdminPasscode = newAdminPasscode;
-        sessionStorage.setItem(ADMIN_PASSCODE_STORAGE_KEY, newAdminPasscode);
-        adminPasscodeInput.value = newAdminPasscode;
+        adminPasscodeInput.value = "";
         newAdminPasscodeInput.value = "";
       }
 
       guestPasscodeInput.value = "";
       renderAdminStats(data || {});
       adminActionStatus.textContent = "Settings saved.";
-      localStorage.removeItem(GALLERY_PASSCODE_STORAGE_KEY);
       currentGalleryPasscode = "";
       await loadGallery();
       await refreshAdminDashboard();
@@ -7014,7 +7013,6 @@
       }
 
       currentGalleryPasscode = passcode;
-      localStorage.setItem(GALLERY_PASSCODE_STORAGE_KEY, passcode);
       await loadGallery();
     });
 
